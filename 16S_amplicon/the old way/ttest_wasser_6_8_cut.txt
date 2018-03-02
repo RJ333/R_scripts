@@ -1,0 +1,81 @@
+#mit threshold
+
+#dieser Teil ist immer gleich (before) 
+
+#glyphosataquarium dna neu
+dna_before_glyph_otu<-subset(meta_otu_dwater_cut_0.2, meta_otu_dwater_cut_0.2$time==6&meta_otu_dwater_cut_0.2$treatment=="glyph"&meta_otu_dwater_cut_0.2$habitat=="water")
+
+#kontrollaquarium dna neu
+dna_before_control_otu<-subset(meta_otu_dwater_cut_0.2, meta_otu_dwater_cut_0.2$time==6&meta_otu_dwater_cut_0.2$treatment=="control"&meta_otu_dwater_cut_0.2$habitat=="water")
+
+#glyphosataquarium dna neu
+cdna_before_glyph_otu<-subset(meta_otu_cdwater_cut_0.2, meta_otu_cdwater_cut_0.2$time==6&meta_otu_cdwater_cut_0.2$treatment=="glyph"&meta_otu_cdwater_cut_0.2$habitat=="water")
+
+#kontrollaquarium dna neu
+cdna_before_control_otu<-subset(meta_otu_cdwater_cut_0.2, meta_otu_cdwater_cut_0.2$time==6&meta_otu_cdwater_cut_0.2$treatment=="control"&meta_otu_cdwater_cut_0.2$habitat=="water")
+
+
+#zu vergleichende probe subsetten (after)
+
+#glyphosataquarium dna neu
+dna_after_glyph_otu_t8<-subset(meta_otu_dwater_cut_0.2, meta_otu_dwater_cut_0.2$time==8&meta_otu_dwater_cut_0.2$treatment=="glyph"&meta_otu_dwater_cut_0.2$habitat=="water")
+
+#kontrollaquarium dna neu
+dna_after_control_otu_t8<-subset(meta_otu_dwater_cut_0.2, meta_otu_dwater_cut_0.2$time==8&meta_otu_dwater_cut_0.2$treatment=="control"&meta_otu_dwater_cut_0.2$habitat=="water")
+
+#glyphosataquarium dna neu
+cdna_after_glyph_otu_t8<-subset(meta_otu_cdwater_cut_0.2, meta_otu_cdwater_cut_0.2$time==8&meta_otu_cdwater_cut_0.2$treatment=="glyph"&meta_otu_cdwater_cut_0.2$habitat=="water")
+
+#kontrollaquarium dna neu
+cdna_after_control_otu_t8<-subset(meta_otu_cdwater_cut_0.2, meta_otu_cdwater_cut_0.2$time==8&meta_otu_cdwater_cut_0.2$treatment=="control"&meta_otu_cdwater_cut_0.2$habitat=="water")
+
+
+#zu vergleichende subsets zusammenfügen
+
+#dna glyphosataquarium
+dna_glyph_before_8<-rbind(dna_before_glyph_otu,dna_after_glyph_otu_t8)
+
+#dna kontrollaquarium
+dna_control_before_8<-rbind(dna_before_control_otu,dna_after_control_otu_t8)
+
+#cdna glyphosataquarium
+cdna_glyph_before_8<-rbind(cdna_before_glyph_otu,cdna_after_glyph_otu_t8)
+
+#cdna kontrollaquarium
+cdna_control_before_8<-rbind(cdna_before_control_otu,cdna_after_control_otu_t8)
+
+
+#einmal anzahl spalten für dna/cdna testen (sollte gleichbleiben)
+ncol(dna_glyph_before_8)
+names(dna_glyph_before_8)
+ncol(dna_control_before_8)
+names(dna_control_before_8)
+ncol(cdna_glyph_before_8)
+names(cdna_glyph_before_8)
+ncol(cdna_control_before_8)
+names(cdna_control_before_8)
+
+library(vegan)
+
+#ttest
+ttest_dna_glyph_8<-lapply(dna_glyph_before_8[c(7:53)],function(x) t.test(x~as.factor(dna_glyph_before_8$time),var.equal=TRUE,paired=FALSE))
+ttest_dna_control_8<-lapply(dna_control_before_8[c(7:53)],function(x) t.test(x~as.factor(dna_control_before_8$time),var.equal=TRUE,paired=FALSE))
+ttest_cdna_glyph_8<-lapply(cdna_glyph_before_8[c(7:59)],function(x) t.test(x~as.factor(cdna_glyph_before_8$time),var.equal=TRUE,paired=FALSE))
+ttest_cdna_control_8<-lapply(cdna_control_before_8[c(7:59)],function(x) t.test(x~as.factor(cdna_control_before_8$time),var.equal=TRUE,paired=FALSE))
+
+#ausdruck der befehlszeilen in notepad++ datei
+for (bacteria in names(ttest_dna_glyph_8)){
+cat(paste("ttest_dna_glyph_8$",bacteria,"$p.value",sep=""),sep="\n",append=TRUE,file="ttest_dna_glyph_8")
+}
+
+for (bacteria in names(ttest_dna_control_8)){
+cat(paste("ttest_dna_control_8$",bacteria,"$p.value",sep=""),sep="\n",append=TRUE,file="ttest_dna_control_8")
+}
+
+for (bacteria in names(ttest_cdna_glyph_8)){
+cat(paste("ttest_cdna_glyph_8$",bacteria,"$p.value",sep=""),sep="\n",append=TRUE,file="ttest_cdna_glyph_8")
+}
+
+for (bacteria in names(ttest_cdna_control_8)){
+cat(paste("ttest_cdna_control_8$",bacteria,"$p.value",sep=""),sep="\n",append=TRUE,file="ttest_cdna_control_8")
+}

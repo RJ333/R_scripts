@@ -1,0 +1,39 @@
+#for RDA
+#counttable: otus in columns, samples in row.names
+#metadata: metadata as dataframe in columns, samples in row.names, same order 
+#angabe der zu berücksichtigenden paramater mit ~...+...+...
+#informationen in summary: x und y werte für samples und species, welche achse erklärt welchen faktor, wo liegen die schwerpunkte
+
+#######rda mit water
+
+######rda mit water glyphosate
+head(all_tnorm_meta_numbercode)
+names(all_tnorm_meta_numbercode)
+water_gly_subset<-subset(all_tnorm_meta_numbercode,all_tnorm_meta_numbercode$habitat=="water"&all_tnorm_meta_numbercode$treatment=="glyph")
+head(water_gly_subset)
+names(water_gly_subset)
+
+#zero counts entfernen
+#meta daten entfernen
+water_gly_subset2<-water_gly_subset[,9:695]
+separation<-colSums(water_gly_subset2)!=0
+water_gly_subset_nonzero<-water_gly_subset2[,separation]
+ncol(water_gly_subset_nonzero)
+
+#meta-subset erstellen
+meta_water_gly<-subset(meta_file,meta_file$habitat=="water"&meta_file$treatment=="glyph")
+head(meta_water_gly)
+head(water_gly_subset_nonzero)
+meta_water_gly$days<-as.factor(meta_water_gly$days)
+str(meta_water_gly)
+
+
+#rda
+rda_water_gly<-rda(water_gly_subset_nonzero~nucleic_acid+days+disturbance,meta_water_gly)
+plot(rda_water_gly,type="p",display="sites",main="rda_water_gly")
+with(meta_water_gly, points(rda_water_gly,col=colfunc(16)[meta_water_gly$days],pch=c(16,17)[meta_water_gly$nucleic_acid]))
+with(meta_water_gly, legend("bottomright", legend = levels(nucleic_acid), bty = "n", pch = c(16,17)))
+with(meta_water_gly, legend("bottomleft", legend = levels(days), pch=16, bty = "n", col=colfunc(16)))
+names(rda_water_gly)
+summary(rda_water_gly)
+

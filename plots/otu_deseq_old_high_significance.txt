@@ -1,0 +1,324 @@
+#OTU_plots DESeq2_normalized counts
+# preparing data for plotting
+
+#library(ggplot2)
+#library(reshape2)
+
+all_tnorm_meta_numbercode<-read.csv(file.choose(),sep=";",row.names=1)
+head(all_tnorm_meta_numbercode)
+names(all_tnorm_meta_numbercode)
+melted_numbercode<-melt(all_tnorm_meta_numbercode, id=c("days","time","treatment","parallel","nucleic_acid","habitat","cellcounts","disturbance"))
+head(melted_numbercode)
+
+
+#plotting 
+
+#Acidovorax (ohne cdna-Ausreißer Anstieg)
+X134_plot<-subset(melted_numbercode,variable == "X134")
+gg_X134_plot<-ggplot(X134_plot)
+gg_X134_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("Acidovorax")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+
+#Blastomonas	
+X193_plot<-subset(melted_numbercode,variable == "X193")
+gg_X193_plot<-ggplot(X193_plot)
+gg_X193_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("Blastomonas")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+	
+#Brevundimonas	
+X203_plot<-subset(melted_numbercode,variable == "X203")
+gg_X203_plot<-ggplot(X203_plot)
+gg_X203_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("Brevundimonas")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+	
+#Caulobacter	
+X215_plot<-subset(melted_numbercode,variable == "X215")
+gg_X215_plot<-ggplot(X215_plot)
+gg_X215_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("Caulobacter")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+	
+#Chlorochromatium	
+X220_plot<-subset(melted_numbercode,variable == "X220")
+gg_X220_plot<-ggplot(X220_plot)
+gg_X220_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("Chlorochromatium")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+
+#Gallaecimonas	
+X286_plot<-subset(melted_numbercode,variable == "X286")
+gg_X286_plot<-ggplot(X286_plot)
+gg_X286_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("Gallaecimonas")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")	
+
+#Hoeflea	
+X306_plot<-subset(melted_numbercode,variable == "X306")
+gg_X306_plot<-ggplot(X306_plot)
+gg_X306_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("Hoeflea")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+	
+#Hydrogenophaga	
+X307_plot<-subset(melted_numbercode,variable == "X307")
+gg_X307_plot<-ggplot(X307_plot)
+gg_X307_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("Hydrogenophaga")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+	
+#Hyphomicrobium	
+X308_plot<-subset(melted_numbercode,variable == "X308")
+gg_X308_plot<-ggplot(X309_plot)
+gg_X308_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("Hyphomicrobium")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+	
+#Hyphomonas (cdna nimmt ab?)
+X309_plot<-subset(melted_numbercode,variable == "X309")
+gg_X309_plot<-ggplot(X309_plot)
+gg_X309_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("Hyphomonas")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+	
+#Limnohabitans
+X342_plot<-subset(melted_numbercode,variable == "X342")
+gg_X342_plot<-ggplot(X342_plot)
+gg_X342_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("Limnohabitans")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+	
+#Marinicella (biofilm dna abnahme)
+X358_plot<-subset(melted_numbercode,variable == "X358")
+gg_X358_plot<-ggplot(X358_plot)
+gg_X358_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("Marinicella")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+
+#Mesorhizobium (dna/rna independent?)
+X371_plot<-subset(melted_numbercode,variable == "X371")
+gg_X371_plot<-ggplot(X371_plot)
+gg_X371_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("Mesorhizobium")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+	
+#Methylotenera
+X383_plot<-subset(melted_numbercode,variable == "X383")
+gg_X383_plot<-ggplot(X383_plot)
+gg_X383_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("Methylotenera")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+	
+#Oceanisphaera
+X415_plot<-subset(melted_numbercode,variable == "X415")
+gg_X415_plot<-ggplot(X415_plot)
+gg_X415_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("Oceanisphaera")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+	
+#Parvibaculum
+X437_plot<-subset(melted_numbercode,variable == "X437")
+gg_X437_plot<-ggplot(X437_plot)
+gg_X437_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("Parvibaculum")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+	
+#Polaribacter
+X466_plot<-subset(melted_numbercode,variable == "X466")
+gg_X466_plot<-ggplot(X466_plot)
+gg_X466_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("Polaribacter")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+
+#Pseudolabrys
+X480_plot<-subset(melted_numbercode,variable == "X480")
+gg_X480_plot<-ggplot(X480_plot)
+gg_X480_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("Pseudolabrys")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+	
+#Pseudomonas
+X481_plot<-subset(melted_numbercode,variable == "X481")
+gg_X481_plot<-ggplot(X481_plot)
+gg_X481_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("Pseudomonas")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+	
+#Pseudorhodobacter
+X485_plot<-subset(melted_numbercode,variable == "X485")
+gg_X485_plot<-ggplot(X485_plot)
+gg_X485_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("Pseudorhodobacter")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+	
+
+	
+#Pseudoxanthobacter
+X489_plot<-subset(melted_numbercode,variable == "X489")
+gg_X489_plot<-ggplot(X489_plot)
+gg_X489_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("Pseudoxanthobacter")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+	
+#Rhizobium
+X499_plot<-subset(melted_numbercode,variable == "X499")
+gg_X499_plot<-ggplot(X499_plot)
+gg_X499_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("Rhizobium")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+	
+#Rhodobacter (zufällige abnahme?)
+X500_plot<-subset(melted_numbercode,variable == "X500")
+gg_X500_plot<-ggplot(X500_plot)
+gg_X500_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("Rhodobacter")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")	
+
+#Simplicispira (abnahme cdna)
+X551_plot<-subset(melted_numbercode,variable == "X551")
+gg_X551_plot<-ggplot(X551_plot)
+gg_X551_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("Simplicispira")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")	
+	
+#Sphingomonas
+X559_plot<-subset(melted_numbercode,variable == "X559")
+gg_X559_plot<-ggplot(X559_plot)
+gg_X559_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("Sphingomonas")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")	
+
+#Sphingorhabdus
+X561_plot<-subset(melted_numbercode,variable == "X561")
+gg_X561_plot<-ggplot(X561_plot)
+gg_X561_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("Sphingorhabdus")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")	
+	
+#uncultured_Beijerinckiaceae
+X612_plot<-subset(melted_numbercode,variable == "X612")
+gg_X612_plot<-ggplot(X612_plot)
+gg_X612_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("uncultured_Beijerinckiaceae")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+
+#uncultured_Caulobacteraceae (focusing on water column)
+X616_plot<-subset(melted_numbercode,variable == "X616")
+gg_X616_plot<-ggplot(X616_plot)
+gg_X616_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("uncultured_Caulobacteraceae")+
+	ylim(0,20000)+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+	
+#uncultured_Hyphomicrobiaceae
+X641_plot<-subset(melted_numbercode,variable == "X641")
+gg_X641_plot<-ggplot(X641_plot)
+gg_X641_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("uncultured_Hyphomicrobiaceae")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+	
+#uncultured_Rhodobacteraceae
+X659_plot<-subset(melted_numbercode,variable == "X659")
+gg_X659_plot<-ggplot(X659_plot)
+gg_X659_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("uncultured_Rhodobacteraceae")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+
+#uncultured_Rhodospirillaceae	
+X662_plot<-subset(melted_numbercode,variable == "X662")
+gg_X662_plot<-ggplot(X662_plot)
+gg_X662_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("uncultured_Rhodospirillaceae")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+	
+#uncultured_Gaiellales
+X122_plot<-subset(melted_numbercode,variable == "X122")
+gg_X122_plot<-ggplot(X122_plot)
+gg_X122_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("uncultured_Gaiellales")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+	
+	
+#Seohaeicola
+X543_plot<-subset(melted_numbercode,variable == "X543")
+gg_X543_plot<-ggplot(X543_plot)
+gg_X543_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("Seohaeicola")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+	
+http://stackoverflow.com/questions/15912210/replace-a-list-of-values-by-another-in-r	
+liste erstellen namens index, wo X1 = otu...
+
+otu_index<-read.csv(file.choose(),sep=";",row.names=0)
+
+ODER
+
+http://stackoverflow.com/questions/12370327/how-do-i-replace-values-within-a-data-frame-with-a-string-in-r

@@ -1,0 +1,35 @@
+############################DCA water DNA glyph
+#counttable: otus in columns, samples in row.names
+#metadata: metadata as dataframe in columns, samples in row.names, same order 
+#angabe der zu berücksichtigenden paramater mit ~...+...+...
+#informationen in summary: x und y werte für samples und species, welche achse erklärt welchen faktor, wo liegen die schwerpunkte
+
+head(all_tnorm_meta_numbercode)
+names(all_tnorm_meta_numbercode)
+water_dna_glyph_subset_dca<-subset(all_tnorm_meta_numbercode,all_tnorm_meta_numbercode$habitat=="water"&all_tnorm_meta_numbercode$nucleic_acid=="dna"&all_tnorm_meta_numbercode$treatment=="glyph")
+head(water_dna_glyph_subset_dca)
+names(water_dna_glyph_subset_dca)
+
+#zero counts entfernen
+#meta daten entfernen
+water_dna_glyph_subset_dca2<-water_dna_glyph_subset_dca[,9:695]
+separation<-colSums(water_dna_glyph_subset_dca2)!=0
+water_dna_glyph_subset_dca_nonzero<-water_dna_glyph_subset_dca2[,separation]
+ncol(water_dna_glyph_subset_dca_nonzero)
+
+#metafile erstellen
+meta_water_dna_glyph_dca<-subset(meta_file,meta_file$habitat=="water"&meta_file$nucleic_acid=="dna"&meta_file$treatment=="glyph")
+head(meta_water_dna_glyph_dca)
+head(water_dna_glyph_subset_dca_nonzero)
+str(meta_water_dna_glyph_dca)
+meta_water_dna_glyph_dca$days<-as.factor(meta_water_dna_glyph_dca$days)
+str(meta_water_dna_glyph_dca)
+
+#dca
+dca_water_dna<-decorana(water_dna_glyph_subset_dca_nonzero)
+plot(dca_water_dna,type="t",display="sites",main="dca_water_glyph_dna")
+with(meta_water_dna_glyph_dca, points(dca_water_dna,col=colfunc(16)[meta_water_dna_glyph_dca$days],pch=c(16,17)[meta_water_dna_glyph_dca$treatment]))
+with(meta_water_dna_glyph_dca, legend("bottomright", legend = levels(treatment), bty = "n", pch = c(16,17)))
+with(meta_water_dna_glyph_dca, legend("topright", legend = levels(days), pch=16, bty = "n", col=colfunc(16)))
+names(dca_water_dna)
+summary(dca_water_dna)

@@ -1,0 +1,26 @@
+###########otu single plots with glyphosate addition
+#Gallaecimonas	
+X286_plot<-subset(melted_numbercode,treatment == "glyph" & habitat == "water" &variable == "X286")
+species_title_286<-expression(paste(,italic("Gallaecimonas")," sp. in water column"))
+ggplot(data=X286_plot, aes(days,value,group=nucleic_acid,colour=nucleic_acid))+ 
+	geom_point()+ 
+	stat_summary(aes(group=nucleic_acid),fun.y="mean", geom="line", size=2)+	
+	scale_colour_manual(values=c("blue","red"),
+						name="Nucleic Acid",
+						breaks=c("cdna","dna"),
+						labels=c("16S-rRNA","16S-rDNA"))+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	ggtitle(species_title_286)+
+	theme(plot.title = element_text(size=18,face="bold"))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	geom_vline(aes(xintercept=69),linetype="dashed", size=1.2)+
+	xlab("days")+
+	ylab("read \n counts")
+	
+	
+	
+

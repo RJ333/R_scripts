@@ -1,0 +1,79 @@
+http://www.r-bloggers.com/how-to-write-the-first-for-loop-in-r/
+
+for (year in c(2010,2011,2012,2013,2014,2015)){
+  print(paste("The year is", year))
+}
+
+for (i in 2010:2015){
+  print(paste("The year is", i))
+}
+
+"The year is 2010"
+"The year is 2011"
+"The year is 2012"
+"The year is 2013"
+"The year is 2014"
+"The year is 2015"
+
+for (i in 1:10) {
+  if (!i %% 2){
+
+#modulus operand: (10/3=3,33...), 3=quotient=%/%, 33...=remainder=%%; own operand: '%p%' <- function(x, y){x^2 + y} z.b. 2 %p% 3  result: 7   
+#! = FALSE 
+
+next
+  }
+    print(i)
+}
+1
+3
+5
+7
+9
+
+yeeha$Flavobacterium_Flavobacteriaceae_Flavobacteriales_Flavobacteriia_Bacteroidetes$p.value um an den p.value zu kommen
+next
+p value größer als dings 1. datei, falls größer als dings 2. datei, größer als dings 3. datei
+
+for (i in yeeha_list){
+	do.call(print(i,quotes=FALSE),NULL)
+}
+
+for (bacteria in names(yeeha_list)){
+cat(paste("yeeha$",bacteria,"$p.value",sep=""),sep="\n",append=TRUE,file="yeeha_list")
+}
+
+
+cat(... , file = "", sep = " ", fill = FALSE, labels = NULL,
+         append = FALSE)
+		 
+
+############Example of nested if...else
+#2-aep-specific: phnW and phnX
+#unspecific ABC-transporter: phnCDE
+#unspecific C-P Lyase: phnGHIJKLM 
+#P-independent phosphonopyruvate hydrolase: pphA
+####pho-genes 
+#("pst|pho|psp|phn|ush|glp|opr|qed|ped|amd|lap|npt|gsp|uxp|plc|dag|ols", genes)
+
+x <- 0
+if (x < 0) {
+   print("Negative number")
+} else if (x > 0) {
+   print("Positive number")
+} else
+   print("Zero")
+
+Output
+
+[1] "Zero" 
+
+
+for (goi in c("phnC","phnD","phnE....)){
+  print(paste("The year is", year))
+}
+d$status <- ifelse(( d$position <= 100 ), 'low', 'high')
+
+
+cellfactor<-max(phnM_contigs_plot$unique_contigs)
+(y=cells_ml*cellfactor/5000000)

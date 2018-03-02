@@ -1,0 +1,105 @@
+#merging kallisto coverage and prokka and binlist
+#read data in
+kallisto<-read.delim(file.choose(),row.names=1)
+bins_1000<-read.csv(file.choose(),row.names=1,sep=";")
+bins_nocutup<-read.csv(file.choose(),row.names=1,sep=";")
+#prokka<-read.delim(file.choose()) wurden angepasst wegen aufgespaltener contigs
+#prokka<-prokka[,c(1:4,6,7,8)]
+kallisto_A1<-read.delim(file.choose(),row.names=1)
+colnames(kallisto_A1)[1] <- "contig_length"
+contig_length<-kallisto_A1[,1,drop=FALSE]
+#merge tables
+kallisto_prokka<-merge(kallisto,prokka_ready2,by.x="row.names",by.y="contig_id",all=TRUE) #neu gemacht "aus prokka_again", war dann falsch, neu gemacht aus prokka_ready2
+kallisto_prokka2<-merge(kallisto_prokka,contig_length,by.x="Row.names",by.y="row.names",all.x=T)
+write.csv(kallisto_prokka2,file="kallisto_prokka2.csv")
+
+#####################enlarging table
+
+head(kallisto_prokka2)
+kallisto_prokka_concoct1<-merge(kallisto_prokka2,bins_1000,by.x="Row.names",by.y="row.names",all.x=T)
+head(kallisto_prokka_concoct1)
+
+#adding bowtie2  information
+bowtie2_cov<-read.delim(file.choose(),header=TRUE)
+kallisto_bowtie2_prokka_concoct<-merge(kallisto_prokka_concoct1,bowtie_cov,by.x="Row.names",by.y="contig",all.x=T)
+head(kallisto_bowtie_prokka_concoct)
+
+#adding metaxa
+metaxa<-read.csv(file.choose(),sep=";")
+kallisto_bowtie_prokka_concoct_metaxa<-merge(kallisto_bowtie_prokka_concoct,metaxa,by.x="Row.names",by.y="contig_id",all=T)
+
+
+#include checkm (only tax, completeness, contamination) lost a1_est_counts here
+checkm<-read.csv(file.choose(),sep=";")
+kallisto_bowtie_prokka_concoct_metaxa_checkm<-merge(kallisto_bowtie_prokka_concoct_metaxa,checkm,by="bin_gt1000",all.x=T)
+write.csv(kallisto_bowtie_prokka_concoct_metaxa_checkm,file="kallisto_bowtie_prokka_concoct_metaxa_checkm.csv")
+#rearrange columns in excel, A1_est counts is missing
+#redid merging, sorting of columns, removed "bins_nocutup" due to missing extra information
+#some extra long contigs with taxonomy tags by metaxa where not correctly merged, I added the contig length and bin information manually
+kallisto_bowtie_prokka_concoct_metaxa_checkm2<-read.csv(file.choose(),sep=";",row.names=1) #using "one split missing"
+kallisto_hoch_split_concoct2_metaxa_checkm2<-read.csv(file.choose(),sep=";",row.names=1)
+omics_collection<-rbind(kallisto_bowtie_prokka_concoct_metaxa_checkm2,kallisto_hoch_split_concoct2_metaxa_checkm2)
+write.csv(omics_collection,file="omics_collection.csv")
+#in excel mit NAs aufgefüllt, einige falsch gemergte contigs entfernt (k141_xxx.-1)
+#NA und <NA> gleichsetzen
+omics_collection[omics_collection == "NA"] <- NA
+#####################gene subsets
+#check for glyph genes
+#create gene subset
+
+glyph_genes<-kallisto_prokka_concoct2_metaxa_checkm[kallisto_prokka_concoct2_metaxa_checkm$ec_number %in% c("3.11.1.1","3.11.1.2","3.11.1.3","2.6.1.37","1.4.3.19","1.5.3.1","1.5.8.3"),]
+glyph_genes2<-glyph_genes[,c(1,5,6,8,10,12,14,16,18,20,22,24,26)]
+library(reshape2)
+molten_glyph<-melt(glyph_genes2,id=c("contig_id","ec_number","genes"))
+#meta data for plotting: treatment/control and time
+meta_omics<-read.csv(file.choose(),row.names=1,sep=";")
+merged_glyph_genes<-merge(molten_glyph,meta_omics,by.x="variable",by.y="row.names",all.x=T)
+write.csv(merged2_glyph_genes,file="merged_glyph_genes.csv")
+
+#check for c-p lyase genes
+#create gene subset
+
+cpl_genes<-subset(kallisto_prokka_concoct2_metaxa_checkm, grepl("pho|phn|pph|sox|thiO", genes))
+cpl_genes2<-cpl_genes[,c(1,5,6,8,10,12,14,16,18,20,22,24,26)]
+library(reshape2)
+molten_cpl<-melt(cpl_genes2,id=c("contig_id","ec_number","genes"))
+#meta data for plotting: treatment/control and time
+#meta_omics<-read.csv(file.choose(),row.names=1,sep=";")
+merged_cpl_genes<-merge(molten_cpl,meta_omics,by.x="variable",by.y="row.names",all.x=T)
+write.csv(merged_cpl_genes,file="merged_cpl_genes.csv")
+
+#check for housekeeping genes
+#create gene subset
+
+house_genes<-kallisto_prokka_concoct2_metaxa_checkm[kallisto_prokka_concoct2_metaxa_checkm$ec_number %in% c("5.99.1.3","1.8.4.7","3.4.6.9","3.6.4.9","3.1.26.12","3.5.2.6","2.7.7.6"),]
+house_genes2<-house_genes[,c(1,5,6,8,10,12,14,16,18,20,22,24,26)]]
+library(reshape2)
+molten_house<-melt(house_genes2,id=c("contig_id","ec_number","genes"))
+#meta data for plotting: treatment/control and time
+#meta_omics<-read.csv(file.choose(),row.names=1,sep=";")
+merged_house_genes<-merge(molten_house,meta_omics,by.x="variable",by.y="row.names",all.x=T)
+write.csv(merged_house_genes,file="merged_house_genes.csv")
+
+##check for phosphate metabolism genes
+pho_genes<-subset(kallisto_prokka_concoct2_metaxa_checkm, grepl("pst|pho|psp|phn|ush|glp|opr|qed|ped|amd|lap|npt|gsp|uxp|plc|dag|ols", genes))
+pho_genes2<-pho_genes[,c(1,5,6,8,10,12,14,16,18,20,22,24,26)]
+library(reshape2)
+molten_pho<-melt(pho_genes2,id=c("contig_id","ec_number","genes"))
+#meta data for plotting: treatment/control and time
+#meta_omics<-read.csv(file.choose(),row.names=1,sep=";")
+merged_pho_genes<-merge(molten_pho,meta_omics,by.x="variable",by.y="row.names",all.x=T)
+
+
+#######################compare concoct with metaxa
+bin56<-subset(kallisto_prokka_concoct2_metaxa,bin_gt1000=="56") 
+bin56$wholetax
+bin56nc<-subset(kallisto_prokka_concoct2_metaxa,bin_nocutup=="56") 
+bin56nc$wholetax
+bin22<-subset(kallisto_prokka_concoct2_metaxa,bin_gt1000=="22") 
+bin22$wholetax
+bin22nc<-subset(kallisto_prokka_concoct2_metaxa,bin_nocutup=="22") 
+bin22nc$wholetax #__Chitinophagaceae_Sphingobacteriales_Sphingobacteriia_Bacteroidetes_Bacteria
+bin32<-subset(kallisto_prokka_concoct2_metaxa,bin_gt1000=="32") 
+bin32$wholetax 
+bin32nc<-subset(kallisto_prokka_concoct2_metaxa,bin_nocutup=="32") 
+bin32nc$wholetax #_Pseudomonas_Pseudomonadaceae_Pseudomonadales_Gammaproteobacteria_Proteobacteria_Bacteria

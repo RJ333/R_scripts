@@ -1,0 +1,45 @@
+#grundlage für threshold ist
+#merged_dwater_cut (26184 reads) für wasser DNA
+#merged_cdwater_cut (41583 reads) für wasser cDNA
+#merged_biofilm_cut (46958 reads) für biofilm cDNA und DNA
+
+#mit max() bei excel höchsten wert in spalte tax_max
+#excel auf . statt , für dezimaltrennung eingestellt, muss noch manuell in fertigen exceldateien geändert werden, aber dec="," fällt weg bei R
+
+
+#water dna threshold 0,2% der gesamtreads -> 53 reads
+
+merged_dwater_cut_max<-read.csv(file.choose(),row.names=1,sep=";") 
+names(merged_dwater_cut_max)
+merged_dwater_cut_0.2<-subset(merged_dwater_cut_max,tax_max > 52)
+nrow(merged_dwater_cut_0.2)
+#47
+tmerged_dwater_cut_0.2<-t(merged_dwater_cut_0.2)
+write.csv(tmerged_dwater_cut_0.2, file="tmerged_dwater_cut_0.2.csv")
+#zeile tax_max in excel entfernt, außerdem metadaten eingefügt
+meta_dwater_cut_0.2<-read.table(file.choose(),row.names=1,header=TRUE,sep=";")
+
+#water cdna threshold 0,2 % der gesamtreads -> 83 reads
+
+merged_cdwater_cut_max<-read.csv(file.choose(),row.names=1,sep=";") 
+names(merged_cdwater_cut_max)
+merged_cdwater_cut_0.2<-subset(merged_cdwater_cut_max,tax_max > 83)
+nrow(merged_cdwater_cut_0.2)
+#53
+tmerged_cdwater_cut_0.2<-t(merged_cdwater_cut_0.2)
+write.csv(tmerged_cdwater_cut_0.2, file="tmerged_cdwater_cut_0.2.csv")
+#zeile tax_max in excel entfernt, außerdem metadaten eingefügt
+meta_cdwater_cut_0.2<-read.table(file.choose(),row.names=1,header=TRUE,sep=";")
+
+
+#biofilm dna cdna threshold 0,2 % der gesamtreads -> 94 reads
+
+merged_biofilm_cut_max<-read.csv(file.choose(),row.names=1,sep=";") 
+names(merged_biofilm_cut_max)
+merged_biofilm_cut_0.2<-subset(merged_biofilm_cut_max,tax_max > 93)
+nrow(merged_biofilm_cut_0.2)
+#76
+tmerged_biofilm_cut_0.2<-t(merged_biofilm_cut_0.2)
+write.csv(tmerged_biofilm_cut_0.2, file="tmerged_biofilm_cut_0.2.csv")
+#zeile tax_max in excel entfernt, außerdem metadaten eingefügt
+meta_biofilm_cut_0.2<-read.table(file.choose(),row.names=1,header=TRUE,sep=";")

@@ -1,0 +1,40 @@
+###plotting whole genes and whole tax
+kallisto_prokka_concoct2_metaxa_checkm<-read.csv(file.choose(),row.names=1,sep=";")
+head(kallisto_prokka_concoct2_metaxa_checkm)
+
+all_genes<-kallisto_prokka_concoct2_metaxa_checkm[,c(1,5,6,7,9,11,13,15,17,19,21,23,25,39,40)]
+library(reshape)
+molten_all<-melt(all_genes,ic=c("contig_id","ec_number","genes"))
+#meta data for plotting: treatment/control and time
+meta_omics<-read.csv(file.choose(),row.names=1,sep=";")
+merged_all_genes<-merge(molten_all,meta_omics,by.x="variable",by.y="row.names",all.x=T)
+write.csv(merged_all_genes,file="merged_all_genes.csv")
+head(merged_all_genes)
+
+##all_genes
+#all_genes_plot<-subset(merged_all_genes, grepl("phnX|phnW", genes))
+all_genes_plot<-merged_all_genes[order(merged_all_genes[,4]),]
+nrow(all_genes_plot)
+library(ggplot2)
+xall_genes_genes_bar<-ggplot(all_genes_plot, aes(x = day, y = value, fill=genes))+				
+	geom_bar(width = 1.7, stat = "identity")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	#geom_text(data=subset(all_genes_plot, value > 3),aes(label=contig_id),size=rel(2.7), position = position_stack(vjust = .5))+
+	#geom_label_repel(data=subset(all_genes_plot, value > 1),position="stack",min.segment.length = unit(0.1, "lines"),aes(label=genes,size=1.4))+
+	ggtitle("all_genes_genes")+
+	theme(plot.title = element_text(size=18,face="bold"))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	geom_vline(aes(xintercept=70),linetype="dashed", size=1.2)+
+	xlab("day")+
+	ylab("rpm")+
+	geom_point(aes(y=cells_ml/100),size=3,alpha=0.4)+
+	facet_wrap( ~treatment,nrow=2)+
+	theme(legend.position='none')
+xall_genes_genes_bar
+ ggsave(file="all_genes_genes.jpg", width=17, height=10)
+ 
+ http://stackoverflow.com/questions/1395229/increasing-or-decreasing-the-memory-available-to-r-processes

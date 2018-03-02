@@ -1,0 +1,24 @@
+##memory management
+
+http://adv-r.had.co.nz/memory.html
+https://stat.ethz.ch/R-manual/R-devel/library/utils/html/memory.size.html
+
+Description
+
+memory.size and memory.limit are used to manage the total memory allocation on Windows. On other platforms these are stubs which report infinity with a warning.
+Usage
+
+memory.size(max = FALSE)
+
+memory.limit(size = NA)
+
+Arguments
+max 	
+
+logical. If true the maximum amount of memory obtained from the OS is reported, otherwise the amount currently in use.
+size 	
+
+numeric. If NA report the memory size, otherwise request a new limit, in Mb.
+Details
+
+To restrict memory usage on a Unix-alike use the facilities of the shell used to launch R, e.g. limit or ulimit. 

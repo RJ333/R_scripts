@@ -1,0 +1,24 @@
+#choosing/selecting data
+
+However, there are two ways to be more strict about which set of genes are considered significant:
+
+    lower the false discovery rate threshold (the threshold on padj in the results table)
+    raise the log2 fold change threshold from 0 using the lfcThreshold argument of results
+
+If we lower the false discovery rate threshold, we should also tell this value to results(), so that the function will use an alternative threshold for the optimal independent filtering step:
+
+res.05 <- results(dds, alpha=.05)
+table(res.05$padj < .05)
+
+## 
+## FALSE  TRUE 
+## 12841  4014
+
+If we want to raise the log2 fold change threshold, so that we test for genes that show more substantial changes due to treatment, we simply supply a value on the log2 scale. For example, by specifying lfcThreshold=1, we test for genes that show significant effects of treatment on gene counts more than doubling or less than halving, because 21 = 2.
+
+resLFC1 <- results(dds, lfcThreshold=1)
+table(resLFC1$padj < 0.1)
+
+## 
+## FALSE  TRUE 
+## 18368   196

@@ -1,0 +1,445 @@
+####pho-genes 
+#("pst|pho|psp|phn|ush|glp|opr|qed|ped|amd|lap|npt|gsp|uxp|plc|dag|ols", genes)
+
+
+###############ols_genes
+##ols
+ols_plot<-subset(merged_pho_genes, grepl("ols", genes))
+ols_plot<-ols_plot[order(ols_plot[,4]),]
+nrow(ols_plot)
+
+xols_genes_bar<-ggplot(ols_plot, aes(x = day, y = value, fill=genes))+				
+	geom_bar(width = 1.7, stat = "identity")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	geom_text(data=subset(ols_plot, value > 1),aes(label=contig_id),size=rel(2.7), position = position_stack(vjust = .5))+
+	#geom_label_repel(data=subset(ols_plot, value > 1),position="stack",min.segment.length = unit(0.1, "lines"),aes(label=genes,size=1.4))+
+	ggtitle("ols_genes")+
+	theme(plot.title = element_text(size=18,face="bold"))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	geom_vline(aes(xintercept=70),linetype="dashed", size=1.2)+
+	xlab("day")+
+	ylab("rpm")+
+	geom_point(aes(y=cells_ml/1000000),size=3,alpha=0.4)+
+	facet_wrap( ~treatment,nrow=2)
+xols_genes_bar
+ ggsave(file="ols_genes.jpg", width=14, height=8)
+ 
+##connecting contig, gene and bin/taxonomy for "remarkable" contigs
+#ols 
+subset(pho_genes,contig_id=="k141_167000")
+
+###############dag_genes
+##dag
+dag_plot<-subset(merged_pho_genes, grepl("dag", genes))
+dag_plot<-dag_plot[order(dag_plot[,4]),]
+nrow(dag_plot)
+
+xdag_genes_bar<-ggplot(dag_plot, aes(x = day, y = value, fill=genes))+				
+	geom_bar(width = 1.7, stat = "identity")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	geom_text(data=subset(dag_plot, value > 1),aes(label=contig_id),size=rel(2.7), position = position_stack(vjust = .5))+
+	#geom_label_repel(data=subset(dag_plot, value > 1),position="stack",min.segment.length = unit(0.1, "lines"),aes(label=genes,size=1.4))+
+	ggtitle("dag_genes")+
+	theme(plot.title = element_text(size=18,face="bold"))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	geom_vline(aes(xintercept=70),linetype="dashed", size=1.2)+
+	xlab("day")+
+	ylab("rpm")+
+	geom_point(aes(y=cells_ml/1000000),size=3,alpha=0.4)+
+	facet_wrap( ~treatment,nrow=2)
+xdag_genes_bar
+ ggsave(file="dag_genes.jpg", width=14, height=8)
+ 
+##connecting contig, gene and bin/taxonomy for "remarkable" contigs
+#dag 
+subset(pho_genes,contig_id=="k141_167000")
+
+###############plc_genes
+##plc
+plc_plot<-subset(merged_pho_genes, grepl("plc", genes))
+plc_plot<-plc_plot[order(plc_plot[,4]),]
+nrow(plc_plot)
+
+xplc_genes_bar<-ggplot(plc_plot, aes(x = day, y = value, fill=genes, colour=contig_id))+				
+	geom_bar(width = 1.7, stat = "identity")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	geom_text(data=subset(plc_plot, value > 1),aes(label=contig_id),size=rel(2.7), position = position_stack(vjust = .5))+
+	#geom_label_repel(data=subset(plc_plot, value > 1),position="stack",min.segment.length = unit(0.1, "lines"),aes(label=genes,size=1.4))+
+	ggtitle("plc_genes")+
+	theme(plot.title = element_text(size=18,face="bold"))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	geom_vline(aes(xintercept=70),linetype="dashed", size=1.2)+
+	xlab("day")+
+	ylab("rpm")+
+	geom_point(aes(y=cells_ml/10000000),size=3,alpha=0.4)+
+	facet_wrap( ~treatment,nrow=2)
+xplc_genes_bar
+ ggsave(file="plc_genes.jpg", width=14, height=8)
+ 
+##connecting contig, gene and bin/taxonomy for "remarkable" contigs
+#plc 
+subset(pho_genes,contig_id=="k141_167000")
+
+###############amd_genes
+##amd
+amd_plot<-subset(merged_pho_genes, grepl("amd", genes))
+amd_plot<-amd_plot[order(amd_plot[,4]),]
+nrow(amd_plot)
+
+xamd_genes_bar<-ggplot(amd_plot, aes(x = day, y = value, fill=genes))+				
+	geom_bar(width = 1.7, stat = "identity")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	geom_text(data=subset(amd_plot, value > 10),aes(label=contig_id),size=rel(2.7), position = position_stack(vjust = .5))+
+	#geom_label_repel(data=subset(amd_plot, value > 1),position="stack",min.segment.length = unit(0.1, "lines"),aes(label=genes,size=1.4))+
+	ggtitle("amd_genes")+
+	theme(plot.title = element_text(size=18,face="bold"))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	geom_vline(aes(xintercept=70),linetype="dashed", size=1.2)+
+	xlab("day")+
+	ylab("rpm")+
+	geom_point(aes(y=cells_ml/1000000),size=3,alpha=0.4)+
+	facet_wrap( ~treatment,nrow=2)
+xamd_genes_bar
+ ggsave(file="amd_genes.jpg", width=14, height=8)
+ 
+##connecting contig, gene and bin/taxonomy for "remarkable" contigs
+#amd 
+subset(pho_genes,contig_id=="k141_160541")
+subset(pho_genes,contig_id=="k141_167119")
+
+
+
+###############ped_genes
+##ped
+ped_plot<-subset(merged_pho_genes, grepl("ped", genes))
+ped_plot<-ped_plot[order(ped_plot[,4]),]
+nrow(ped_plot)
+
+xped_genes_bar<-ggplot(ped_plot, aes(x = day, y = value, fill=genes))+				
+	geom_bar(width = 1.7, stat = "identity")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	geom_text(data=subset(ped_plot, value > 5),aes(label=contig_id),size=rel(2.7), position = position_stack(vjust = .5))+
+	#geom_label_repel(data=subset(ped_plot, value > 1),position="stack",min.segment.length = unit(0.1, "lines"),aes(label=genes,size=1.4))+
+	ggtitle("ped_genes")+
+	theme(plot.title = element_text(size=18,face="bold"))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	geom_vline(aes(xintercept=70),linetype="dashed", size=1.2)+
+	xlab("day")+
+	ylab("rpm")+
+	geom_point(aes(y=cells_ml/1000000),size=3,alpha=0.4)+
+	facet_wrap( ~treatment,nrow=2)
+xped_genes_bar
+ ggsave(file="ped_genes.jpg", width=14, height=8)
+ 
+##connecting contig, gene and bin/taxonomy for "remarkable" contigs
+#ped 
+subset(pho_genes,contig_id=="k141_151818")
+subset(pho_genes,contig_id=="k141_265797")
+
+###############qed_genes
+##qed
+qed_plot<-subset(merged_pho_genes, grepl("qed", genes))
+qed_plot<-qed_plot[order(qed_plot[,4]),]
+nrow(qed_plot)
+
+xqed_genes_bar<-ggplot(qed_plot, aes(x = day, y = value, fill=genes))+				
+	geom_bar(width = 1.7, stat = "identity")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	geom_text(data=subset(qed_plot, value > 20),aes(label=contig_id),size=rel(2.7), position = position_stack(vjust = .5))+
+	#geom_label_repel(data=subset(qed_plot, value > 1),position="stack",min.segment.length = unit(0.1, "lines"),aes(label=genes,size=1.4))+
+	ggtitle("qed_genes")+
+	theme(plot.title = element_text(size=18,face="bold"))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	geom_vline(aes(xintercept=70),linetype="dashed", size=1.2)+
+	xlab("day")+
+	ylab("rpm")+
+	geom_point(aes(y=cells_ml/1000000),size=3,alpha=0.4)+
+	facet_wrap( ~treatment,nrow=2)
+xqed_genes_bar
+ ggsave(file="qed_genes.jpg", width=14, height=8)
+ 
+##connecting contig, gene and bin/taxonomy for "remarkable" contigs
+#qed 
+subset(pho_genes,contig_id=="k141_109078")
+subset(pho_genes,contig_id=="k141_98528")
+subset(pho_genes,contig_id=="k141_61214")
+subset(pho_genes,contig_id=="k141_48349")
+
+###############psp_genes
+##pspA
+pspA_plot<-subset(merged_pho_genes, grepl("pspA", genes))
+pspA_plot<-pspA_plot[order(pspA_plot[,4]),]
+nrow(pspA_plot)
+
+xpspA_genes_bar<-ggplot(pspA_plot, aes(x = day, y = value, fill=genes))+				
+	geom_bar(width = 1.7, stat = "identity")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	geom_text(data=subset(pspA_plot, value > 1),aes(label=contig_id),size=rel(2.7), position = position_stack(vjust = .5))+
+	#geom_label_repel(data=subset(pspA_plot, value > 1),position="stack",min.segment.length = unit(0.1, "lines"),aes(label=genes,size=1.4))+
+	ggtitle("pspA_genes")+
+	theme(plot.title = element_text(size=18,face="bold"))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	geom_vline(aes(xintercept=70),linetype="dashed", size=1.2)+
+	xlab("day")+
+	ylab("rpm")+
+	geom_point(aes(y=cells_ml/1000000),size=3,alpha=0.4)+
+	facet_wrap( ~treatment,nrow=2)
+xpspA_genes_bar
+ ggsave(file="pspA_genes.jpg", width=14, height=8)
+ 
+##connecting contig, gene and bin/taxonomy for "remarkable" contigs
+#pspA 
+subset(pho_genes,contig_id=="k141_134918")
+subset(pho_genes,contig_id=="k141_231634")
+subset(pho_genes,contig_id=="k141_134979")
+subset(pho_genes,contig_id=="k141_113019")
+subset(pho_genes,contig_id=="k141_26796")
+subset(pho_genes,contig_id=="k141_116064")
+subset(pho_genes,contig_id=="k141_6623")
+subset(pho_genes,contig_id=="k141_155384")
+subset(pho_genes,contig_id=="k141_182772")
+
+##pspB
+pspB_plot<-subset(merged_pho_genes, grepl("pspB", genes))
+pspB_plot<-pspB_plot[order(pspB_plot[,4]),]
+nrow(pspB_plot)
+
+xpspB_genes_bar<-ggplot(pspB_plot, aes(x = day, y = value, fill=genes))+				
+	geom_bar(width = 1.7, stat = "identity")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	geom_text(data=subset(pspB_plot, value > 1),aes(label=contig_id),size=rel(2.7), position = position_stack(vjust = .5))+
+	#geom_label_repel(data=subset(pspB_plot, value > 1),position="stack",min.segment.length = unit(0.1, "lines"),aes(label=genes,size=1.4))+
+	ggtitle("pspB_genes")+
+	theme(plot.title = element_text(size=18,face="bold"))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	geom_vline(aes(xintercept=70),linetype="dashed", size=1.2)+
+	xlab("day")+
+	ylab("rpm")+
+	geom_point(aes(y=cells_ml/1000000),size=3,alpha=0.4)+
+	facet_wrap( ~treatment,nrow=2)
+xpspB_genes_bar
+ ggsave(file="pspB_genes.jpg", width=14, height=8)
+ 
+##connecting contig, gene and bin/taxonomy for "remarkable" contigs
+#pspB 
+subset(pho_genes,contig_id=="k141_44320")
+subset(pho_genes,contig_id=="k141_249102")
+subset(pho_genes,contig_id=="k141_169848")
+subset(pho_genes,contig_id=="k141_262833")
+subset(pho_genes,contig_id=="k141_118304")
+subset(pho_genes,contig_id=="k141_92722")
+
+##pspE
+pspE_plot<-subset(merged_pho_genes, grepl("pspE", genes))
+pspE_plot<-pspE_plot[order(pspE_plot[,4]),]
+nrow(pspE_plot)
+
+xpspE_genes_bar<-ggplot(pspE_plot, aes(x = day, y = value, fill=genes))+				
+	geom_bar(width = 1.7, stat = "identity")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	geom_text(data=subset(pspE_plot, value > 1),aes(label=contig_id),size=rel(2.7), position = position_stack(vjust = .5))+
+	#geom_label_repel(data=subset(pspE_plot, value > 1),position="stack",min.segment.length = unit(0.1, "lines"),aes(label=genes,size=1.4))+
+	ggtitle("pspE_genes")+
+	theme(plot.title = element_text(size=18,face="bold"))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	geom_vline(aes(xintercept=70),linetype="dashed", size=1.2)+
+	xlab("day")+
+	ylab("rpm")+
+	geom_point(aes(y=cells_ml/1000000),size=3,alpha=0.4)+
+	facet_wrap( ~treatment,nrow=2)
+xpspE_genes_bar
+ ggsave(file="pspE_genes.jpg", width=14, height=8)
+ 
+##connecting contig, gene and bin/taxonomy for "remarkable" contigs
+#pspE 
+subset(pho_genes,contig_id=="k141_128781")
+subset(pho_genes,contig_id=="k141_82001")
+subset(pho_genes,contig_id=="k141_80829")
+subset(pho_genes,contig_id=="k141_62248")
+subset(pho_genes,contig_id=="k141_229733")
+###############pho_genes
+
+phoD_plot<-subset(merged_pho_genes, grepl("phoD", genes))
+phoD_plot<-phoD_plot[order(phoD_plot[,4]),]
+nrow(phoD_plot)
+
+xphoD_genes_bar<-ggplot(phoD_plot, aes(x = day, y = value, fill=genes))+				
+	geom_bar(width = 1.7, stat = "identity")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	geom_text(data=subset(phoD_plot, value > 3),aes(label=contig_id),size=rel(2.7), position = position_stack(vjust = .5))+
+	#geom_label_repel(data=subset(phoD_plot, value > 1),position="stack",min.segment.length = unit(0.1, "lines"),aes(label=genes,size=1.4))+
+	ggtitle("phoD_genes")+
+	theme(plot.title = element_text(size=18,face="bold"))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	geom_vline(aes(xintercept=70),linetype="dashed", size=1.2)+
+	xlab("day")+
+	ylab("rpm")+
+	geom_point(aes(y=cells_ml/1000000),size=3,alpha=0.4)+
+	facet_wrap( ~treatment,nrow=2)
+xphoD_genes_bar
+ ggsave(file="phoD_genes.jpg", width=14, height=8)
+ 
+##connecting contig, gene and bin/taxonomy for "remarkable" contigs
+#phoD 
+subset(pho_genes,contig_id=="k141_241865")
+subset(pho_genes,contig_id=="k141_29497")
+
+
+phoA_plot<-subset(merged_pho_genes, grepl("phoA", genes))
+phoA_plot<-phoA_plot[order(phoA_plot[,4]),]
+nrow(phoA_plot)
+
+xphoA_genes_bar<-ggplot(phoA_plot, aes(x = day, y = value, fill=genes))+				
+	geom_bar(width = 1.7, stat = "identity")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	geom_text(data=subset(phoA_plot, value > 3),aes(label=contig_id),size=rel(2.7), position = position_stack(vjust = .5))+
+	#geom_label_repel(data=subset(phoA_plot, value > 1),position="stack",min.segment.length = unit(0.1, "lines"),aes(label=genes,size=1.4))+
+	ggtitle("phoA_genes")+
+	theme(plot.title = element_text(size=18,face="bold"))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	geom_vline(aes(xintercept=70),linetype="dashed", size=1.2)+
+	xlab("day")+
+	ylab("rpm")+
+	geom_point(aes(y=cells_ml/1000000),size=3,alpha=0.4)+
+	facet_wrap( ~treatment,nrow=2)
+xphoA_genes_bar
+ ggsave(file="phoA_genes.jpg", width=14, height=8)
+ 
+##connecting contig, gene and bin/taxonomy for "remarkable" contigs
+#phoA 
+subset(pho_genes,contig_id=="k141_165377")
+subset(pho_genes,contig_id=="k141_4660")
+
+
+#######################pst_genes
+
+pstB_plot<-subset(merged_pho_genes, grepl("pstB", genes))
+pstB_plot<-pstB_plot[order(pstB_plot[,4]),]
+nrow(pstB_plot)
+
+xpstB_genes_bar<-ggplot(pstB_plot, aes(x = day, y = value, fill=genes))+				
+	geom_bar(width = 1.7, stat = "identity")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	geom_text(data=subset(pstB_plot, value > 3),aes(label=contig_id),size=rel(2.7), position = position_stack(vjust = .5))+
+	#geom_label_repel(data=subset(pstB_plot, value > 1),position="stack",min.segment.length = unit(0.1, "lines"),aes(label=genes,size=1.4))+
+	ggtitle("pstB_genes")+
+	theme(plot.title = element_text(size=18,face="bold"))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	geom_vline(aes(xintercept=70),linetype="dashed", size=1.2)+
+	xlab("day")+
+	ylab("rpm")+
+	geom_point(aes(y=cells_ml/1000000),size=3,alpha=0.4)+
+	facet_wrap( ~treatment,nrow=2)
+xpstB_genes_bar
+ ggsave(file="pstB_genes.jpg", width=14, height=8)
+ 
+##connecting contig, gene and bin/taxonomy for "remarkable" contigs
+#pstB 
+subset(pho_genes,contig_id=="k141_67008")
+subset(pho_genes,contig_id=="k141_68600")
+subset(pho_genes,contig_id=="k141_174849")
+
+pstP_plot<-subset(merged_pho_genes, grepl("pstP", genes))
+pstP_plot<-pstP_plot[order(pstP_plot[,4]),]
+nrow(pstP_plot)
+
+xpstP_genes_bar<-ggplot(pstP_plot, aes(x = day, y = value, fill=genes))+				
+	geom_bar(width = 1.7, stat = "identity")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	geom_text(data=subset(pstP_plot, value > 3),aes(label=contig_id),size=rel(2.7), position = position_stack(vjust = .5))+
+	#geom_label_repel(data=subset(pstP_plot, value > 1),position="stack",min.segment.length = unit(0.1, "lines"),aes(label=genes,size=1.4))+
+	ggtitle("pstP_genes")+
+	theme(plot.title = element_text(size=18,face="bold"))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	geom_vline(aes(xintercept=70),linetype="dashed", size=1.2)+
+	xlab("day")+
+	ylab("rpm")+
+	geom_point(aes(y=cells_ml/1000000),size=3,alpha=0.4)+
+	facet_wrap( ~treatment,nrow=2)
+xpstP_genes_bar
+ ggsave(file="pstP_genes.jpg", width=14, height=8)
+ 
+##connecting contig, gene and bin/taxonomy for "remarkable" contigs
+#pstP 
+subset(pho_genes,contig_id=="k141_248100")
+
+pstS_plot<-subset(merged_pho_genes, grepl("pstS", genes))
+pstS_plot<-pstS_plot[order(pstS_plot[,4]),]
+nrow(pstS_plot)
+
+xpstS_genes_bar<-ggplot(pstS_plot, aes(x = day, y = value, fill=genes))+				
+	geom_bar(width = 1.7, stat = "identity")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	geom_text(data=subset(pstS_plot, value > 3),aes(label=contig_id),size=rel(2.7), position = position_stack(vjust = .5))+
+	#geom_label_repel(data=subset(pstS_plot, value > 1),position="stack",min.segment.length = unit(0.1, "lines"),aes(label=genes,size=1.4))+
+	ggtitle("pstS_genes")+
+	theme(plot.title = element_text(size=18,face="bold"))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	geom_vline(aes(xintercept=70),linetype="dashed", size=1.2)+
+	xlab("day")+
+	ylab("rpm")+
+	geom_point(aes(y=cells_ml/1000000),size=3,alpha=0.4)+
+	facet_wrap( ~treatment,nrow=2)
+xpstS_genes_bar
+ ggsave(file="pstS_genes.jpg", width=14, height=8)
+ 
+##connecting contig, gene and bin/taxonomy for "remarkable" contigs
+#pstS 
+subset(pho_genes,contig_id=="k141_5800")
+subset(pho_genes,contig_id=="k141_48801")

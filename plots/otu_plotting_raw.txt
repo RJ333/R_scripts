@@ -1,0 +1,38 @@
+#original plot aus subsample data
+Gallaecimonas_plot<-subset(film_water_rel_cut,variable == "Gallaecimonas_Unknown.Family_Gammaproteobacteria.Incertae.Sedis_Gammaproteobacteria_Proteobacteria")
+gg_Gallaecimonas_plot<-ggplot(Gallaecimonas_plot)
+gg_Gallaecimonas_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("Gallaecimonas")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+	
+	
+#unscaled plot aus raw data (meta_cast_cut_all)
+library(reshape)
+meta_cast_cut_all<-read.csv(file.choose(),sep=";",row.names=1)
+melted_cut_all<-melt(meta_cast_cut_all, id=c("time","days","treatment","parallel","nucleic_acid","habitat","library_size","scale_factor"))
+write.csv(melted_otu_cdwater_cut_0.2,file="melted_otu_cdwater_cut_0.2.csv")
+melted_otu_cdwater_cut_0.2_rel<-read.csv(file.choose(),sep=";",row.names=1)
+
+Gallaecimonas_plot_raw<-subset(melted_cut_all,variable == "Gallaecimonas_Unknown.Family_Gammaproteobacteria.Incertae.Sedis_Gammaproteobacteria_Proteobacteria" & time >= 1)
+Gallaecimonas_plot_raw$value_num<-as.numeric(as.character(Gallaecimonas_plot_raw$value)) #spalte ist vorher ein faktor, muss über "as.character" zu "as.numeric" geändert werden, sonst verändern sich die werte (ausgabe der pointer)
+Gallaecimonas_plot_raw$scaled_value<-Gallaecimonas_plot_raw$value_num/Gallaecimonas_plot_raw$scale_factor
+gg_Gallaecimonas_plot_raw<-ggplot(Gallaecimonas_plot_raw)
+gg_Gallaecimonas_plot_raw+
+	geom_point(aes(x=days,y=scaled_value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("Gallaecimonas")+
+	(aes(x=days,y=scaled_value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+	
+	
+	
+Methylotenera_plot_raw<-subset(melted_cut_all,variable == "Methylotenera_Methylophilaceae_Methylophilales_Betaproteobacteria_Proteobacteria"& time >= 1)
+Methylotenera_plot_raw$value<-as.numeric(as.character(Methylotenera_plot_raw$value))
+Methylotenera_plot_raw$scaled_value<-Methylotenera_plot_raw$value/Methylotenera_plot_raw$scale_factor
+gg_Methylotenera_plot_raw<-ggplot(Methylotenera_plot_raw)
+gg_Methylotenera_plot_raw+
+	geom_point(aes(x=days,y=scaled_value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("Methylotenera")+
+	(aes(x=days,y=scaled_value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")

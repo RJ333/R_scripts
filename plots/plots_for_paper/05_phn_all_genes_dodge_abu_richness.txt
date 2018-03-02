@@ -1,0 +1,97 @@
+#create variable for adjusting different ranges of data series
+readfactor<-max(phnW_unique2$value)
+cellfactor<-max(phnW_unique2$unique_contigs)
+
+
+phn_bound_all<-rbind(phnA_unique2,phnC_unique2,phnD_unique2,phnE_unique2,phnF_unique2,phnG_unique2,phnH_unique2,phnI_unique2,phnJ_unique2,phnK_unique2,phnL_unique2,phnM_unique2,phnN_unique2,phnR_unique2,phnP_unique2,phnS_unique2,phnT_unique2,phnU_unique2,phnV_unique2,phnW_unique2,phnX_unique2)
+phn_bound_operon<-rbind(phnC_unique2,phnD_unique2,phnE_unique2,phnF_unique2,phnG_unique2,phnH_unique2,phnI_unique2,phnJ_unique2,phnK_unique2,phnL_unique2,phnM_unique2,phnN_unique2,phnP_unique2,soxA_unique2,soxB_unique2)
+#plotting diversity and scaled relative contig abundance
+#,colour="sum_unique_\ngenes\n")
+goi<-expression(paste(,italic("phn")," gene richness in water column"))
+phn_iso<-ggplot(phn_bound, aes(x=day))+
+	geom_bar(data=phn_bound,width=2.7,position = "dodge", stat="identity",aes(y=unique_gene,alpha=1,fill=gsub("_.*$", "", gene)))+
+	geom_line(data=more_cell_counts_60, aes(y=glyph_mg_L*(cellfactor/13),colour="glyphosate\nconcentration\n"),alpha=0.8,linetype="solid", size=1)+
+	geom_line(data=more_cell_counts_60, aes(y=glyph_theor*(cellfactor/13),colour="glyphosate\ndilution\n"),alpha=0.5,linetype="F1", size=1)+
+	geom_vline(aes(xintercept=70.0),linetype="dashed", size=0.8)+
+	geom_point(data=more_cell_counts_60, aes(y=cells_ml*cellfactor/(60000000),colour="cell counts\n"),fill="grey2",shape=21,size=3.5,alpha=0.8)+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle(goi)+
+	scale_fill_discrete(name = "genes")+
+	scale_colour_discrete(name = "data series")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	theme(plot.title = element_text(size=18,face="bold",hjust = 0.5))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0,vjust=0.5))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	xlab("days")+
+	#theme(legend.position="none")+
+	#guides(fill=FALSE)+
+	ylab("gene\nrichness")
+phn_iso
+ggsave(file="phn_richness_dodge.jpg", width=14, height=8)
+
+
+phn_bound2<-subset(phn_bound_operon,time==6 | time==10 | time==12| time==15| time==19)
+phn_bound3<-subset(phn_bound_operon,treatment=="glyph")
+goi<-expression(paste(,italic("phn")," operon genes richness in water column"))
+phn_iso2<-ggplot(phn_bound3, aes(x=as.factor(day-69)))+
+	geom_bar(data=subset(phn_bound3,grepl("phnC|phnD|phnE",gene)),width=1,position = "dodge", stat="identity",aes(y=unique_gene,alpha=1,fill=gsub("_.*$", "", gene)),fill="grey30")+
+	geom_bar(data=subset(phn_bound3,grepl("phnI|phnJ|phnK|phnG|phnH",gene)),width=1,position = "dodge", stat="identity",aes(y=unique_gene,alpha=1,fill=gsub("_.*$", "", gene)),fill="black")+
+	geom_bar(data=subset(phn_bound3,grepl("phnF|phnL|phnN|phnP|soxB",gene)),width=1,position = "dodge", stat="identity",aes(y=unique_gene,alpha=1,fill=gsub("_.*$", "", gene)),fill="grey60")+
+	geom_bar(data=subset(phn_bound3,grepl("phnM|soxA",gene)),width=1,position = "dodge", stat="identity",aes(y=unique_gene,alpha=1,fill=gsub("_.*$", "", gene)),fill="grey60")+
+	facet_wrap(~gsub("_.*$", "", gene),nrow=1)+
+	theme_bw()+
+	theme(panel.grid.major=element_line(colour = NA, size = 0.2))+
+	theme(panel.grid.minor=element_line(colour = NA, size = 0.5))+
+	#ggtitle(goi)+
+	scale_fill_discrete(name = "genes")+
+	scale_colour_discrete(name = "data series")+
+	scale_x_discrete(drop=TRUE)+
+	#theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.text.x = element_text(angle=90,vjust=0.5))+
+	theme(axis.title.y = element_text(angle=90,vjust=0.5))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.text=element_text(size=11))+
+	xlab("Days")+
+	theme(legend.position="none")+
+	theme(strip.text = element_text(face = "italic"))+
+	guides(fill=FALSE)+
+	ylab('amount of specific gene present\non all contigs ("gene richness")')
+phn_iso2
+ggsave(file="phn_richness_dodge_selection_for_manuscript.png", width=16, height=8)
+
+#create variable for adjusting different ranges of data series
+readfactor<-max(soxB_unique2$value)
+cellfactor<-max(soxB_unique2$unique_contigs)
+
+
+sox_bound<-rbind(soxA_unique2,soxB_unique2)
+
+#plotting diversity and scaled relative contig abundance
+#,colour="sum_unique_\ngenes\n")
+goi<-expression(paste(,italic("sox")," gene richness in water column"))
+sox_iso<-ggplot(sox_bound, aes(x=day))+
+	geom_bar(data=sox_bound,width=2.7,position = "dodge", stat="identity",aes(y=unique_gene,alpha=1,fill=gsub("_.*$", "", gene)))+
+	geom_line(data=more_cell_counts_60, aes(y=glyph_mg_L*(cellfactor/13),colour="glyphosate\nconcentration\n"),alpha=0.8,linetype="solid", size=1)+
+	geom_line(data=more_cell_counts_60, aes(y=glyph_theor*(cellfactor/13),colour="glyphosate\ndilution\n"),alpha=0.5,linetype="F1", size=1)+
+	geom_vline(aes(xintercept=70.0),linetype="dashed", size=0.8)+
+	geom_point(data=more_cell_counts_60, aes(y=cells_ml*cellfactor/(75000000),colour="cell counts\n"),fill="grey2",shape=21,size=3.5,alpha=0.8)+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle(goi)+
+	scale_fill_discrete(name = "genes")+
+	scale_colour_discrete(name = "data series")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	theme(plot.title = element_text(size=18,face="bold",hjust = 0.5))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0,vjust=0.5))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	xlab("days")+
+	#theme(legend.position="none")+
+	#guides(fill=FALSE)+
+	ylab("gene\nrichness")
+sox_iso
+ggsave(file="sox_richness_dodge.jpg", width=14, height=8)

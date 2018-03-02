@@ -1,0 +1,164 @@
+####################compare functional diversity
+#####unique iso and contig for gene: phnC
+
+#START HERE (if clean workspace)
+
+##read required files and libraries
+kallisto_prokka_concoct2_metaxa_checkm<-read.csv(file.choose(),row.names=1,sep=";")
+meta_omics<-read.csv(file.choose(),row.names=1,sep=";")
+meta_omics_twodigit<-read.csv(file.choose(),row.names=1,sep=";")
+more_cell_counts<-read.csv(file.choose(),sep=";")
+library(reshape)
+library(ggplot2)
+samples_omic<-c("A01","A02","A03","A04","A05","A06","A07","B08","B09","B10")
+
+#START HERE (if workspace and libraries loaded)
+
+###adjust functions
+count_unique_contigs <- function(x){ sum(phnC_contigs[x,] > 0)}
+count_gene_isoforms <- function(x){ sum(phnC_genes[x,] > 0)}
+
+###phnC: 2-AEP specific phosphonatase
+phnC<-subset(kallisto_prokka_concoct2_metaxa_checkm, grepl("phnC", genes))
+head(phnC)
+nrow(phnC)
+phnC_select<-phnC[,c(1,5,6,7,9,11,13,15,17,19,21,23,25,26,27,40,41)]
+head(phnC_select)
+
+molten_phnC<-melt(phnC_select,id=c("contig_id","ec_number","genes","bin_gt1000","bin_nocutup","marker_lineage","completeness"))
+nrow(molten_phnC)
+#meta data for plotting: treatment/control and time
+
+merged_phnC_select<-merge(molten_phnC,meta_omics,by.x="variable",by.y="row.names",all.x=T)
+head(merged_phnC_select)
+write.csv(merged_phnC_select,file="merged_phnC_select.csv")
+
+##in excel checked:
+#E.C. number identical?
+#unimported columns to remove
+
+##in excel phnCed:
+#total number of isogenes per timepoint
+#number of unique contigs per timepoint with phnC on it
+#number of bins per timepoint with contig in it
+#which bins
+#which isogenes how often per timepoint
+
+#not yet: count data (abundance less important to diversity?)
+
+###drop levels in subset
+phnC_nonzero<-subset(merged_phnC_select,value!=0.0000000)
+str(phnC_nonzero)
+phnC_nonzero <- droplevels(phnC_nonzero)
+str(phnC_nonzero)
+phnC_nonzero<-rbind(phnC_nonzero,cell_id)
+head(phnC)
+head(phnW)
+
+###create multiple objects rbind to single object
+###empty object before running
+phnC_contigs<-vector() 
+phnC_contigs<-table((subset(phnC_nonzero,time=="6"&treatment=="glyph"))$contig_id)
+phnC_contigs<-rbind(phnC_contigs,table((subset(phnC_nonzero,time=="7"&treatment=="glyph"))$contig_id))
+phnC_contigs<-rbind(phnC_contigs,table((subset(phnC_nonzero,time=="8"&treatment=="glyph"))$contig_id))
+phnC_contigs<-rbind(phnC_contigs,table((subset(phnC_nonzero,time=="10"&treatment=="glyph"))$contig_id))
+phnC_contigs<-rbind(phnC_contigs,table((subset(phnC_nonzero,time=="12"&treatment=="glyph"))$contig_id))
+phnC_contigs<-rbind(phnC_contigs,table((subset(phnC_nonzero,time=="15"&treatment=="glyph"))$contig_id))
+phnC_contigs<-rbind(phnC_contigs,table((subset(phnC_nonzero,time=="19"&treatment=="glyph"))$contig_id))
+phnC_contigs<-rbind(phnC_contigs,table((subset(phnC_nonzero,time=="6"&treatment=="control"))$contig_id))
+phnC_contigs<-rbind(phnC_contigs,table((subset(phnC_nonzero,time=="12"&treatment=="control"))$contig_id))
+phnC_contigs<-rbind(phnC_contigs,table((subset(phnC_nonzero,time=="19"&treatment=="control"))$contig_id))
+
+#set row.names
+row.names(phnC_contigs)<-samples_omic
+sum(phnC_contigs[1,] > 0)
+
+###empty object before running
+unique_contigs<-vector()
+for (i in 1:10){
+unique_contigs<-rbind(unique_contigs,count_unique_contigs(i))
+}
+
+###################################################plot number of unique contigs
+phnC_contigs<-cbind(phnC_contigs,unique_contigs)
+phnC_contigs<-as.data.frame(phnC_contigs)
+names(phnC_contigs)[ncol(phnC_contigs)] <- "unique_contigs"
+phnC_contigs<-as.data.frame(rbind(phnC_contigs,colSums(phnC_contigs)))
+row.names(phnC_contigs)[nrow(phnC_contigs)]<-"sum_per_contig"
+
+#merge with meta data
+phnC_contigs<-merge(phnC_contigs,meta_omics_twodigit,by="row.names",all.x=T)
+phnC_contigs_plot<-subset(phnC_contigs,treatment != "NA")
+row.names(phnC_contigs_plot)<-samples_omic
+phnC_contigs_plot<-phnC_contigs_plot[,-1]
+head(phnC_contigs_plot)
+	
+##############################################do the same stuff with genes instead of contigs
+
+phnC_nonzero_genes<-subset(merged_phnC_select,value!=0.0000000)
+str(phnC_nonzero_genes)
+phnC_nonzero_genes <- droplevels(phnC_nonzero_genes)
+str(phnC_nonzero_genes)
+
+###empty object before running
+phnC_genes<-vector() 
+phnC_genes<-table((subset(phnC_nonzero_genes,time=="6"&treatment=="glyph"))$genes)
+phnC_genes<-rbind(phnC_genes,table((subset(phnC_nonzero_genes,time=="7"&treatment=="glyph"))$genes))
+phnC_genes<-rbind(phnC_genes,table((subset(phnC_nonzero_genes,time=="8"&treatment=="glyph"))$genes))
+phnC_genes<-rbind(phnC_genes,table((subset(phnC_nonzero_genes,time=="10"&treatment=="glyph"))$genes))
+phnC_genes<-rbind(phnC_genes,table((subset(phnC_nonzero_genes,time=="12"&treatment=="glyph"))$genes))
+phnC_genes<-rbind(phnC_genes,table((subset(phnC_nonzero_genes,time=="15"&treatment=="glyph"))$genes))
+phnC_genes<-rbind(phnC_genes,table((subset(phnC_nonzero_genes,time=="19"&treatment=="glyph"))$genes))
+phnC_genes<-rbind(phnC_genes,table((subset(phnC_nonzero_genes,time=="6"&treatment=="control"))$genes))
+phnC_genes<-rbind(phnC_genes,table((subset(phnC_nonzero_genes,time=="12"&treatment=="control"))$genes))
+phnC_genes<-rbind(phnC_genes,table((subset(phnC_nonzero_genes,time=="19"&treatment=="control"))$genes))
+	
+row.names(phnC_genes)<-samples_omic
+unique_gene_isoforms<-vector()
+for (i in 1:10){
+unique_gene_isoforms<-rbind(unique_gene_isoforms,count_gene_isoforms(i))
+}
+	
+#####plot number of unique genes
+phnC_gene_isoforms<-cbind(phnC_genes,unique_gene_isoforms)
+phnC_gene_isoforms<-as.data.frame(phnC_gene_isoforms)
+names(phnC_gene_isoforms)[ncol(phnC_gene_isoforms)] <- "unique_gene_isoforms"
+phnC_gene_isoforms<-as.data.frame(rbind(phnC_gene_isoforms,colSums(phnC_gene_isoforms)))
+row.names(phnC_gene_isoforms)[nrow(phnC_gene_isoforms)]<-"sum_per_gene_isoform"
+
+#merge with meta data
+phnC_gene_isoforms<-merge(phnC_gene_isoforms,meta_omics_twodigit,by="row.names",all.x=T)
+row.names(phnC_gene_isoforms)<-phnC_gene_isoforms$Row.names
+phnC_gene_isoforms<-phnC_gene_isoforms[,-1]
+phnC_gene_isoforms_plot<-subset(phnC_gene_isoforms,treatment != "NA")
+molten_phnC_gene_isoforms<-melt(phnC_gene_isoforms_plot,id=c("time","day","treatment","cells_ml","glyph_mg_L"))
+#molten_phnC_gene_isoforms<-subset(molten_phnC_gene_isoforms,variable != "unique_gene_isoforms")
+cellfactor<-max(phnC_contigs_plot$unique_contigs)
+
+
+goi<-expression(paste(,italic("phnC")," metagenomic read distribution in water column"))
+phnC_iso<-ggplot(molten_phnC_gene_isoforms, aes(x=day))+
+	geom_line(data=more_cell_counts, aes(y=glyph_mg_L*(cellfactor/15),colour="glyphosate concentration"),alpha=0.8,linetype="solid", size=1)+
+	geom_line(data=more_cell_counts, aes(y=glyph_theor*(cellfactor/15),colour="glyphosate dilution"),alpha=0.5,linetype="F1", size=1)+
+	geom_vline(aes(xintercept=70.5),linetype="dashed", size=0.8)+
+	geom_bar(width=1,stat="identity",data=phnC_contigs_plot,aes(x=day+0.5, y=unique_contigs,colour="n(contigs)"),fill="grey1")+
+	geom_bar(width=1,stat="identity",position="stack",  data=subset(molten_phnC_gene_isoforms, variable != "unique_gene_isoforms"),fill="grey3", aes (y=value,x=day-0.5,colour="phnC_stacked"),alpha=.5)+
+	geom_bar(width=2.7,stat="identity",position="stack",  data=subset(molten_phnC_gene_isoforms, variable == "unique_gene_isoforms"), aes (y=value,colour="n(isoforms)"),alpha=0.4)+
+	geom_bar(width=2.7,stat="identity",position="dodge", data=subset(molten_phnC_gene_isoforms, variable != "unique_gene_isoforms"), aes(y=value,fill=variable))+
+	geom_point(data=more_cell_counts, aes(y=cells_ml*cellfactor/100000000,colour="cell counts"),fill="grey2",shape=21,size=3,alpha=1)+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle(goi)+
+	scale_fill_discrete(name = "gene isoforms")+
+	scale_colour_discrete(name = "data series")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	theme(plot.title = element_text(size=18,face="bold",hjust = 0.5))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0,vjust=0.5))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	xlab("days")+
+	ylab("read counts\nper million")
+phnC_iso
+ggsave(file="phnC_gene_isoforms.jpg", width=14, height=8)
+

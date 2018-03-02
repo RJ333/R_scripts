@@ -1,0 +1,89 @@
+#create meta_data file in excel
+#read in meta_data
+#integer to factor
+meta_data<-read.csv(file.choose(),header=T,row.names=1,sep=";") 										#samples in rows, meta data in colums
+str(meta_data) 
+meta_data$time<-as.factor(meta_data$time)
+meta_data$days<-as.factor(meta_data$days)
+meta_data$parallel<-as.factor(meta_data$parallel)
+str(meta_data)
+
+library(DESeq2)
+library(ggplot2)
+
+#giving data to deseq: wichtige variable am ende bei "~x + y" design
+dds_start <- DESeqDataSetFromMatrix(countData = tcast_start_otu,colData = meta_data,design = ~time)
+#running a LRT likelihood ratio test for testing several factors at once, reduced: reducing the degrees of freedom by 1, local dispersion fit
+dds_start<-DESeq(dds_start,test="LRT",reduced= ~ 1, fitType='local') 
+
+sizeFactors(dds_start)
+write.csv(sizeFactors(dds_start),file="factor_start.csv")
+counts_start<-counts(dds_start, normalized=T)
+counts_start
+write.csv(counts_start,file="norm_start.csv")															#use normalized read counts for absolute comparisons
+
+
+#merge with meta data
+counttable_with_meta<-merge(counttable_without_meta,meta_file,by="row.names",all.x=TRUE)	
+		
+#zwei tabellen, die eine gemeinsame spalte aufweisen (hier: row.names), werden zusammengesetzt. soviele zeilen, wie in x (der erstgenannten tabelle enthalten sind, kommen in die finale datei)
+#split wholetax into taxonomic levels again (in excel) 
+#melt into final table with all samples, all taxonomic levels and all metadata combinations
+final_table<-melt(counttable_with_meta, id=c("criteria1","criteria2","criteria3","criteria4","criteria5","criteria6"))
+
+#extract phylogeny/sample/habitat of interest
+sample_subset<-subset(final_table,final_table$criteria1=="water"&final_table$criteria1=="dna")
+
+#remove 0/1 in excel
+
+#set threshold?
+
+##plot ideas
+
+#specific otu
+otuname_plot<-subset(melted_tax_test,otuspalte == "otuname")
+gg_otu_name_plot<-ggplot(otu_name_plot)
+gg_otu_name_plot+
+	geom_point(aes(x=inputxachse,y=hier_die_counts_spalte,colour=die spalte, nach der die farbliche auftrennung passieren soll, z.B. otus oder material))+
+	facet_wrap(~day*treatment,nrow=2,ncol=4)+
+	ggtitle("otu_name")+
+	(aes(x=criteria1,y=value, colour=criteria2))
+	
+##hier etwas ausgefeilter: ich will nur einen organismus darstellen, in einem punkt diagramm (geom_point). auf der x achse könnte ich zB die parallelen darstellen, auf der y-achse natürlich die read counts
+#mit ggtitle gebe ich dem plot einen namen
+#facet_wrap ermöglicht mir viele verschiedene plots gleichzeitig, die sich in den faktoren "day" und "treatment" unterschieden. diese vielen plots möchte ich in zwei reihen und 4 spalten dargestellt haben (wenn das ausreicht)
+#die "aes"-eingabe ist ziemlich kompliziert, siehe ggplot2-manual, ich glaube, hier geht es um die legende
+
+#gemeinschaftsplot
+
+test<-ggplot(final_table_subset, aes(x = "", y = value, fill=variable))+		
+	facet_wrap( ~criteria1*criteria2,nrow=?,ncol=?)+				
+	geom_bar(width = 1, stat = "identity")
+#ohne legende: +theme(legend.position='none')	
+
+#um aus säulendiagramm ein tortendiagramm zu machen:
+torten_test<-test + coord_polar("y", start=0)
+
+
+#gemeinschaftsplot mit mindestreadsanzahl 
+test_groesser_50<-ggplot(final_table_subset[which(final_table_subset$value>50),], aes(x = "", y = value, fill=variable))+
+	facet_wrap( ~criteria1*criteria2,nrow=2,ncol=16)+				
+	geom_bar(width = 1, stat = "identity")
+
+##diversity indices mit 
+library(vegan) 
+
+
+## for Shannon Index (H) you need Species richness (S) and Pielou's evenness (J):
+S <- specnumber(table) 					## rowSums(table > 0) does the same...
+J <- H/log(S)
+
+##otus in spalten/proben als rownames 
+head(final_table_subset)
+h_final_table_subset<-diversity(final_table_subset)
+s_final_table_subset<-specnumber(final_table_subset)
+j_final_table_subset<-h_final_table_subset/log(final_table_subset)
+write.csv(h_final_table_subset,file="h_final_table_subset.csv")
+write.csv(s_final_table_subset,file="s_final_table_subset.csv")
+write.csv(j_final_table_subset,file="j_final_table_subset.csv")
+#manuelles kombinieren der werte in excel

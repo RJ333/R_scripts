@@ -1,0 +1,60 @@
+##subsetting
+##plot ideas
+
+#specific otu
+otuname_plot<-subset(melted_tax_test,otuspalte == "otuname")
+gg_otu_name_plot<-ggplot(otu_name_plot)
+gg_otu_name_plot+
+	geom_point(aes(x=inputxachse,y=hier_die_counts_spalte,colour=die spalte, nach der die farbliche auftrennung passieren soll, z.B. otus oder material))+
+	facet_wrap(~day*treatment,nrow=2,ncol=4)+
+	ggtitle("otu_name")+
+	(aes(x=criteria1,y=value, colour=criteria2))
+	
+##hier etwas ausgefeilter: ich will nur einen organismus darstellen, in einem punkt diagramm (geom_point). auf der x achse könnte ich zB die parallelen darstellen, auf der y-achse natürlich die read counts
+#mit ggtitle gebe ich dem plot einen namen
+#facet_wrap ermöglicht mir viele verschiedene plots gleichzeitig, die sich in den faktoren "day" und "treatment" unterschieden. diese vielen plots möchte ich in zwei reihen und 4 spalten dargestellt haben (wenn das ausreicht)
+#die "aes"-eingabe ist ziemlich kompliziert, siehe ggplot2-manual, ich glaube, hier geht es um die legende
+
+#gemeinschaftsplot
+
+final_table_subset<-subset(final_table_tax_mean,nucleic_acid == "dna" & habitat == "biofilm")
+test<-ggplot(final_table_subset, aes(x = days, y = value, fill=genus, colour = "black"))+		
+	facet_wrap( ~treatment,nrow=2)+				
+	geom_bar(width = 2, stat = "identity")+
+	geom_vline(aes(xintercept=70),linetype="dashed", size=1.2)+
+	geom_point(data=more_cell_counts_62, aes(x= day, y=cells_ml/(3000000),colour="cell_counts"),shape=21,fill="black",size=3,alpha=1)+
+	geom_text(data=subset(final_table_subset, value > 0.25),aes(label=variable),colour ="black",size=rel(1.5), position = position_stack(vjust = 0.5))+
+	#geom_text_repel(data=subset(final_table_subset, value > 0.1),aes(label=genus),size=rel(2.0), position = position_jitter(width=1,height=1))+
+	theme(legend.position='none')
+test
+ggsave(file="genus_biofilm_dna_rel_abund.jpg", width=14, height=8)
+
+
+#ohne legende: +theme(legend.position='none')	
+
+#um aus säulendiagramm ein tortendiagramm zu machen:
+torten_test<-test + coord_polar("y", start=0)
+
+
+#gemeinschaftsplot mit mindestreadsanzahl 
+test_groesser_50<-ggplot(final_table_subset[which(final_table_subset$value>50),], aes(x = "", y = value, fill=variable))+
+	facet_wrap( ~criteria1*criteria2,nrow=2,ncol=16)+				
+	geom_bar(width = 1, stat = "identity")
+
+##diversity indices mit 
+library(vegan) 
+
+
+## for Shannon Index (H) you need Species richness (S) and Pielou's evenness (J):
+S <- specnumber(table) 					## rowSums(table > 0) does the same...
+J <- H/log(S)
+
+##otus in spalten/proben als rownames 
+head(final_table_subset)
+h_final_table_subset<-diversity(final_table_subset)
+s_final_table_subset<-specnumber(final_table_subset)
+j_final_table_subset<-h_final_table_subset/log(final_table_subset)
+write.csv(h_final_table_subset,file="h_final_table_subset.csv")
+write.csv(s_final_table_subset,file="s_final_table_subset.csv")
+write.csv(j_final_table_subset,file="j_final_table_subset.csv")
+#manuelles kombinieren der werte in excel

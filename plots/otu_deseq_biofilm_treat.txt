@@ -1,0 +1,142 @@
+#library(ggplot2)
+melted_numbercode<-melt(all_tnorm_meta_numbercode, id=c("days","time","treatment","parallel","nucleic_acid","habitat","cellcounts","disturbance"))
+
+
+#Marinicella
+X358_biofilm_plot<-subset(melted_numbercode,variable == "X358" & habitat=="biofilm")
+gg_X358_biofilm_plot<-ggplot(X358_biofilm_plot)
+gg_X358_biofilm_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Marinicella")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+
+#Moraxella
+X391_biofilm_plot<-subset(melted_numbercode,variable == "X391" & habitat=="biofilm")
+gg_X391_biofilm_plot<-ggplot(X391_biofilm_plot)
+gg_X391_biofilm_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Moraxella")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+
+#MNG7_Rhizobiales
+X94_biofilm_plot<-subset(melted_numbercode,variable == "X94" & habitat=="biofilm")
+gg_X94_biofilm_plot<-ggplot(X94_biofilm_plot)
+gg_X94_biofilm_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("MNG7_Rhizobiales")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+	
+#DEV007_Verrucomicrobia
+X71_biofilm_plot<-subset(melted_numbercode,variable == "X71" & habitat=="biofilm")
+gg_X71_biofilm_plot<-ggplot(X71_biofilm_plot)
+gg_X71_biofilm_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("DEV007_Verrucomicrobia")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+
+#Hydrogenophaga
+X307_biofilm_plot<-subset(melted_numbercode,variable == "X307" & habitat=="biofilm")
+gg_X307_biofilm_plot<-ggplot(X307_biofilm_plot)
+gg_X307_biofilm_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Hydrogenophaga")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+
+#Micrococcus
+X388_biofilm_plot<-subset(melted_numbercode,variable == "X388" & habitat=="biofilm")
+gg_X388_biofilm_plot<-ggplot(X388_biofilm_plot)
+gg_X388_biofilm_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Micrococcus")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+
+#uncultured_Xanthomonadaceae
+X670_biofilm_plot<-subset(melted_numbercode,variable == "X670" & habitat=="biofilm")
+gg_X670_biofilm_plot<-ggplot(X670_biofilm_plot)
+gg_X670_biofilm_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("uncultured_Xanthomonadaceae")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+
+#uncultured_Micromonosporaceae
+X646_biofilm_plot<-subset(melted_numbercode,variable == "X646" & habitat=="biofilm")
+gg_X646_biofilm_plot<-ggplot(X646_biofilm_plot)
+gg_X646_biofilm_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("uncultured_Micromonosporaceae")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+
+#uncultured_Xanthomonadales.Incertae.Sedis
+X671_biofilm_plot<-subset(melted_numbercode,variable == "X671" & habitat=="biofilm")
+gg_X671_biofilm_plot<-ggplot(X671_biofilm_plot)
+gg_X671_biofilm_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("uncultured_Xanthomonadales.Incertae.Sedis")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+
+#Rhodobacter
+X500_biofilm_plot<-subset(melted_numbercode,variable == "X500" & habitat=="biofilm")
+gg_X500_biofilm_plot<-ggplot(X500_biofilm_plot)
+gg_X500_biofilm_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Rhodobacter")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+
+#Rhizobacter
+X498_biofilm_plot<-subset(melted_numbercode,variable == "X498" & habitat=="biofilm")
+gg_X498_biofilm_plot<-ggplot(X498_biofilm_plot)
+gg_X498_biofilm_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Rhizobacter")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+
+#Rhodopirellula
+X505_biofilm_plot<-subset(melted_numbercode,variable == "X505" & habitat=="biofilm")
+gg_X505_biofilm_plot<-ggplot(X505_biofilm_plot)
+gg_X505_biofilm_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Rhodopirellula")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+
+#B38_Gammaproteobacteria
+X29_biofilm_plot<-subset(melted_numbercode,variable == "X29" & habitat=="biofilm")
+gg_X29_biofilm_plot<-ggplot(X29_biofilm_plot)
+gg_X29_biofilm_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("B38_Gammaproteobacteria")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+
+#Stappia
+X565_biofilm_plot<-subset(melted_numbercode,variable == "X565" & habitat=="biofilm")
+gg_X565_biofilm_plot<-ggplot(X565_biofilm_plot)
+gg_X565_biofilm_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Stappia")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+	
+	
+#Planococcus
+X462_biofilm_plot<-subset(melted_numbercode,variable == "X462" & habitat=="biofilm")
+gg_X462_biofilm_plot<-ggplot(X462_biofilm_plot)
+gg_X462_biofilm_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Planococcus")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+	
+
+

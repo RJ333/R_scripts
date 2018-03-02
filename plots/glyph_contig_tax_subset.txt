@@ -1,0 +1,16 @@
+#####################gene subsets
+#check for glyph genes
+#create gene subset
+
+glyph_tax_subset<-kallisto_prokka_concoct2_metaxa[kallisto_prokka_concoct2_metaxa$ec_number %in% c("1.4.3.19","1.5.3.1"),]
+glyph_tax_subset2<-glyph_tax_subset[,c(1,2,5,6,7,9,11,13,15,17,19,21,23,25,26,27,30,39)]
+nrow(glyph_tax_subset2)
+#258
+
+glyph_tax_subset2$bin_gt1000
+glyph_tax_subset2$bin_nocutup
+glyph_tax_subset2$wholetax
+
+compare! contig id, gen_x version number, bin, tax for development over time
+
+plots

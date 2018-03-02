@@ -1,0 +1,64 @@
+#4 separate Plots:
+
+acidovorax_plot_water<-subset(film_water_rel,variable == "Acidovorax_Comamonadaceae_Burkholderiales_Betaproteobacteria_Proteobacteria")
+gg_acidovorax_plot_water<-ggplot(acidovorax_plot_water)
+gg_acidovorax_plot_water+
+	geom_point(aes(x=days,y=rel_value,colour=nucleic_acid))+
+	facet_wrap(~habitat*treatment,nrow=2)+
+	ggtitle("Acidovorax")+
+	(aes(x=days,y=rel_value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+
+hypho_plot<-subset(film_water_rel,variable == "Hyphomonas_Hyphomonadaceae_Caulobacterales_Alphaproteobacteria_Proteobacteria")
+gg_hypho_plot<-ggplot(hypho_plot)
+gg_hypho_plot+
+	geom_point(aes(x=days,y=rel_value,colour=nucleic_acid))+
+	facet_wrap(~habitat*treatment,nrow=2)+
+	ggtitle("Hyphomonas")+
+	(aes(x=days,y=rel_value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+
+gallaeci_plot_water<-subset(film_water_rel,variable == "Gallaecimonas_Unknown.Family_Gammaproteobacteria.Incertae.Sedis_Gammaproteobacteria_Proteobacteria")
+gg_gallaeci_plot_water<-ggplot(gallaeci_plot_water)
+gg_gallaeci_plot_water+
+	geom_point(aes(x=days,y=rel_value,colour=nucleic_acid))+
+	facet_wrap(~habitat*treatment,nrow=2)+
+	ggtitle("Gallaecimonas")+
+	(aes(x=days,y=rel_value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+
+methylo_plot_water<-subset(film_water_rel,variable == "Methylotenera_Methylophilaceae_Methylophilales_Betaproteobacteria_Proteobacteria")
+gg_methylo_plot_water<-ggplot(methylo_plot_water)
+gg_methylo_plot_water+
+	geom_point(aes(x=days,y=rel_value,colour=nucleic_acid))+
+	facet_wrap(~habitat*treatment,nrow=2)+
+	ggtitle("Methylotenera")+
+	(aes(x=days,y=rel_value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")
+
+
+
+#2 plots mit wassersäule und biofilm kombiniert, farbe nach nucleic acid, form nach habitat
+
+hypho_plot<-subset(film_water_rel,variable == "Hyphomonas_Hyphomonadaceae_Caulobacterales_Alphaproteobacteria_Proteobacteria")
+gg_hypho_plot<-ggplot(hypho_plot)
+gg_hypho_plot+
+	geom_point(aes(x=days,y=rel_value,colour=nucleic_acid,pch=habitat))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Hyphomonas")
+
+#2 plots mit wassersäule und biofilm kombiniert, einzelne farbe je verschiedene kombi von nucleic_acid und habitat, farben ausgesucht
+
+hypho_plot<-subset(film_water_rel,variable == "Hyphomonas_Hyphomonadaceae_Caulobacterales_Alphaproteobacteria_Proteobacteria")
+gg_hypho_plot<-ggplot(hypho_plot)
+palette1 <- c('red',"black","yellow","blue")
+gg_hypho_plot+
+	geom_point(aes(x=days,y=rel_value,colour=interaction(habitat,nucleic_acid)))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Hyphomonas")+
+	scale_colour_manual(values=palette1)
+
+
+palette1 <- c('red',"green","yellow","blue")
+scale_color_manual(values=c("#CC6666", "#9999CC"))+
+
+
+scale x continuous breaks = 
+scale y discrete
+http://www.sthda.com/english/wiki/ggplot2-dot-plot-quick-start-guide-r-software-and-data-visualization

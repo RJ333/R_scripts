@@ -1,0 +1,47 @@
+######NMDS plots mit ggplot
+#######################ALL WATER
+all_tnorm_meta_numbercode<-read.csv(file.choose(),sep=";",row.names=1)
+head(all_tnorm_meta_numbercode)
+names(all_tnorm_meta_numbercode)
+water_subset<-subset(all_tnorm_meta_numbercode,all_tnorm_meta_numbercode$habitat=="water")
+head(water_subset)
+names(water_subset)
+
+
+#zero counts entfernen
+#meta daten entfernen
+water_subset2<-water_subset[,9:695]
+separation<-colSums(water_subset2)!=0
+water_subset_nonzero<-water_subset2[,separation]
+ncol(water_subset2)
+ncol(water_subset_nonzero)
+names(water_subset_nonzero)
+head(water_subset_nonzero)
+
+#NMDS mit 2 dimensionen
+nmds_water<-metaMDS(water_subset_nonzero,autotransform=FALSE)
+
+#extract site data
+nmds_water_score<-as.data.frame(scores(nmds_water))
+nmds_water_score$sample<-rownames(nmds_water_score)
+nmds_water_score<-cbind(nmds_water_score,water_subset[,1:8])
+head(nmds_water_score)
+
+#extract species data
+nmds_water_species<-as.data.frame(scores(nmds_water,"species"))
+nmds_water_species$species<-rownames(nmds_water_species)
+
+#normaler plot
+ggplot() +  
+	geom_point(data=nmds_water_score,aes(x=NMDS1,y=NMDS2,colour=interaction(nucleic_acid,treatment),shape=nucleic_acid),size=2)+
+	geom_text(data=nmds_water_score,aes(x=NMDS1,y=NMDS2,label=days),size=2,vjust=1)
+
+#plot mit geom_path
+write.csv(nmds_water_score,file="nmds_water_score.csv") #in excel x und y mittelwerte berechnet, nach tagen sortiert
+nmds_water_xymean<-read.csv(file.choose(),header=1, sep=";",row.names=1)
+
+ggplot() +  
+	geom_point(data=nmds_water_xymean,aes(x=x_ave,y=y_ave,colour=interaction(nucleic_acid,treatment),shape=nucleic_acid),size=2)+
+	geom_text(data=nmds_water_xymean,aes(x=x_ave,y=y_ave,label=days),size=2,vjust=1)+
+	geom_path(data=nmds_water_xymean,aes(x=x_ave,y=y_ave,group=interaction(nucleic_acid,treatment)))
+

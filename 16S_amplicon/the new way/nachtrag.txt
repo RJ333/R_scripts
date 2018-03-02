@@ -1,0 +1,70 @@
+#zero counts entfernen
+#meta daten entfernen
+water_dna_glyph_subset_dca2<-water_dna_glyph_subset_dca[,9:695]
+separation<-colSums(water_dna_glyph_subset_dca2)!=0
+water_dna_glyph_subset_dca_nonzero<-water_dna_glyph_subset_dca2[,separation]
+ncol(water_dna_glyph_subset_dca_nonzero)
+
+library(DESeq2) #auf objekte, die in deseq2 erstellt wurden, kann nur zugegriffen werden, wenn das jeweilige paket geladen ist, sonst versteht R das objekt nicht
+library(reshape) #für melt und cast
+##erst melten
+tcounts_Platte1_with_meta<-read.csv(file.choose(),header=T,row.names=1,sep=";")
+ttcounts_Platte1_with_meta<-t(tcounts_Platte1_with_meta)
+head(ttcounts_Platte1_with_meta)
+names(ttcounts_Platte1_with_meta)
+ttcounts_Platte1_with_meta<-as.data.frame(ttcounts_Platte1_with_meta)
+names(ttcounts_Platte1_with_meta)
+#die "geschmolzene" datei heißt bei mir einfach "melted_test"
+#beim melten gebt ihr alle tabellen mit meta_daten an (siehe grafik "reshape melt cast" bei google)
+melted_test<-melt(ttcounts_Platte1_with_meta, id=c("material","organism","day"))
+head(melted_test)
+names(melted_test)
+melted_test
+write.csv(melted_test,file="melted_test.csv")
+
+
+##jetzt haben wir eine tabelle, in der alle kombinationen von read counts, proben und metadaten enthalten sind
+##es fehlen nur noch die taxonomischen ebenen
+##copying column with wholetax and splitting into levels in excel
+##wieder in excel einlesen
+melted_tax_test<-read.csv(file.choose(),header=T,row.names=1,sep=";")
+
+##subsetting: eine der tollsten funktionen in R: ihr sucht euch aus, wie euer subset aus der großen tabelle aussehen soll (was ihr plotten wollt)
+http://stats.idre.ucla.edu/r/faq/frequently-asked-questions-about-rhow-can-i-subset-a-data-setthe-r-program-as-a-text-file-for-all-the-code-on-this-page-subsetting-is-a-very-important-component/
+##dadurch erstellt ihr eine neue tabelle, wo nur die sachen drin sind, die euch gerade interessieren, z.b.
+test_subset<-subset(melted_tax_test,melted_tax_test$material=="gut"&melted_tax_test$organism=="Acartia"&melted_tax_test$domain=="Archaea")
+##hier habe ich ihm bedingungen für verschiedene spalten genannt, das == ist ein "logischer operator", über & werden bedingungen verknüpft
+head(test_subset)
+
+
+#noch nicht enthalten, aber potenziell möglich: in den subsets tauchen möglicherweise otus auf, die gar keine counts haben, die kann man löschen, um es übersichtlicher zu gestalten. aber die funktion erklär ich euch im büro
+#set threshold? ungefähr das gleiche, aber es geht nicht um "null", sondern ihr wollt nur counts darstellen, die mindestens z.B. 20 reads haben
+
+##erste plots
+#bei dem package ggplot2 erstellt ihr erst ein eigenes objekt  
+#dieses wird dann immer genauer definiert
+#ggplot2 ist sehr komplex, kann aber so ziemlich alles --> siehe manual
+
+
+
+#gemeinschaftsplot mit mindestreadsanzahl 
+library(ggplot2)
+
+test_groesser_1<-ggplot(test_subset[which(test_subset$counts>1),], aes(x = "", y = counts, fill="organism"))+
+	facet_wrap( ~day,ncol=3)+				
+	geom_bar(width = 1, stat = "identity")
+test_groesser_1 ##anzeigen lassen
+##da ich über soviele bedingungen gesubsettet habe, ist im datensatz nicht mehr viel info enthalten: ein organismus, ein material etc
+##etwas allgemeiner im nachfolgenden beispiel
+	
+#gemeinschaftsplot
+test_subset<-subset(melted_tax_test,melted_tax_test$domain=="Archaea")
+test<-ggplot(test_subset, aes(x = day, y = counts, fill=otu))+		
+	facet_wrap( ~material)+				
+	geom_bar(width = 1, stat = "identity")	
+#säulenplots ("geom_bar") sind nur eine von ganz vielen möglichkeiten in R
+#um aus säulendiagramm ein tortendiagramm zu machen:
+torten_test<-test + coord_polar("y", start=0)
+
+##plot ideas
+##plotting

@@ -1,0 +1,79 @@
+#########do.call operation and set union
+
+First, bind them together:
+
+df.cat <- rbind(dfSub[[1]], dfSub[[2]], dfSub[[3]], dfSub[[4]])
+
+or better:
+
+df.cat <- do.call(rbind, dfSub[1:4])
+
+This first step requires that all data.frames have the same column names. If it is not the case, then you might be interested in the rbind.fill function from the plyr package:
+
+library(plyr)
+df.cat <- rbind.fill(dfSub[1:4])
+
+Then, to remove duplicates if you need (as a set union would):
+
+df.union <- unique(df.cat)
+
+
+
+###creating data.frames
+> df <- data.frame("1"=c("a","b","a","c","c"), "2"=c(1,5,3,6,2), "3"=c(3,3,4,5,2))
+> df
+  X1 X2 X3
+1  a  1  3
+2  b  5  3
+3  a  3  4
+4  c  6  5
+5  c  2  2
+
+### How to add count of unique values by group to R data.frame 3 answers
+#I am trying to add a column to an existing dataframe, such that the column defines the number of DIFFERENT products, each user has bought. A toy example is
+Customer    Product
+1           Chocolate
+1           Candy
+1           Soda
+2           Chocolate
+2           Chocolate
+2           Chocolate
+3           Insulin
+3           Candy
+#Where the output should be
+Customer    Product     #Products
+1           Chocolate   3
+1           Candy       3
+1           Soda        3
+2           Chocolate   1
+2           Chocolate   1
+2           Chocolate   1
+3           Insulin     2
+3           Candy       2
+#with package
+library(data.table)
+as.data.table(soxB_nonzero)[, unique_contigs := length(unique(contig_id)), by = variable][]
+#works!
+soxB_unique1<-as.data.table(soxB_nonzero)[, unique_contigs := length(unique(gsub("\\..*$", "", contig_id))), by = variable][]
+soxB_unique2<-as.data.table(soxB_unique1)[, unique_genes := length(gsub("_.*$", "", genes)), by = variable][]
+
+#Details for assigning by reference
+
+:= is defined for use in j only. It adds or updates or removes column(s) by reference. It makes no copies of any part of memory at all. Read the Reference Semantics HTML vignette to follow with examples. Some typical usages are:
+
+    DT[, col := val]                              # update (or add at the end if doesn't exist) a column called "col" with value "val" (recycled if necessary).
+    DT[i, col := val]                             # same as above, but only for those rows specified in i and (for new columns) NA elsewhere.
+    DT[i, "col a" := val]                         # same. column is called "col a"
+    DT[i, (3:6) := val]                           # update existing columns 3:6 with value. Aside: parens are not required here since : already makes LHS a call rather than a symbol.
+    DT[i, colvector := val, with = FALSE]         # OLD syntax. The contents of "colvector" in calling scope determine the column(s).
+    DT[i, (colvector) := val]                     # same (NOW PREFERRED) shorthand syntax. The parens are enough to stop the LHS being a symbol; same as c(colvector).
+    DT[i, colC := mean(colB), by = colA]          # update (or add) column called "colC" by reference by group. A major feature of `:=`.
+    DT[,`:=`(new1 = sum(colB), new2 = sum(colC))] # Functional form
+	
+#manipulating strings
+length(table(gsub("\\..*$", "", soxB_select$contig_id)))
+length(table(soxB_select$contig_id))
+table(gsub("\\..*$", "", soxB_select$contig_id)))
+table(soxB_select$contig_id)
+unique(gsub("\\..*$", "", soxB_select$contig_id))
+####################################################################################################

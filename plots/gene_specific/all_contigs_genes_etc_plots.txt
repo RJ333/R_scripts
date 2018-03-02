@@ -1,0 +1,301 @@
+####plotting all contigs???? once with any functional annotation and those without
+#with annotation:
+all_contigs_with<-subset(omics_collection,!is.na(gene))
+nrow(all_contigs_with)
+all_contigs_with2<-all_contigs_with[,c(1,3,4,8:17)]
+all_contigs_with3<-all_contigs_with2[which(!duplicated(all_contigs_with2[,"contig_id"])),]
+nrow(all_contigs_with3)
+library(reshape2)
+moltencontig_with_all<-melt(all_contigs_with3,id=c("contig_id","ec_number","gene"))
+
+#meta data for plotting: treatment/control and time
+#meta_omics<-read.csv(file.choose(),row.names=1,sep=";")
+merged_all_contigs_with<-merge(moltencontig_with_all,meta_omics,by.x="variable",by.y="row.names",all.x=T)
+
+all_contigs_with_plot<-merged_all_contigs_with[order(merged_all_contigs_with[,1]),]
+nrow(all_contigs_with_plot)
+
+all_contigs_with<-ggplot(all_contigs_with_plot, aes(x = day, y = value, fill=contig_id))+						
+	geom_bar(width = 1.7, stat = "identity")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	ylim(0,1000000)+
+	#geom_text(data=subset(all_contigs_with_plot, value > 50),aes(label=contig_id),size=rel(2.7), position = position_stack(vjust = 0))+
+	#geom_label_repel(data=subset(all_contigs_with_plot, value > 50),position="stack",min.segment.length = unit(0.1, "lines"),aes(label=genes,size=1.4))+
+	ggtitle("all_contigs_with")+
+	theme(plot.title = element_text(size=18,face="bold"))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	geom_vline(aes(xintercept=70),linetype="dashed", size=1.2)+
+	xlab("day")+
+	ylab("rpm")+
+	geom_point(aes(y=cells_ml/200),size=3,alpha=0.4)+
+	geom_point(aes(y=total_gene_richness*300))+
+	theme(legend.position="none")+
+	facet_wrap( ~treatment,nrow=2)
+all_contigs_with
+ ggsave(file="all_contigs_with_annotation.jpg", width=14, height=8)
+
+###now contigs without annotation 
+all_contigs_without<-subset(omics_collection,is.na(gene))
+nrow(all_contigs_without)
+all_contigs_without2<-all_contigs_without[,c(1,3,4,8:17)]
+all_contigs_without3<-all_contigs_without2[which(!duplicated(all_contigs_without2[,"contig_id"])),]
+nrow(all_contigs_without3)
+library(reshape2)
+moltencontig_without_all<-melt(all_contigs_without2,id=c("contig_id","ec_number","gene"))
+#meta data for plotting: treatment/control and time
+#meta_omics<-read.csv(file.choose(),row.names=1,sep=";")
+merged_all_contigs_without<-merge(moltencontig_without_all,meta_omics,by.x="variable",by.y="row.names",all.x=T)
+
+all_contigs_without_plot<-merged_all_contigs_without[order(merged_all_contigs_without[,1]),]
+nrow(all_contigs_without_plot)
+
+all_contigs_without<-ggplot(all_contigs_without_plot, aes(x = day, y = value, fill=contig_id))+						
+	geom_bar(width = 1.7, stat = "identity")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	ylim(0,1000000)+
+	#geom_text(data=subset(all_contigs_without_plot, value > 50),aes(label=contig_id),size=rel(2.7), position = position_stack(vjust = 0))+
+	#geom_label_repel(data=subset(all_contigs_without_plot, value > 50),position="stack",min.segment.length = unit(0.1, "lines"),aes(label=gene,size=1.4))+
+	ggtitle("all_contigs_without")+
+	theme(plot.title = element_text(size=18,face="bold"))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	geom_vline(aes(xintercept=70),linetype="dashed", size=1.2)+
+	xlab("day")+
+	ylab("rpm")+
+	geom_point(aes(y=cells_ml/200),size=3,alpha=0.4)+
+	geom_point(aes(y=total_gene_richness*300))+
+	theme(legend.position="none")+
+	facet_wrap( ~treatment,nrow=2)
+all_contigs_without
+ ggsave(file="all_contigs_without_annotation.jpg", width=14, height=8)
+ 
+
+#398177 contigs (inkl. geschnitten)
+
+####plotting all genes
+#create gene subset
+
+all_genes<-subset(omics_collection,gene != "<NA>")
+all_genes2<-all_genes[,c(1,3,4,8:17)]
+#all_genes3<-all_genes2
+#all_genes3$genes<-gsub("_.*$", "", all_genes2$gene)
+library(reshape2)
+molten_all<-melt(all_genes2,id=c("contig_id","ec_number","gene"))
+#meta data for plotting: treatment/control and time
+meta_omics<-read.csv(file.choose(),row.names=1,sep=";")
+merged_all_genes<-merge(molten_all,meta_omics,by.x="variable",by.y="row.names",all.x=T)
+all_gene_plot<-subset(merged_all_genes,value > 0)
+
+##plot all
+#all_plot<-subset(merged_all_genes, grepl("all", gene)& !grepl("allC", gene))
+all_gene_plot<-all_gene_plot[order(all_gene_plot[,4]),]
+nrow(all_gene_plot)
+#was will ich darstellen? alle gene? einzigartige gene? was entspricht richness?
+all_genes_ggplot<-ggplot(all_gene_plot, aes(x = day, y = gene, fill=contig_id))+						
+	geom_bar(width = 1.7, stat = "identity")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	#geom_text(data=subset(all_gene_plot, value > 50),aes(label=contig_id),size=rel(2.7), position = position_stack(vjust = 0))+
+	#geom_label_repel(data=subset(all_gene_plot, value > 50),position="stack",min.segment.length = unit(0.1, "lines"),aes(label=genes,size=1.4))+
+	ggtitle("all_genes")+
+	theme(plot.title = element_text(size=18,face="bold"))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	geom_vline(aes(xintercept=70),linetype="dashed", size=1.2)+
+	xlab("day")+
+	ylab("rpm")+
+	#geom_point(aes(y=cells_ml/50),size=3,alpha=0.4)+
+	#geom_point(aes(y=total_gene_richness*500))+
+	theme(legend.position="none")+
+	facet_wrap( ~treatment,nrow=2)
+all_genes_ggplot
+ ggsave(file="all_genes.jpg", width=14, height=8)
+ 
+  test3<-gsub("_.*$", "", test3)
+ test4<-unique(test3)
+ 
+ test1<-subset(all_gene_plot,treatment=="glyph"&day=="69"&value!=0)
+ test1$gene<-gsub("_.*$", "", test1$gene)
+ test2<-unique(test1$gene)
+ length(test2)
+ #alt3417 5075
+ test1<-subset(all_gene_plot,treatment=="glyph"&day=="72"&value!=0)
+ test1$gene<-gsub("_.*$", "", test1$gene)
+ test2<-unique(test1$gene)
+ length(test2)
+ #alt3411 5059
+ test1<-subset(all_gene_plot,treatment=="glyph"&day=="76"&value!=0)
+ test1$gene<-gsub("_.*$", "", test1$gene)
+ test2<-unique(test1$gene)
+ length(test2)
+ #alt3460 5099
+ test1<-subset(all_gene_plot,treatment=="glyph"&day=="83"&value!=0)
+ test1$gene<-gsub("_.*$", "", test1$gene)
+ test2<-unique(test1$gene)
+ length(test2)
+ #alt3556 5257
+ test1<-subset(all_gene_plot,treatment=="glyph"&day=="91"&value!=0)
+ test1$gene<-gsub("_.*$", "", test1$gene)
+ test2<-unique(test1$gene)
+ length(test2)
+ #alt3492 5162
+  test1<-subset(all_gene_plot,treatment=="glyph"&day=="112"&value!=0)
+ test1$gene<-gsub("_.*$", "", test1$gene)
+ test2<-unique(test1$gene)
+ length(test2)
+ #alt3507 5174
+ test1<-subset(all_gene_plot,treatment=="glyph"&day=="140"&value!=0)
+ test1$gene<-gsub("_.*$", "", test1$gene)
+ test2<-unique(test1$gene)
+ length(test2)
+ #alt3525 5202
+ test1<-subset(all_gene_plot,treatment=="control"&day=="69"&value!=0)
+ test1$gene<-gsub("_.*$", "", test1$gene)
+ test2<-unique(test1$gene)
+ length(test2)
+ #alt3483 5162
+ test1<-subset(all_gene_plot,treatment=="control"&day=="91"&value!=0)
+ test1$gene<-gsub("_.*$", "", test1$gene)
+ test2<-unique(test1$gene)
+ length(test2)
+ #alt3417 5067
+ test1<-subset(all_gene_plot,treatment=="control"&day=="140"&value!=0)
+ test1$gene<-gsub("_.*$", "", test1$gene)
+ test2<-unique(test1$gene)
+ length(test2)
+ #alt3541 5289
+ 
+ #alt#alt#altfür contigs mit annotation
+ test1<-subset(all_contigs_with_plot,treatment=="glyph"&day=="69"&value!=0)
+ test1<-droplevels(test1)
+ length(levels(test1$contig_id))
+ #alt41267 52257
+ test1<-subset(all_contigs_with_plot,treatment=="glyph"&day=="72"&value!=0)
+ test1<-droplevels(test1)
+ length(levels(test1$contig_id))
+ #alt41206 53192
+ test1<-subset(all_contigs_with_plot,treatment=="glyph"&day=="76"&value!=0)
+ test1<-droplevels(test1)
+ length(levels(test1$contig_id))
+ #alt49122 64646
+ test1<-subset(all_contigs_with_plot,treatment=="glyph"&day=="83"&value!=0)
+ test1<-droplevels(test1)
+ length(levels(test1$contig_id))
+ #alt64712 86978
+ test1<-subset(all_contigs_with_plot,treatment=="glyph"&day=="91"&value!=0)
+ test1<-droplevels(test1)
+ length(levels(test1$contig_id))
+ #alt51345 67341
+ test1<-subset(all_contigs_with_plot,treatment=="glyph"&day=="112"&value!=0)
+ test1<-droplevels(test1)
+ length(levels(test1$contig_id))
+ #alt52461 68652
+ test1<-subset(all_contigs_with_plot,treatment=="glyph"&day=="140"&value!=0)
+ test1<-droplevels(test1)
+ length(levels(test1$contig_id))
+ #alt56665 74377
+ test1<-subset(all_contigs_with_plot,treatment=="control"&day=="69"&value!=0)
+ test1<-droplevels(test1)
+ length(levels(test1$contig_id))
+ #alt52693 69558
+ test1<-subset(all_contigs_with_plot,treatment=="control"&day=="91"&value!=0)
+ test1<-droplevels(test1)
+ length(levels(test1$contig_id))
+ #alt43436 55666
+ test1<-subset(all_contigs_with_plot,treatment=="control"&day=="140"&value!=0)
+ test1<-droplevels(test1)
+ length(levels(test1$contig_id))
+ #alt53818 70118
+ 
+ #alt#alt#altfür contigs ohne annotation
+ test1<-subset(all_contigs_without_plot,treatment=="glyph"&day=="69"&value!=0)
+ test1<-droplevels(test1)
+ length(levels(test1$contig_id))
+ #alt41550 30510
+ test1<-subset(all_contigs_without_plot,treatment=="glyph"&day=="72"&value!=0)
+ test1<-droplevels(test1)
+ length(levels(test1$contig_id))
+ #alt46766 34733
+ test1<-subset(all_contigs_without_plot,treatment=="glyph"&day=="76"&value!=0)
+ test1<-droplevels(test1)
+ length(levels(test1$contig_id))
+ #alt61762 46193
+ test1<-subset(all_contigs_without_plot,treatment=="glyph"&day=="83"&value!=0)
+ test1<-droplevels(test1)
+ length(levels(test1$contig_id))
+ #alt96919 74602
+ test1<-subset(all_contigs_without_plot,treatment=="glyph"&day=="91"&value!=0)
+ test1<-droplevels(test1)
+ length(levels(test1$contig_id))
+ #alt62395 46348
+ test1<-subset(all_contigs_without_plot,treatment=="glyph"&day=="112"&value!=0)
+ test1<-droplevels(test1)
+ length(levels(test1$contig_id))
+ #alt61582 45341
+ test1<-subset(all_contigs_without_plot,treatment=="glyph"&day=="140"&value!=0)
+ test1<-droplevels(test1)
+ length(levels(test1$contig_id))
+ #alt70844 53084
+ test1<-subset(all_contigs_without_plot,treatment=="control"&day=="69"&value!=0)
+ test1<-droplevels(test1)
+ length(levels(test1$contig_id))
+ #alt67063 50146
+ test1<-subset(all_contigs_without_plot,treatment=="control"&day=="91"&value!=0)
+ test1<-droplevels(test1)
+ length(levels(test1$contig_id))
+ #alt43993 31712
+ test1<-subset(all_contigs_without_plot,treatment=="control"&day=="140"&value!=0)
+ test1<-droplevels(test1)
+ length(levels(test1$contig_id))
+ #alt65568 49218
+ 
+ #alt#alt#altfür alle unique contigs (bleibt gleich, macht sinn)
+ test1<-subset(all_unique_contigs_plot,treatment=="glyph"&day=="69"&value!=0)
+ test1<-droplevels(test1)
+ length(levels(test1$contig_id))
+ #alt82725
+ test1<-subset(all_unique_contigs_plot,treatment=="glyph"&day=="72"&value!=0)
+ test1<-droplevels(test1)
+length(levels(test1$contig_id))
+ #alt87891
+ test1<-subset(all_unique_contigs_plot,treatment=="glyph"&day=="76"&value!=0)
+ test1<-droplevels(test1)
+ length(levels(test1$contig_id))
+ #alt110802
+ test1<-subset(all_unique_contigs_plot,treatment=="glyph"&day=="83"&value!=0)
+ test1<-droplevels(test1)
+ length(levels(test1$contig_id))
+ #alt161538
+ test1<-subset(all_unique_contigs_plot,treatment=="glyph"&day=="91"&value!=0)
+ test1<-droplevels(test1)
+ length(levels(test1$contig_id))
+ #alt113650
+ test1<-subset(all_unique_contigs_plot,treatment=="glyph"&day=="112"&value!=0)
+ test1<-droplevels(test1)
+ length(levels(test1$contig_id))
+ #alt113949
+ test1<-subset(all_unique_contigs_plot,treatment=="glyph"&day=="140"&value!=0)
+ test1<-droplevels(test1)
+ length(levels(test1$contig_id))
+ #alt127417
+ test1<-subset(all_unique_contigs_plot,treatment=="control"&day=="69"&value!=0)
+ test1<-droplevels(test1)
+ length(levels(test1$contig_id))
+ #alt119661
+ test1<-subset(all_unique_contigs_plot,treatment=="control"&day=="91"&value!=0)
+ test1<-droplevels(test1)
+ length(levels(test1$contig_id))
+ #alt87335
+ test1<-subset(all_unique_contigs_plot,treatment=="control"&day=="140"&value!=0)
+ test1<-droplevels(test1)
+ length(levels(test1$contig_id))
+ #alt119292

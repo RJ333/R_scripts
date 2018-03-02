@@ -1,0 +1,34 @@
+metagenomics:
+
+UPPMAX DATEN!! Übersicht
+
+read mapping with bowtie2
+snakemake verstehen
+
+übersichtstabelle: welche tabelle enthält welche infos?
+welche contigs in welchen bins mit welchen quantifications (10 spalten) mit welchen genen und welcher tax!
+
+Auswertung:
+glyphosate related genes
+gallaecimonas etc draft genomes check for genes
+minpath/prokka vergleich mit z.b. munitionsabbau. was heißt es kommt einmal vor? welche gene?
+enlarging diversity of stress genes/degradation genes? --> gene duplication?
+counting degradation and stress genes over time and sample
+comparing 16S otus to metagenomic data with metaxa2, grepping sequences and using new silva version
+picking metaxa hits, find contigs in bin
+community rel abundance whole tax
+
+prokka:
+einzelne gffs rübergezogen und bearbeitet in excel
+tsv, spalten gelöscht, nur die zeilen mit contig id übergelassen
+zu einer tabelle zusammenfügen
+in R einlesen
+
+minpath: zuordnung prokka? separate ec-listen pro mapping notwendig
+
+ohne metaxa, eher separate bin=metaxa mergetabelle
+
+daten in R einlesen, mergen,speichern
+
+in excel namen kürzen, nach glyph genen suchen: 
+https://metacyc.org/compound?orgid=META&id=CPD0-1308#tab=RXNS

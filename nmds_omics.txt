@@ -1,0 +1,139 @@
+#tpm and estimated counts not a good idea in same plot
+
+#general data preparation
+
+
+library(vegan)
+#species/genes in columns, samples in rows
+#which table to start?
+#callisto_prokka: combining ec, gene and contig_id to unique name, removing all zero read genes
+#zweimal einlesen ohne row.names, um extra spalte hinzuzufügen
+omics_for_vegan<-read.csv(file.choose(),sep=";")
+write.csv(omics_for_vegan,file="omics_for_vegan.csv")
+#richtigen ordner beachten,kein ";" notwendig
+omics_for_vegan<-read.csv(file.choose())
+head(omics_for_vegan)
+#ein einzigartiger name je gen
+omics_for_vegan$unique<-do.call(paste, c(omics_for_vegan[c("X","X.1")],sep="_")) 
+row.names(omics_for_vegan)<-omics_for_vegan$unique
+omics_for_vegan2<-omics_for_vegan[,c(3:22)]
+head(omics_for_vegan2)
+write.csv(omics_for_vegan2,file="omics_for_vegan2.csv")
+#NAs in Excel entfernen, subsets erstellen und auswählen
+
+
+#############choose subset --> tpm all nonzeros
+omics_for_vegan2_tpm<-read.csv(file.choose(),sep=";",row.names=1)
+omics_for_vegan2_nonzero_tpm<-subset(omics_for_vegan2_tpm,rowSums(omics_for_vegan2_tpm)>0)
+nrow(omics_for_vegan2_tpm)
+nrow(omics_for_vegan2_nonzero_tpm)
+head(omics_for_vegan2_nonzero_tpm)
+tomics_for_vegan2_nonzero_tpm<-t(omics_for_vegan2_nonzero_tpm)
+
+#run NMDS
+nmds_omics_tpm<-metaMDS(tomics_for_vegan2_nonzero_tpm,autotransform=FALSE)
+#extract data
+names(nmds_omics_tpm)
+nmds_omics_tpm_coord<-as.data.frame(nmds_omics_tpm$points)
+str(nmds_omics_tpm_coord)
+row.names(nmds_omics_tpm_coord)<-row.names(tomics_for_vegan2_nonzero_tpm)
+plot(nmds_omics_tpm,main="NMDS_nonzero_tpm", type="t",display="sites")
+plot(nmds_omics_tpm,main="NMDS_nonzero_tpm", type="p",display="species")
+#gives the sample ids, must be called when the plot is already open
+text(nmds_omics_tpm_coord,labels=row.names(nmds_omics_tpm_coord),cex=0.8) 
+
+#############choose subset --> tpm treat nonzeros
+omics_for_vegan2_glyph_tpm<-read.csv(file.choose(),sep=";",row.names=1)
+omics_for_vegan2_nonzero_glyph_tpm<-subset(omics_for_vegan2_glyph_tpm,rowSums(omics_for_vegan2_glyph_tpm)>0)
+nrow(omics_for_vegan2_glyph_tpm)
+nrow(omics_for_vegan2_nonzero_glyph_tpm)
+head(omics_for_vegan2_nonzero_glyph_tpm)
+tomics_for_vegan2_nonzero_glyph_tpm<-t(omics_for_vegan2_nonzero_glyph_tpm)
+
+#run NMDS
+nmds_omics_glyph_tpm<-metaMDS(tomics_for_vegan2_nonzero_glyph_tpm,autotransform=FALSE)
+#extract data
+names(nmds_omics_glyph_tpm)
+nmds_omics_glyph_tpm_coord<-as.data.frame(nmds_omics_glyph_tpm$points)
+str(nmds_omics_glyph_tpm_coord)
+row.names(nmds_omics_glyph_tpm_coord)<-row.names(tomics_for_vegan2_nonzero_glyph_tpm)
+plot(nmds_omics_glyph_tpm,main="NMDS_glyph_nonzero_tpm", type="t",display="sites")
+plot(nmds_omics_glyph_tpm,main="NMDS_glyph_nonzero_tpm", type="p",display="species")
+#gives the sample ids, must be called when the plot is already open
+text(nmds_omics_glyph_tpm_coord,labels=row.names(nmds_omics_glyph_tpm_coord),cex=0.8) 
+
+#############choose subset --> tpm all
+omics_for_vegan2_tpm<-read.csv(file.choose(),sep=";",row.names=1)
+nrow(omics_for_vegan2_tpm)
+head(omics_for_vegan2_tpm)
+tomics_for_vegan2_tpm<-t(omics_for_vegan2_tpm)
+#run NMDS
+nmds_omics_tpm<-metaMDS(tomics_for_vegan2_tpm,autotransform=FALSE)
+#extract data
+names(nmds_omics_tpm)
+nmds_omics_tpm_coord<-as.data.frame(nmds_omics_tpm$points)
+str(nmds_omics_tpm_coord)
+row.names(nmds_omics_tpm_coord)<-row.names(tomics_for_vegan2_tpm)
+plot(nmds_omics_tpm,main="NMDS_tpm", type="t",display="sites")
+plot(nmds_omics_tpm,main="NMDS_tpm", type="p",display="species")
+#gives the sample ids, must be called when the plot is already open
+text(nmds_omics_tpm_coord,labels=row.names(nmds_omics_tpm_coord),cex=0.8) 
+
+#############choose subset --> nonzeros control tpm
+omics_for_vegan2_control_tpm<-read.csv(file.choose(),sep=";",row.names=1)
+omics_for_vegan2_nonzero_control_tpm<-subset(omics_for_vegan2_control_tpm,rowSums(omics_for_vegan2_control_tpm)>0)
+nrow(omics_for_vegan2_control_tpm)
+nrow(omics_for_vegan2_nonzero_control_tpm)
+head(omics_for_vegan2_nonzero_control_tpm)
+tomics_for_vegan2_nonzero_control_tpm<-t(omics_for_vegan2_nonzero_control_tpm)
+#run NMDS
+nmds_omics_nonzero_control_tpm<-metaMDS(tomics_for_vegan2_nonzero_control_tpm,autotransform=FALSE)
+#extract data
+names(nmds_omics_nonzero_control_tpm)
+nmds_omics_nonzero_control_tpm_coord<-as.data.frame(nmds_omics_nonzero_control_tpm$points)
+str(nmds_omics_nonzero_control_tpm_coord)
+row.names(nmds_omics_nonzero_control_tpm_coord)<-row.names(tomics_for_vegan2_nonzero_control_tpm)
+plot(nmds_omics_nonzero_control_tpm,main="NMDS_nonzero_control_tpm", type="t",display="sites")
+plot(nmds_omics_nonzero_control_tpm,main="NMDS_nonzero_control_tpm", type="p",display="species")
+#gives the sample ids, must be called when the plot is already open
+text(nmds_omics_nonzero_control_tpm_coord,labels=row.names(nmds_omics_nonzero_control_tpm_coord),cex=0.8) 
+
+
+###############choose subset --> est all
+omics_for_vegan2_est<-read.csv(file.choose(),sep=";",row.names=1)
+
+head(omics_for_vegan2_est)
+tomics_for_vegan2_est<-t(omics_for_vegan2_est)
+
+#run NMDS
+nmds_omics_est<-metaMDS(tomics_for_vegan2_est,autotransform=FALSE)
+#extract data
+names(nmds_omics_tpm)
+nmds_omics_est_coord<-as.data.frame(nmds_omics_est$points)
+str(nmds_omics_est_coord)
+row.names(nmds_omics_est_coord)<-row.names(tomics_for_vegan2_est)
+plot(nmds_omics_est,main="NMDS_est", type="t",display="sites")
+plot(nmds_omics_est,main="NMDS_est", type="p",display="species")
+#gives the sample ids, must be called when the plot is already open
+text(nmds_omics_est_coord,labels=row.names(nmds_omics_est_coord),cex=0.8) 
+
+#############choose subset --> est treat nonzeros
+omics_for_vegan2_glyph_est<-read.csv(file.choose(),sep=";",row.names=1)
+omics_for_vegan2_nonzero_glyph_est<-subset(omics_for_vegan2_glyph_est,rowSums(omics_for_vegan2_glyph_est)>0)
+nrow(omics_for_vegan2_glyph_est)
+nrow(omics_for_vegan2_nonzero_glyph_est)
+head(omics_for_vegan2_nonzero_glyph_est)
+tomics_for_vegan2_nonzero_glyph_est<-t(omics_for_vegan2_nonzero_glyph_est)
+
+#run NMDS
+nmds_omics_glyph_est<-metaMDS(tomics_for_vegan2_nonzero_glyph_est,autotransform=FALSE)
+#extract data
+names(nmds_omics_glyph_est)
+nmds_omics_glyph_est_coord<-as.data.frame(nmds_omics_glyph_est$points)
+str(nmds_omics_glyph_est_coord)
+row.names(nmds_omics_glyph_est_coord)<-row.names(tomics_for_vegan2_nonzero_glyph_est)
+plot(nmds_omics_glyph_est,main="NMDS_glyph_nonzero_est", type="t",display="sites")
+plot(nmds_omics_glyph_est,main="NMDS_glyph_nonzero_est", type="p",display="species")
+#gives the sample ids, must be called when the plot is already open
+text(nmds_omics_glyph_est_coord,labels=row.names(nmds_omics_glyph_est_coord),cex=0.8) 
+

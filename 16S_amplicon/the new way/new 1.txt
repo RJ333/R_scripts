@@ -1,0 +1,75 @@
+für R
+
+was habe ich alles und wo?
+#significant changes overview: statistik von deseq2 mit p-values im Vergleich zu t6
+#deseq2: logfold changes gegenüber t6, base mean etc
+#melted_numbercode!!!, Deseq-normalisierte counts melted
+
+write.csv(melted_numbercode,file="melted_numbercode.csv") 
+melted_numbercode_2<-melted_numbercode[,-(7:8)] # Spalten mit NAs entfernen (cellcounts, disturbance) 
+melted_numbercode_mean<-aggregate(value~days+time+treatment+nucleic_acid+habitat+variable, data = melted_numbercode_2, mean)   #parallelen mitteln
+melted_numbercode_mean <- melted_numbercode_mean[order(melted_numbercode_mean$variable),]                                      #sortieren notwendig?
+testsubset<-subset(melted_numbercode_mean,treatment == "glyph" & habitat == "water" & nucleic_acid == "dna")                   #testsubset erstellen
+testsubset2<-testsubset[,c(1,6,7)]
+testsubset2 <- testsubset2[order(testsubset2$days),]                                                                           #nach tagen sortieren
+write.csv(testsubset2,file="testsubset2.csv") 
+#excel: zählenwenn, summewenn, wenn(istfehler),
+
+
+#test erfolgreich, für dna treatment water:
+glyph_water_dna_subset<-subset(melted_numbercode_mean,treatment == "glyph" & habitat == "water" & nucleic_acid == "dna")                   #testsubset erstellen
+glyph_water_dna_subset2<-glyph_water_dna_subset[,c(1,6,7)]
+glyph_water_dna_subset2 <- glyph_water_dna_subset2[order(glyph_water_dna_subset2$days),]                                                                           #nach tagen sortieren
+write.csv(glyph_water_dna_subset2,file="glyph_water_dna_subset2.csv") 
+
+#test erfolgreich, für dna control water:
+control_water_dna_subset<-subset(melted_numbercode_mean,treatment == "control" & habitat == "water" & nucleic_acid == "dna")                   #testsubset erstellen
+control_water_dna_subset2<-control_water_dna_subset[,c(1,6,7)]
+control_water_dna_subset2 <- control_water_dna_subset2[order(control_water_dna_subset2$days),]                                                                           #nach tagen sortieren
+write.csv(control_water_dna_subset2,file="control_water_dna_subset2.csv") 
+
+#test erfolgreich, für cdna treatment water:
+glyph_water_cdna_subset<-subset(melted_numbercode_mean,treatment == "glyph" & habitat == "water" & nucleic_acid == "cdna")                   #testsubset erstellen
+glyph_water_cdna_subset2<-glyph_water_cdna_subset[,c(1,6,7)]
+glyph_water_cdna_subset2 <- glyph_water_cdna_subset2[order(glyph_water_cdna_subset2$days),]                                                                           #nach tagen sortieren
+write.csv(glyph_water_cdna_subset2,file="glyph_water_cdna_subset2.csv") 
+
+#test erfolgreich, für cdna control water:
+control_water_cdna_subset<-subset(melted_numbercode_mean,treatment == "control" & habitat == "water" & nucleic_acid == "cdna")                   #testsubset erstellen
+control_water_cdna_subset2<-control_water_cdna_subset[,c(1,6,7)]
+control_water_cdna_subset2 <- control_water_cdna_subset2[order(control_water_cdna_subset2$days),]                                                                           #nach tagen sortieren
+write.csv(control_water_cdna_subset2,file="control_water_cdna_subset2.csv") 
+
+#####ohne gemittelte parallelen
+
+#dna treatment water
+glyph_water_dna_subset_par<-subset(melted_numbercode,treatment == "glyph" & habitat == "water" & nucleic_acid == "dna")                   #testsubset erstellen
+glyph_water_dna_subset_par2<-glyph_water_dna_subset_par[,c(1,4,9,10)]
+glyph_water_dna_subset_par2 <- glyph_water_dna_subset_par2[order(glyph_water_dna_subset_par2$days),]                                                                           #nach tagen sortieren
+write.csv(glyph_water_dna_subset_par2,file="glyph_water_dna_subset_par2.csv")
+#dna control water
+control_water_dna_subset_par<-subset(melted_numbercode,treatment == "control" & habitat == "water" & nucleic_acid == "dna")                   #testsubset erstellen
+control_water_dna_subset_par2<-control_water_dna_subset_par[,c(1,4,9,10)]
+control_water_dna_subset_par2 <- control_water_dna_subset_par2[order(control_water_dna_subset_par2$days),]                                                                           #nach tagen sortieren
+write.csv(control_water_dna_subset_par2,file="control_water_dna_subset_par2.csv")
+#cdna treatment water
+glyph_water_cdna_subset_par<-subset(melted_numbercode,treatment == "glyph" & habitat == "water" & nucleic_acid == "cdna")                   #testsubset erstellen
+glyph_water_cdna_subset_par2<-glyph_water_cdna_subset_par[,c(1,4,9,10)]
+glyph_water_cdna_subset_par2 <- glyph_water_cdna_subset_par2[order(glyph_water_cdna_subset_par2$days),]                                                                           #nach tagen sortieren
+write.csv(glyph_water_cdna_subset_par2,file="glyph_water_cdna_subset_par2.csv")
+#cdna control water
+control_water_cdna_subset_par<-subset(melted_numbercode,treatment == "control" & habitat == "water" & nucleic_acid == "cdna")                   #testsubset erstellen
+control_water_cdna_subset_par2<-control_water_cdna_subset_par[,c(1,4,9,10)]
+control_water_cdna_subset_par2 <- control_water_cdna_subset_par2[order(control_water_cdna_subset_par2$days),]                                                                           #nach tagen sortieren
+write.csv(control_water_cdna_subset_par2,file="control_water_cdna_subset_par2.csv")
+
+ylim(0,250)+
+
+#ARKICE.90_Proteobacteria
+X35_plot<-subset(melted_numbercode,variable == "X35")
+gg_X35_plot<-ggplot(X35_plot)
+gg_X35_plot+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment*habitat,nrow=2)+
+	ggtitle("ARKICE.90_Proteobacteria")+
+	(aes(x=days,y=value, colour=nucleic_acid))+stat_summary(fun.y="mean", geom="line")

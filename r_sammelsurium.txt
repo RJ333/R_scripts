@@ -1,0 +1,57 @@
+sammelsurium r sachen
+
+min(rowSums(juhu))
+
+aggtest<-aggregate(number_sequences~sample_name+genus, data = otu, sum)
+agg<-aggregate(number_sequences~sample_name+class, data = otu, sum)		#includes amount of reads in counting, here for class column
+
+hist(reads)
+
+tjuhu<-cbind(tjuhu,tjuhu_sums)
+
+subset<-subset(tjuhu,tjuhu$tjuhu_sums>=1)
+subset<-subset2[c(1:93)]
+subset<-subset2[,-29]
+tmeta_otu_dna_new_0.2<-subset(tmeta_otu_dna_max,tax_max > 52) #water dna threshold 0,2% der gesamtreads -> 53 reads
+
+subsample_class<-ddply(merged2, "class", numcolwise(sum)) #library(plyr)
+aggsubsamples<-ddply(merged2, "phylum", numcolwise(sum)) reads pro Probe pro Phylum
+
+merged<-merge(agg,samplelist,by="sample_name",all.x=TRUE)
+merged<-merge(agg,samplelist,by.x="sample_name",by.y="row.names",all.x=TRUE)	#verschiedene Bedingungen für x und y
+
+Sys.setenv(LANG = "en") #language changing 
+
+lapply(before_after[c(4:283)],function(x) t.test(x~as.factor(before_after$time),var.equal=TRUE)) as.factor sagt R, dass es sich bei den zahlen nicht um den wert handelt
+
+
+#ttest + extraktionsloop
+cdna_before_control<-subset(merged_genus_cdna_absolute,merged_genus_cdna_absolute$time==6&merged_genus_cdna_absolute$treatment=="control")
+cdna_after_control<-subset(merged_genus_cdna_absolute,merged_genus_cdna_absolute$time==7&merged_genus_cdna_absolute$treatment=="control")
+cdna_before_after_water_control<-rbind(cdna_before_control,cdna_after_control)
+ncol(cdna_before_after_water_control)
+head(cdna_before_after_water_control)
+yeeha_cdna_control<-lapply(cdna_before_after_water_control[c(5:415)],function(x) t.test(x~as.factor(cdna_before_after_water_control$time),var.equal=TRUE))
+for (bacteria in names(yeeha_dna_control_new)){
+cat(paste("yeeha_dna_control_new$",bacteria,"$p.value",sep=""),sep="\n",append=TRUE,file="yeeha_cdna_control_new")
+}
+
+
+#plotsachen
+#rda
+plot(rda_test,main="RDA_all_Bray")
+with(rda_test, points(rda_test,col=levels(merged_nmds_coord$days),pch=levels(merged_nmds_coord$nucleic_acid)[pch= c(16,17)]))
+with(merged_nmds_coord, legend("topright", legend = levels(interaction(treatment,state2)), bty = "n",col = c('black',"red","green","blue"), pch = 18 ))
+with(merged_nmds_coord, legend("bottomright", legend = levels(nucleic_acid), bty = "n", pch = c(16,17)))
+
+
+
+#Here's how I did it with facet_grid(yfacet~xfacet) using ggplot2, version 2.2.1:
+
+facet_grid(
+    yfacet~xfacet,
+    labeller = labeller(
+        yfacet = c(`0` = "an y label", `1` = "another y label"),
+        xfacet = c(`10` = "an x label", `20` = "another x label")
+    )
+)

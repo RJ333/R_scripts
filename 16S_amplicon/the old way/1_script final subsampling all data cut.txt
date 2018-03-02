@@ -1,0 +1,234 @@
+subsampling-script anwenden auf dna/cdna datensatz 
+
+die excel datei ssu breakdown bereinigt, bakterien entfernt, kontrollen entfernt, namen aufgeteilt, als csv gespeichert
+
+nochmal subsetten für die sequenziertiefen: wasser dna, wasser cdna und biofilm dna/cdna
+
+cut_all<-read.csv(file.choose(),sep=";",header=TRUE) #in R einlesen
+cut_all$wholetax<-do.call(paste, c(cut_all[c("genus","family","order","class","phylum")],sep="_")) #ein langer name je otu
+agg_cut_all<-aggregate(total_seq~sample_name+wholetax, data = cut_all, sum) #aggregiert otu_all zu drei spalten mit sample_name, wholetax und total seq
+
+library(reshape) #load package reshape for cast (not reshape2!)
+
+cast_cut_all<-cast(agg_cut_all,sample_name~wholetax)
+cast_cut_all[is.na(cast_cut_all)]<-0 # ersetzt NA durch 0
+rowSums(cast_cut_all) # zeigt reads pro probe
+row.names(cast_cut_all)<-cast_cut_all$sample_name
+nrow(cast_cut_all) 
+
+#falls notwendig dna subsample und cdna subsample erstellen, zB
+cast_cut_dwater<-cast_cut_all[1:93,] 
+cast_cut_cwater<-cast_cut_all[94:187,]
+cast_cut_biofilm<-cast_cut_all[188:279,]
+
+#subsampling für biofilm
+
+cast_cut_biofilm<-as.numeric(cast_cut_biofilm) #falls transponieren nicht klappt
+tcast_cut_biofilm<-t(cast_cut_biofilm)
+write.csv(tcast_cut_biofilm,file="tcast_cut_biofilm.csv")
+tcast_cut_biofilm<-read.csv(file.choose(),sep=";",header=TRUE,row.names=1)
+row.names(tcast_cut_biofilm)<-names(cast_cut_biofilm) #klappt nicht immer/bereits vorhanden
+colnames(tcast_cut_biofilm)<-row.names(cast_cut_biofilm)
+tcast_cut_biofilm_sums<-rowSums(tcast_cut_biofilm)
+[sapply(tcast_cut_biofilm, is.numeric)]) #diese zeile nur, wenn rowSums wegen "nicht numerisch" nicht funktioniert
+tcast_cut_biofilm<-cbind(tcast_cut_biofilm,tcast_cut_biofilm_sums)
+
+cut_biofilm_subset<-subset(tcast_cut_biofilm,tcast_cut_biofilm$tcast_cut_biofilm_sums>=1) #geht meist erst nach neu einlesen (inkl X)
+write.csv(t_otu_biofilm,file="t_otu_biofilm.csv")
+t_otu_biofilm<-read.csv(file.choose(),sep=";",header=TRUE)
+
+ncol(cast_cut_biofilm)
+min(rowSums(cast_cut_biofilm[,2:688])) #niedrigste readzahl ermitteln 22352 (probe d327), zweitniedrigste (d343) 46958
+cut_biofilm_subset2<-cut_biofilm_subset[,-62] #probe d327 mit niedrigster readzahl entfernt
+ncol(cut_biofilm_subset2)
+cut_biofilm_subset3<-cut_biofilm_subset2[c(1:91)] #sums spalte abschneiden
+library(vegan)
+#script: iterations und reads und durchschnitt anpassen, noch eine transponierung einbauen zu beginn
+tY<-cut_biofilm_subset3
+tY2<-tY #speichert originaldatei
+tY<-t(tY) 
+
+
+#output sichern
+xtempave_biofilm_cut<-XtempAve
+xtemptot_biofilm_cut<-XtempTot
+outdata_biofilm_cut<-outData
+outdata2_biofilm_cut<-outData2
+write.csv(xtempave_biofilm_cut,file="xtempave_biofilm_cut.csv")
+write.csv(xtemptot_biofilm_cut,file="xtemptot_biofilm_cut.csv")
+write.csv(outdata_biofilm_cut,file="outdata_biofilm_cut.csv")
+write.csv(outdata2_biofilm_cut,file="outdata2_biofilm_cut.csv")
+
+#ergebnisse checken: otus vor und nach subsampling 
+nrow(cut_biofilm_subset3)
+ncol(xtempave_biofilm_cut)
+
+#cut_biofilm_subset3 in excel mit xtempave_biofilm_cut für taxonomie und sample names kombinieren
+write.csv(cut_biofilm_subset3,file="cut_biofilm_subset3.csv")
+
+#in excel tax_biofilm erstellt mit taxonomielevels+whole_tax aus subset->taxonomy
+cut_taxonomy<-read.csv(file.choose(),sep=";")
+xtempave_biofilm_cut<-read.table(file.choose(),row.names=1,sep=";",dec=",",header=TRUE)
+named_biofilm_cut<-xtempave_biofilm_cut
+
+#transponieren zum mergen
+tnamed_biofilm_cut<-t(named_biofilm_cut)
+tnamed_biofilm_cut<-read.csv(file.choose(),sep=";",row.names=1)
+row.names(tnamed_biofilm_cut)
+
+#verschiedene Bedingungen für x und y
+merged_biofilm_cut<-merge(cut_taxonomy,tnamed_biofilm_cut,by.x="whole_tax",by.y="row.names",all.y=TRUE)
+write.csv(merged_biofilm_cut,file="merged_biofilm_cut.csv")
+
+#X... war nach unten gerutscht, falsch gemergt:
+merged_biofilm_sub<-read.table(file.choose(),sep=";",dec=",",header=TRUE)
+row.names(merged_biofilm_sub)<-merged_biofilm_sub$wholetax
+merged_biofilm_sub<-merged_biofilm_sub[,-1]
+#falls probleme beim mergen: bindestriche und leerzeichen von wholetax zum angleichen in excel in punkte umgewandelt oder wholetax kopieren
+#komma zu punkt
+write.csv(merged_biofilm_sub,file="merged_biofilm_sub.csv")	
+merged_biofilm_sub<-read.table(file.choose(),sep=";",header=TRUE,row.names=1,dec=",") 	
+
+--> weiter zu 0,2 % threshold
+
+
+
+
+#subsampling water dna
+
+cast_cut_dwater<-as.data.frame(cast_cut_dwater) #falls transponieren nicht klappt, möglicherweise header/row.names doppelt
+tcast_cut_dwater<-t(cast_cut_dwater)
+write.csv(tcast_cut_dwater,file="tcast_cut_dwater.csv")
+tcast_cut_dwater<-read.csv(file.choose(),sep=";",header=TRUE,row.names=1)
+row.names(tcast_cut_dwater)<-names(cast_cut_dwater) #klappt nicht immer/bereits vorhanden
+colnames(tcast_cut_dwater)<-row.names(cast_cut_dwater)
+tcast_cut_dwater_sums<-rowSums(tcast_cut_dwater)
+[sapply(tcast_cut_dwater, is.numeric)]) #diese zeile nur, wenn rowSums wegen "nicht numerisch" nicht funktioniert
+tcast_cut_dwater<-cbind(tcast_cut_dwater,tcast_cut_dwater_sums)
+
+cut_dwater_subset<-subset(tcast_cut_dwater,tcast_cut_dwater$tcast_cut_dwater_sums>=1) #geht meist erst nach neu einlesen (inkl X)
+write.csv(t_otu_dwater,file="t_otu_dwater.csv")
+t_otu_dwater<-read.csv(file.choose(),sep=";",header=TRUE)
+
+ncol(cast_cut_dwater)
+min(rowSums(cast_cut_dwater[,2:688])) #niedrigste readzahl ermitteln 9503 (probe 33), zweitniedrigste (32)  26184
+cut_dwater_subset2<-cut_dwater_subset[,-29] #probe 33 mit niedrigster readzahl entfernt
+ncol(cut_dwater_subset2)
+cut_dwater_subset3<-cut_dwater_subset2[c(1:92)] #sums spalte abschneiden
+library(vegan)
+#script: iterations und reads und durchschnitt anpassen, noch eine transponierung einbauen zu beginn
+tY<-cut_dwater_subset3
+tY2<-tY #speichert originaldatei
+tY<-t(tY) 
+
+#output sichern
+xtempave_dwater_cut<-XtempAve
+xtemptot_dwater_cut<-XtempTot
+outdata_dwater_cut<-outData
+outdata2_dwater_cut<-outData2
+write.csv(xtempave_dwater_cut,file="xtempave_dwater_cut.csv")
+write.csv(xtemptot_dwater_cut,file="xtemptot_dwater_cut.csv")
+write.csv(outdata_dwater_cut,file="outdata_dwater_cut.csv")
+write.csv(outdata2_dwater_cut,file="outdata2_dwater_cut.csv")
+
+#ergebnisse checken: otus vor und nach subsampling 
+nrow(cut_dwater_subset3)
+ncol(xtempave_dwater_cut)
+
+#cut_dwater_subset3 in excel mit xtempave_dwater_cut für taxonomie und sample names kombinieren
+write.csv(cut_dwater_subset3,file="cut_dwater_subset3.csv")
+
+#in excel tax_dwater erstellt mit taxonomielevels+whole_tax aus subset->taxonomy
+cut_taxonomy<-read.csv(file.choose(),sep=";")
+xtempave_dwater_cut<-read.table(file.choose(),row.names=1,sep=";",dec=",",header=TRUE)
+named_dwater_cut<-xtempave_dwater_cut
+
+#transponieren zum mergen
+tnamed_dwater_cut<-t(named_dwater_cut)
+tnamed_dwater_cut<-read.csv(file.choose(),sep=";",row.names=1)
+row.names(tnamed_dwater_cut)
+
+#verschiedene Bedingungen für x und y
+merged_dwater_cut<-merge(cut_taxonomy,tnamed_dwater_cut,by.x="whole_tax",by.y="row.names",all.y=TRUE)
+write.csv(merged_dwater_cut,file="merged_dwater_cut.csv")
+
+#X... war nach unten gerutscht, falsch gemergt:
+merged_dwater_sub<-read.table(file.choose(),sep=";",dec=",",header=TRUE)
+row.names(merged_dwater_sub)<-merged_dwater_sub$wholetax
+merged_dwater_sub<-merged_dwater_sub[,-1]
+#falls probleme beim mergen: bindestriche und leerzeichen von wholetax zum angleichen in excel in punkte umgewandelt oder wholetax kopieren
+#komma zu punkt
+write.csv(merged_dwater_sub,file="merged_dwater_sub.csv")	
+merged_dwater_sub<-read.table(file.choose(),sep=";",header=TRUE,row.names=1,dec=",") 
+
+
+--> weiter zu 0,2% threshold
+
+
+#subsampling water cdna
+
+cast_cut_cdwater<-as.data.frame(cast_cut_cwater) #falls transponieren nicht klappt, möglicherweise header/row.names doppelt
+tcast_cut_cdwater<-t(cast_cut_cdwater)
+write.csv(tcast_cut_cdwater,file="tcast_cut_cdwater.csv")
+tcast_cut_cdwater<-read.csv(file.choose(),sep=";",header=TRUE,row.names=1)
+row.names(tcast_cut_cdwater)<-names(cast_cut_cdwater) #klappt nicht immer/bereits vorhanden
+colnames(tcast_cut_cdwater)<-row.names(cast_cut_cdwater)
+tcast_cut_cdwater_sums<-rowSums(tcast_cut_cdwater)
+[sapply(tcast_cut_cdwater, is.numeric)]) #diese zeile nur, wenn rowSums wegen "nicht numerisch" nicht funktioniert
+tcast_cut_cdwater<-cbind(tcast_cut_cdwater,tcast_cut_cdwater_sums)
+
+cut_cdwater_subset<-subset(tcast_cut_cdwater,tcast_cut_cdwater$tcast_cut_cdwater_sums>=1) #geht meist erst nach neu einlesen (inkl X)
+write.csv(t_otu_cdwater,file="t_otu_cdwater.csv")
+t_otu_cdwater<-read.csv(file.choose(),sep=";",header=TRUE)
+
+ncol(cast_cut_cdwater)
+min(rowSums(cast_cut_cdwater[,2:688])) #niedrigste readzahl ermitteln 41584 (probe 34), wird nicht entfernt
+cut_cdwater_subset3<-cut_cdwater_subset[c(1:94)] #sums spalte abschneiden
+library(vegan)
+#script: iterations und reads und durchschnitt anpassen, noch eine transponierung einbauen zu beginn
+tY<-cut_cdwater_subset3
+tY2<-tY #speichert originaldatei
+tY<-t(tY) 
+
+#output sichern
+xtempave_cdwater_cut<-XtempAve
+xtemptot_cdwater_cut<-XtempTot
+outdata_cdwater_cut<-outData
+outdata2_cdwater_cut<-outData2
+write.csv(xtempave_cdwater_cut,file="xtempave_cdwater_cut.csv")
+write.csv(xtemptot_cdwater_cut,file="xtemptot_cdwater_cut.csv")
+write.csv(outdata_cdwater_cut,file="outdata_cdwater_cut.csv")
+write.csv(outdata2_cdwater_cut,file="outdata2_cdwater_cut.csv")
+
+#ergebnisse checken: otus vor und nach subsampling 
+nrow(cut_cdwater_subset3)
+ncol(xtempave_cdwater_cut)
+
+#cut_cdwater_subset3 in excel mit xtempave_cdwater_cut für taxonomie und sample names kombinieren
+write.csv(cut_cdwater_subset3,file="cut_cdwater_subset3.csv")
+
+#in excel tax_cdwater erstellt mit taxonomielevels+whole_tax aus subset->taxonomy
+cut_taxonomy<-read.csv(file.choose(),sep=";")
+xtempave_cdwater_cut<-read.table(file.choose(),row.names=1,sep=";",dec=",",header=TRUE)
+named_cdwater_cut<-xtempave_cdwater_cut
+
+#transponieren zum mergen
+tnamed_cdwater_cut<-t(named_cdwater_cut)
+tnamed_cdwater_cut<-read.csv(file.choose(),sep=";",row.names=1)
+row.names(tnamed_cdwater_cut)
+
+#verschiedene Bedingungen für x und y
+merged_cdwater_cut<-merge(cut_taxonomy,tnamed_cdwater_cut,by.x="whole_tax",by.y="row.names",all.y=TRUE)
+write.csv(merged_cdwater_cut,file="merged_cdwater_cut.csv")
+
+#X... war nach unten gerutscht, falsch gemergt:
+merged_cdwater_sub<-read.table(file.choose(),sep=";",dec=",",header=TRUE)
+row.names(merged_cdwater_sub)<-merged_cdwater_sub$wholetax
+merged_cdwater_sub<-merged_cdwater_sub[,-1]
+#falls probleme beim mergen: bindestriche und leerzeichen von wholetax zum angleichen in excel in punkte umgewandelt oder wholetax kopieren
+#komma zu punkt
+write.csv(merged_cdwater_sub,file="merged_cdwater_sub.csv")	
+merged_cdwater_sub<-read.table(file.choose(),sep=";",header=TRUE,row.names=1,dec=",") 
+
+
+--> weiter zu 0,2% threshold

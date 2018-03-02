@@ -1,0 +1,42 @@
+#normalising data for vizualisation (different methods)
+rld_gly_dw <- rlog(dds_glyph_dna_water, blind=FALSE)
+rld_gly_cw <- rlog(dds_glyph_cdna_water, blind=FALSE)
+rld_gly_db <- rlog(dds_glyph_dna_biofilm, blind=FALSE)
+rld_gly_cb <- rlog(dds_glyph_cdna_biofilm, blind=FALSE)
+rld_con_dw <- rlog(dds_control_dna_water, blind=FALSE)
+rld_con_cw <- rlog(dds_control_cdna_water, blind=FALSE)
+rld_con_db <- rlog(dds_control_dna_biofilm, blind=FALSE)
+rld_con_cb <- rlog(dds_control_cdna_biofilm, blind=FALSE)
+
+
+##DNA WATER TREATMENT
+#distance matrix euclidean (necessary for heatmap)
+sampleDists_gly_dw2<-dist(t(assay(rld_gly_dw)))
+
+sampleDist_gly_dw_Matrix2 <- as.matrix( sampleDists_gly_dw2 )
+rownames(sampleDist_gly_dw_Matrix2) <- paste( rld_gly_dw$days )
+colnames(sampleDist_gly_dw_Matrix2) <- NULL
+
+#diesmal poissondistance ausprobieren
+library("PoiClaClu")
+poisd <- PoissonDistance(t(counts(dds_glyph_dna_water)))
+
+samplePoisDistMatrix <- as.matrix( poisd$dd )
+rownames(samplePoisDistMatrix) <- paste( rld_gly_dw$time )
+colnames(samplePoisDistMatrix) <- NULL
+
+#pca
+plotPCA(rld_gly_dw, intgroup = "days")
+
+#NMDS euclid
+mdsData_gly_dw <- data.frame(cmdscale(sampleDist_gly_dw_Matrix2))
+mds_gly_dw <- cbind(mdsData_gly_dw, as.data.frame(colData(rld_gly_dw)))
+ggplot(mds_gly_dw, aes(X1,X2,color=days,shape=treatment)) + geom_point(size=3) +
+  coord_fixed()
+
+#NMDS poisson
+mdsPoisData <- data.frame(cmdscale(samplePoisDistMatrix))
+mdsPois <- cbind(mdsPoisData, as.data.frame(colData(dds_glyph_dna_water)))
+ggplot(mdsPois, aes(X1,X2,color=days,shape=treatment)) + geom_point(size=3) +
+  coord_fixed()
+ 

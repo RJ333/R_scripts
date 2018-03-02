@@ -1,0 +1,22 @@
+#meta-subset erstellen
+meta_water_dna<-subset(meta_data,habitat=="water"&nucleic_acid=="dna"&days>=44)
+head(meta_water_dna)
+head(water_dna_subset_nonzero)
+
+#cca
+str(meta_water_dna)
+meta_water_dna$days<-as.factor(meta_water_dna$days)
+str(meta_water_dna)
+cca_water_dna<-cca(water_dna_subset_nonzero~disturbance + days,data=meta_water_dna)
+
+colfunc <- colorRampPalette(c("yellow2","red","purple"))
+colfunc(16)
+plot(cca_water_dna,main="CCA_water_dna", type="p",display="sites")
+with(meta_water_dna, points(cca_water_dna,col=colfunc(16)[meta_water_dna$days],pch=c(16,17)[meta_water_dna$treatment]))
+with(meta_water_dna, legend("bottomright", legend = levels(treatment), bty = "n", pch = c(16,17)))
+with(meta_water_dna, legend("topright", legend = levels(days), pch=16, bty = "n", col=colfunc(16)))
+ordihull(cca_water_dna,groups=interaction(meta_water_dna$days,meta_water_dna$treatment),label=TRUE,cex=0.4,draw="polygon",col="red")
+#text(meta_water_dna,labels=row.names(meta_water_dna),cex=0.7)
+
+names(cca_water_dna)
+summary(cca_water_dna)

@@ -1,0 +1,338 @@
+##tpm bar plots
+test<-kallisto_prokka_concoct2_metaxa_checkm[kallisto_prokka_concoct2_metaxa_checkm$ec_number %in% c("1.5.3.23,1.14.14.1"),]
+#c("3.11.1.1","3.11.1.2","3.11.1.3","2.6.1.37","1.4.3.19","1.5.3.1","1.5.8.3")
+enzyme_3.11.1.1_plot<-subset(merged_glyph_genes,merged_glyph_genes$ec_number == "3.11.1.1")
+enzyme_3.11.1.1_plot<-enzyme_3.11.1.1_plot[order(enzyme_3.11.1.1_plot[,4]),]
+nrow(enzyme_3.11.1.1_plot)
+enzyme_3.11.1.2_plot<-subset(merged_glyph_genes,merged_glyph_genes$ec_number == "3.11.1.2")
+enzyme_3.11.1.2_plot<-enzyme_3.11.1.2_plot[order(enzyme_3.11.1.2_plot[,4]),]
+nrow(enzyme_3.11.1.2_plot)
+enzyme_3.11.1.3_plot<-subset(merged_glyph_genes,merged_glyph_genes$ec_number == "3.11.1.3")
+enzyme_3.11.1.3_plot<-enzyme_3.11.1.3_plot[order(enzyme_3.11.1.3_plot[,4]),]
+nrow(enzyme_3.11.1.3_plot)
+enzyme_2.6.1.37_plot<-subset(merged_glyph_genes,merged_glyph_genes$ec_number == "2.6.1.37")
+enzyme_2.6.1.37_plot<-enzyme_2.6.1.37_plot[order(enzyme_2.6.1.37_plot[,4]),]
+nrow(enzyme_2.6.1.37_plot)
+enzyme_1.4.3.19_plot<-subset(merged_glyph_genes,merged_glyph_genes$ec_number == "1.4.3.19")
+enzyme_1.4.3.19_plot<-enzyme_1.4.3.19_plot[order(enzyme_1.4.3.19_plot[,4]),]
+nrow(enzyme_1.4.3.19_plot)
+enzyme_1.5.3.1_plot<-subset(merged_glyph_genes,merged_glyph_genes$ec_number == "1.5.3.1")
+enzyme_1.5.3.1_plot<-enzyme_1.5.3.1_plot[order(enzyme_1.5.3.1_plot[,4]),]
+nrow(enzyme_1.5.3.1_plot)
+enzyme_1.5.8.3_plot<-subset(merged_glyph_genes,merged_glyph_genes$ec_number == "1.5.8.3")
+enzyme_1.5.8.3_plot<-enzyme_1.5.8.3_plot[order(enzyme_1.5.8.3_plot[,4]),]
+nrow(enzyme_1.5.8.3_plot)
+enzyme_1.5.3.1_soxA_plot<-subset(merged_glyph_genes, grepl("soxA", genes))
+enzyme_1.5.3.1_soxA_plot<-enzyme_1.5.3.1_soxA_plot[order(enzyme_1.5.3.1_soxA_plot[,4]),]
+nrow(enzyme_1.5.3.1_soxA_plot)
+enzyme_1.5.3.1_soxB_plot<-subset(merged_glyph_genes, grepl("soxB", genes))
+enzyme_1.5.3.1_soxB_plot<-enzyme_1.5.3.1_soxB_plot[order(enzyme_1.5.3.1_soxB_plot[,4]),]
+nrow(enzyme_1.5.3.1_soxB_plot)
+
+
+#to see actually what will be plotted and compare 
+    qplot(clarity, data=diamonds, fill=cut, geom="bar")
+#save the plot in a variable image to be able to export to svg
+    image=qplot(clarity, data=diamonds, fill=cut, geom="bar")
+#This actually save the plot in a image
+    ggsave(file="test.jpg", width=10, height=8)
+
+#object names must not start with a number
+
+##sox
+sox_plot<-subset(gallaeci_bins, grepl("sox", genes))
+sox_plot<-sox_plot[order(sox_plot[,4]),]
+nrow(sox_plot)
+
+sox_genes<-ggplot(sox_plot, aes(x = day, y = value, fill=genes))+						
+	geom_bar(width = 1.7, stat = "identity")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	geom_text(data=subset(sox_plot, value > 3),aes(label=contig_id),size=rel(2.7), position = position_stack(vjust = 0.5))+
+	#geom_label_repel(data=subset(sox_plot, value > 50),position="stack",min.segment.length = unit(0.1, "lines"),aes(label=genes,size=1.4))+
+	ggtitle("sox_genes")+
+	theme(plot.title = element_text(size=18,face="bold"))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	geom_vline(aes(xintercept=70),linetype="dashed", size=1.2)+
+	xlab("day")+
+	ylab("rpm")+
+	geom_point(aes(y=cells_ml/1000000),size=3,alpha=0.4)+
+	facet_wrap( ~treatment,nrow=2)
+sox_genes
+
+x3.11.1.1_bar<-ggplot(enzyme_3.11.1.1_plot, aes(x = day, y = value, fill=genes))+		
+	facet_wrap( ~treatment,nrow=2)+				
+	geom_bar(width = 1, stat = "identity")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	ggtitle("3.11.1.1")+
+	theme(plot.title = element_text(size=18,face="bold"))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	geom_vline(aes(xintercept=70),linetype="dashed", size=1.2)+
+	xlab("day")+
+	ylab("rpm")+
+	geom_point(aes(y=cells_ml/1000000,size=1.5),alpha=0.4)
+x3.11.1.1_bar
+ ggsave(file="3.11.1.1.jpg", width=14, height=8)
+	
+x3.11.1.2_bar<-ggplot(enzyme_3.11.1.2_plot, aes(x = day, y = value, fill=genes))+		
+	facet_wrap( ~treatment,nrow=2)+				
+	geom_bar(width = 1, stat = "identity")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	ggtitle("3.11.1.2")+
+	theme(plot.title = element_text(size=18,face="bold"))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	geom_vline(aes(xintercept=70),linetype="dashed", size=1.2)+
+	xlab("day")+
+	ylab("rpm")+
+	geom_point(aes(y=cells_ml/1000000,size=1.2),alpha=0.6)
+x3.11.1.2_bar
+ ggsave(file="3.11.1.2.jpg", width=14, height=8)
+	
+x3.11.1.3_bar<-ggplot(enzyme_3.11.1.3_plot, aes(x = day, y = value, fill=genes))+		
+	facet_wrap( ~treatment,nrow=2)+				
+	geom_bar(width = 1, stat = "identity")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	ggtitle("3.11.1.3")+
+	theme(plot.title = element_text(size=18,face="bold"))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	geom_vline(aes(xintercept=70),linetype="dashed", size=1.2)+
+	xlab("day")+
+	ylab("rpm")+
+	geom_point(aes(y=cells_ml/1000000,size=1.2),alpha=0.6)
+x3.11.1.3_bar
+ ggsave(file="3.11.1.3.jpg", width=14, height=8)
+ 
+x2.6.1.37_bar<-ggplot(enzyme_2.6.1.37_plot, aes(x = day, y = value, fill=genes))+		
+	facet_wrap( ~treatment,nrow=2)+				
+	geom_bar(width = 1, stat = "identity")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	ggtitle("2.6.1.37")+
+	theme(plot.title = element_text(size=18,face="bold"))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	geom_vline(aes(xintercept=70),linetype="dashed", size=1.2)+
+	xlab("day")+
+	ylab("rpm")+
+	geom_point(aes(y=cells_ml/1000000,size=1.2),alpha=0.6)
+x2.6.1.37_bar
+ ggsave(file="2.6.1.37.jpg", width=14, height=8)	
+	
+x1.4.3.19_bar<-ggplot(enzyme_1.4.3.19_plot, aes(x = day, y = value, fill=genes))+		
+	facet_wrap( ~treatment,nrow=2)+				
+	geom_bar(width = 1, stat = "identity")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	ggtitle("1.4.3.19")+
+	theme(plot.title = element_text(size=18,face="bold"))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	geom_vline(aes(xintercept=70),linetype="dashed", size=1.2)+
+	xlab("day")+
+	ylab("rpm")+
+	geom_point(aes(y=cells_ml/1000000,size=1.2),alpha=0.6)
+x1.4.3.19_bar
+ ggsave(file="1.4.3.19.jpg", width=14, height=8)
+ 
+x1.5.3.1_bar<-ggplot(enzyme_1.5.3.1_plot, aes(x = day, y = value, fill=genes))+		
+	facet_wrap( ~treatment,nrow=2)+				
+	geom_bar(width = 1, stat = "identity")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	ggtitle("1.5.3.1")+
+	theme(plot.title = element_text(size=18,face="bold"))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	geom_vline(aes(xintercept=70),linetype="dashed", size=1.2)+
+	xlab("day")+
+	ylab("rpm")+
+	geom_point(aes(y=cells_ml/100000,size=1.2),alpha=0.6)
+x1.5.3.1_bar
+ ggsave(file="default1.5.3.1.jpg", width=14, height=8)
+ 
+x1.5.3.1_soxA_bar<-ggplot(enzyme_1.5.3.1_soxA_plot, aes(x = day, y = value, colour=contig_id,fill=genes))+		
+	facet_wrap( ~treatment,nrow=2)+				
+	geom_bar(width = 1, stat = "identity")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	ggtitle("1.5.3.1_soxA")+
+	theme(plot.title = element_text(size=18,face="bold"))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	geom_vline(aes(xintercept=70),linetype="dashed", size=1.2)+
+	xlab("day")+
+	ylab("rpm")+
+	geom_point(aes(y=cells_ml/1000000,size=1.2),alpha=0.6)
+x1.5.3.1_soxA_bar
+ ggsave(file="1.5.3.1_soxA.jpg", width=14, height=8)
+ 
+x1.5.3.1_soxB_bar<-ggplot(enzyme_1.5.3.1_soxB_plot, aes(x = day, y = value, fill=genes))+		
+	facet_wrap( ~treatment,nrow=2)+				
+	geom_bar(width = 1, stat = "identity")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	ggtitle("1.5.3.1_soxB")+
+	theme(plot.title = element_text(size=18,face="bold"))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	geom_vline(aes(xintercept=70),linetype="dashed", size=1.2)+
+	xlab("day")+
+	ylab("rpm")+
+	geom_point(aes(y=cells_ml/100000,size=1.2),alpha=0.6)
+x1.5.3.1_soxB_bar
+ ggsave(file="1.5.3.1_soxB.jpg", width=14, height=8)
+ 
+###############
+##thi
+
+thi_plot<-subset(merged_glyph_genes, grepl("thi", genes))
+thi_plot<-thi_plot[order(thi_plot[,4]),]
+nrow(thi_plot)
+
+
+xthi_genes_bar<-ggplot(thi_plot, aes(x = day, y = value, fill=genes))+				
+	geom_bar(width = 1.7, stat = "identity")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	geom_text(data=subset(thi_plot, value > 3),aes(label=contig_id),size=rel(2.7), position = position_stack(vjust = .5))+
+	#geom_label_repel(data=subset(thi_plot, value > 1),position="stack",min.segment.length = unit(0.1, "lines"),aes(label=genes,size=1.4))+
+	ggtitle("thi_genes")+
+	theme(plot.title = element_text(size=18,face="bold"))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	geom_vline(aes(xintercept=70),linetype="dashed", size=1.2)+
+	xlab("day")+
+	ylab("rpm")+
+	geom_point(aes(y=cells_ml/1000000),size=3,alpha=0.4)+
+	facet_wrap( ~treatment,nrow=2)
+xthi_genes_bar
+ ggsave(file="thi_genes.jpg", width=14, height=8)
+ 
+##connecting contig, gene and bin/taxonomy for "remarkable" contigs
+#thi 
+subset(glyph_genes,contig_id=="k141_254433")
+subset(glyph_genes,contig_id=="k141_175865")
+subset(glyph_genes,contig_id=="k141_136889")
+subset(glyph_genes,contig_id=="k141_138965")
+subset(glyph_genes,contig_id=="k141_191701")
+subset(glyph_genes,contig_id=="k141_82813")
+subset(glyph_genes,contig_id=="k141_231802")
+
+###############
+##soxB
+
+soxB_plot<-subset(merged_glyph_genes, grepl("soxB", genes))
+soxB_plot<-soxB_plot[order(soxB_plot[,4]),]
+nrow(soxB_plot)
+
+
+xsoxB_genes_bar<-ggplot(soxB_plot, aes(x = day, y = value, fill=genes))+				
+	geom_bar(width = 1.7, stat = "identity")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	geom_text(data=subset(soxB_plot, value > 5),aes(label=contig_id),size=rel(2.7), position = position_stack(vjust = .5))+
+	#geom_label_repel(data=subset(soxB_plot, value > 1),position="stack",min.segment.length = unit(0.1, "lines"),aes(label=genes,size=1.4))+
+	ggtitle("soxB_genes")+
+	theme(plot.title = element_text(size=18,face="bold"))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	geom_vline(aes(xintercept=70),linetype="dashed", size=1.2)+
+	xlab("day")+
+	ylab("rpm")+
+	geom_point(aes(y=cells_ml/1000000),size=3,alpha=0.4)+
+	facet_wrap( ~treatment,nrow=2)
+xsoxB_genes_bar
+ ggsave(file="soxB_genes.jpg", width=14, height=8)
+ 
+##connecting contig, gene and bin/taxonomy for "remarkable" contigs
+#soxB 
+subset(glyph_genes,contig_id=="k141_230763")
+subset(glyph_genes,contig_id=="k141_26989")
+subset(glyph_genes,contig_id=="k141_118737")
+subset(glyph_genes,contig_id=="k141_209419")
+subset(glyph_genes,contig_id=="k141_121644")
+subset(glyph_genes,contig_id=="k141_3733")
+subset(glyph_genes,contig_id=="k141_87123")
+subset(glyph_genes,contig_id=="k141_17577")
+subset(glyph_genes,contig_id=="k141_170544")
+subset(glyph_genes,contig_id=="k141_87123")
+subset(glyph_genes,contig_id=="k141_87123")
+
+###############
+##soxA
+
+soxA_plot<-subset(merged_glyph_genes, grepl("soxA", genes))
+soxA_plot<-soxA_plot[order(soxA_plot[,4]),]
+nrow(soxA_plot)
+
+
+xsoxA_genes_bar<-ggplot(soxA_plot, aes(x = day, y = value, fill=genes))+				
+	geom_bar(width = 1.7, stat = "identity")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	geom_text(data=subset(soxA_plot, value > 1),aes(label=contig_id),size=rel(2.7), position = position_stack(vjust = .5))+
+	#geom_label_repel(data=subset(soxA_plot, value > 1),position="stack",min.segment.length = unit(0.1, "lines"),aes(label=genes,size=1.4))+
+	ggtitle("soxA_genes")+
+	theme(plot.title = element_text(size=18,face="bold"))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	geom_vline(aes(xintercept=70),linetype="dashed", size=1.2)+
+	xlab("day")+
+	ylab("rpm")+
+	geom_point(aes(y=cells_ml/1000000),size=3,alpha=0.4)+
+	facet_wrap( ~treatment,nrow=2)
+xsoxA_genes_bar
+ ggsave(file="soxA_genes.jpg", width=14, height=8)
+ 
+##connecting contig, gene and bin/taxonomy for "remarkable" contigs
+#soxA 
+subset(glyph_genes,contig_id=="k141_203760")
+subset(glyph_genes,contig_id=="k141_166004")
+subset(glyph_genes,contig_id=="k141_50218")
+subset(glyph_genes,contig_id=="k141_245537")
+subset(glyph_genes,contig_id=="k141_109691")
+subset(glyph_genes,contig_id=="k141_67989")
+subset(glyph_genes,contig_id=="k141_3495")
+subset(glyph_genes,contig_id=="k141_187036")
+subset(glyph_genes,contig_id=="k141_255262")
+subset(glyph_genes,contig_id=="k141_228009")
+subset(glyph_genes,contig_id=="k141_4072")
+subset(glyph_genes,contig_id=="k141_259692")
+subset(glyph_genes,contig_id=="k141_8512")
+subset(glyph_genes,contig_id=="k141_42062")
+subset(glyph_genes,contig_id=="k141_246088")
+subset(glyph_genes,contig_id=="k141_203901")
+subset(glyph_genes,contig_id=="k141_154103")
+subset(glyph_genes,contig_id=="k141_32210")
+subset(glyph_genes,contig_id=="k141_102945")

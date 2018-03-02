@@ -1,0 +1,243 @@
+#2 plots mit wassersäule und biofilm kombiniert, einzelne farbe je verschiedene kombi von nucleic_acid und habitat, farben ausgesucht
+
+palette1 <- c("blue1","red1","aquamarine3","chocolate1")
+
+Acidovorax_plot<-subset(film_water_rel,variable == "Acidovorax_Comamonadaceae_Burkholderiales_Betaproteobacteria_Proteobacteria")
+gg_Acidovorax_plot<-ggplot(Acidovorax_plot)
+gg_Acidovorax_plot+
+	geom_point(aes(x=days,y=rel_value,colour=interaction(habitat,nucleic_acid)))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Acidovorax")+
+	scale_colour_manual(values=palette1)
+
+
+Caulobacter_plot<-subset(film_water_rel,variable == "Caulobacter_Caulobacteraceae_Caulobacterales_Alphaproteobacteria_Proteobacteria")
+gg_Caulobacter_plot<-ggplot(Caulobacter_plot)
+gg_Caulobacter_plot+
+	geom_point(aes(x=days,y=rel_value,colour=interaction(habitat,nucleic_acid)))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Caulobacter")+
+	scale_colour_manual(values=palette1)
+	
+Cupriavidus_plot<-subset(film_water_rel,variable == "Cupriavidus_Burkholderiaceae_Burkholderiales_Betaproteobacteria_Proteobacteria")
+gg_Cupriavidus_plot<-ggplot(Cupriavidus_plot)
+gg_Cupriavidus_plot+
+	geom_point(aes(x=days,y=rel_value,colour=interaction(habitat,nucleic_acid)))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Cupriavidus")+
+	scale_colour_manual(values=palette1)
+
+
+Gallaecimonas_plot<-subset(film_water_rel,variable == "Gallaecimonas_Unknown.Family_Gammaproteobacteria.Incertae.Sedis_Gammaproteobacteria_Proteobacteria")
+gg_Gallaecimonas_plot<-ggplot(Gallaecimonas_plot)
+gg_Gallaecimonas_plot+
+	geom_point(aes(x=days,y=rel_value,colour=interaction(habitat,nucleic_acid)))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Gallaecimonas")+
+	scale_colour_manual(values=palette1)
+
+Hydrogenophaga_plot<-subset(film_water_rel,variable == "Hydrogenophaga_Comamonadaceae_Burkholderiales_Betaproteobacteria_Proteobacteria")
+gg_Hydrogenophaga_plot<-ggplot(Hydrogenophaga_plot)
+gg_Hydrogenophaga_plot+
+	geom_point(aes(x=days,y=rel_value,colour=interaction(habitat,nucleic_acid)))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Hydrogenophaga")+
+	scale_colour_manual(values=palette1)
+
+hypho_plot<-subset(film_water_rel,variable == "Hyphomonas_Hyphomonadaceae_Caulobacterales_Alphaproteobacteria_Proteobacteria")
+gg_hypho_plot<-ggplot(hypho_plot)
+gg_hypho_plot+
+	geom_point(aes(x=days,y=rel_value,colour=interaction(habitat,nucleic_acid)))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Hyphomonas")+
+	scale_colour_manual(values=palette1)
+
+Idiomarina_plot<-subset(film_water_rel,variable == "Idiomarina_Idiomarinaceae_Alteromonadales_Gammaproteobacteria_Proteobacteria")
+gg_Idiomarina_plot<-ggplot(Idiomarina_plot)
+gg_Idiomarina_plot+
+	geom_point(aes(x=days,y=rel_value,colour=interaction(habitat,nucleic_acid)))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Idiomarina")+
+	scale_colour_manual(values=palette1)
+
+Massilia_plot<-subset(film_water_rel,variable == "Massilia_Oxalobacteraceae_Burkholderiales_Betaproteobacteria_Proteobacteria")
+gg_Massilia_plot<-ggplot(Massilia_plot)
+gg_Massilia_plot+
+	geom_point(aes(x=days,y=rel_value,colour=interaction(habitat,nucleic_acid)))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Massilia")+
+	scale_colour_manual(values=palette1)
+
+Mesorhizobium_plot<-subset(film_water_rel,variable == "Mesorhizobium_Phyllobacteriaceae_Rhizobiales_Alphaproteobacteria_Proteobacteria")
+gg_Mesorhizobium_plot<-ggplot(Mesorhizobium_plot)
+gg_Mesorhizobium_plot+
+	geom_point(aes(x=days,y=rel_value,colour=interaction(habitat,nucleic_acid)))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Mesorhizobium")+
+	scale_colour_manual(values=palette1)
+
+Methylotenera_plot<-subset(film_water_rel,variable == "Methylotenera_Methylophilaceae_Methylophilales_Betaproteobacteria_Proteobacteria")
+gg_Methylotenera_plot<-ggplot(Methylotenera_plot)
+gg_Methylotenera_plot+
+	geom_point(aes(x=days,y=rel_value,colour=interaction(habitat,nucleic_acid)))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Methylotenera")+
+	scale_colour_manual(values=palette1)
+
+Oceanisphaera_plot<-subset(film_water_rel,variable == "Oceanisphaera_Aeromonadaceae_Aeromonadales_Gammaproteobacteria_Proteobacteria")
+gg_Oceanisphaera_plot<-ggplot(Oceanisphaera_plot)
+gg_Oceanisphaera_plot+
+	geom_point(aes(x=days,y=rel_value,colour=interaction(habitat,nucleic_acid)))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Oceanisphaera")+
+	scale_colour_manual(values=palette1)
+
+Parvibaculum_plot<-subset(film_water_rel,variable == "Parvibaculum_Rhodobiaceae_Rhizobiales_Alphaproteobacteria_Proteobacteria")
+gg_Parvibaculum_plot<-ggplot(Parvibaculum_plot)
+gg_Parvibaculum_plot+
+	geom_point(aes(x=days,y=rel_value,colour=interaction(habitat,nucleic_acid)))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Parvibaculum")+
+	scale_colour_manual(values=palette1)
+
+Pseudoalteromonas_plot<-subset(film_water_rel,variable == "Pseudoalteromonas_Pseudoalteromonadaceae_Alteromonadales_Gammaproteobacteria_Proteobacteria")
+gg_Pseudoalteromonas_plot<-ggplot(Pseudoalteromonas_plot)
+gg_Pseudoalteromonas_plot+
+	geom_point(aes(x=days,y=rel_value,colour=interaction(habitat,nucleic_acid)))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Pseudoalteromonas")+
+	scale_colour_manual(values=palette1)
+
+Pseudolabrys_plot<-subset(film_water_rel,variable == "Pseudolabrys_Xanthobacteraceae_Rhizobiales_Alphaproteobacteria_Proteobacteria")
+gg_Pseudolabrys_plot<-ggplot(Pseudolabrys_plot)
+gg_Pseudolabrys_plot+
+	geom_point(aes(x=days,y=rel_value,colour=interaction(habitat,nucleic_acid)))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Pseudolabrys")+
+	scale_colour_manual(values=palette1)
+
+Rhizobium_plot<-subset(film_water_rel,variable == "Rhizobium_Rhizobiaceae_Rhizobiales_Alphaproteobacteria_Proteobacteria")
+gg_Rhizobium_plot<-ggplot(Rhizobium_plot)
+gg_Rhizobium_plot+
+	geom_point(aes(x=days,y=rel_value,colour=interaction(habitat,nucleic_acid)))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Rhizobium")+
+	scale_colour_manual(values=palette1)
+
+Rhodobacter_plot<-subset(film_water_rel,variable == "Rhodobacter_Rhodobacteraceae_Rhodobacterales_Alphaproteobacteria_Proteobacteria")
+gg_Rhodobacter_plot<-ggplot(Rhodobacter_plot)
+gg_Rhodobacter_plot+
+	geom_point(aes(x=days,y=rel_value,colour=interaction(habitat,nucleic_acid)))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Rhodobacter")+
+	scale_colour_manual(values=palette1)
+
+Sphingorhabdus_plot<-subset(film_water_rel,variable == "Sphingorhabdus_Sphingomonadaceae_Sphingomonadales_Alphaproteobacteria_Proteobacteria")
+gg_Sphingorhabdus_plot<-ggplot(Sphingorhabdus_plot)
+gg_Sphingorhabdus_plot+
+	geom_point(aes(x=days,y=rel_value,colour=interaction(habitat,nucleic_acid)))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Sphingorhabdus")+
+	scale_colour_manual(values=palette1)
+
+Terrimonas_plot<-subset(film_water_rel,variable == "Terrimonas_Chitinophagaceae_Sphingobacteriales_Sphingobacteriia_Bacteroidetes")
+gg_Terrimonas_plot<-ggplot(Terrimonas_plot)
+gg_Terrimonas_plot+
+	geom_point(aes(x=days,y=rel_value,colour=interaction(habitat,nucleic_acid)))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Terrimonas")+
+	scale_colour_manual(values=palette1)
+
+
+Thalassobaculum_plot<-subset(film_water_rel,variable == "Thalassobaculum_Rhodospirillaceae_Rhodospirillales_Alphaproteobacteria_Proteobacteria")
+gg_Thalassobaculum_plot<-ggplot(Thalassobaculum_plot)
+gg_Thalassobaculum_plot+
+	geom_point(aes(x=days,y=rel_value,colour=interaction(habitat,nucleic_acid)))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Thalassobaculum")+
+	scale_colour_manual(values=palette1)
+
+uncultured_Rhodobacteraceae_plot<-subset(film_water_rel,variable == "uncultured_Rhodobacteraceae_Rhodobacterales_Alphaproteobacteria_Proteobacteria")
+gg_uncultured_Rhodobacteraceae_plot<-ggplot(uncultured_Rhodobacteraceae_plot)
+gg_uncultured_Rhodobacteraceae_plot+
+	scale_y_continuous(limits = c(0, 5.5))+
+	geom_point(aes(x=days,y=rel_value,colour=interaction(habitat,nucleic_acid)))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("uncultured_Rhodobacteraceae")+
+	scale_colour_manual(values=palette1)
+
+uncultured_Rhodospirillaceae_plot<-subset(film_water_rel,variable == "uncultured_Rhodospirillaceae_Rhodospirillales_Alphaproteobacteria_Proteobacteria")
+gg_uncultured_Rhodospirillaceae_plot<-ggplot(uncultured_Rhodospirillaceae_plot)
+gg_uncultured_Rhodospirillaceae_plot+
+	geom_point(aes(x=days,y=rel_value,colour=interaction(habitat,nucleic_acid)))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("uncultured_Rhodospirillaceae")+
+	scale_colour_manual(values=palette1)
+
+uncultured__plot<-subset(film_water_rel,variable == "uncultured_Caulobacteraceae_Caulobacterales_Alphaproteobacteria_Proteobacteria")
+gg_uncultured_Caulobacteraceae_plot<-ggplot(uncultured_Caulobacteraceae_plot)
+gg_uncultured_Caulobacteraceae_plot+
+	geom_point(aes(x=days,y=rel_value,colour=interaction(habitat,nucleic_acid)))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("uncultured_Caulobacteraceae")+
+	scale_colour_manual(values=palette1)
+
+uncultured_Caulobacteraceae_plot<-subset(film_water_rel,variable == "uncultured_Caulobacteraceae_Caulobacterales_Alphaproteobacteria_Proteobacteria")
+gg_uncultured_Caulobacteraceae_plot<-ggplot(uncultured_Caulobacteraceae_plot)
+gg_uncultured_Caulobacteraceae_plot+
+	geom_point(aes(x=days,y=rel_value,colour=interaction(habitat,nucleic_acid)))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("uncultured_Caulobacteraceae")+
+	scale_colour_manual(values=palette1)+
+	scale_y_continuous(limits = c(0, 12.5))
+
+Variovorax_plot<-subset(film_water_rel,variable == "Variovorax_Comamonadaceae_Burkholderiales_Betaproteobacteria_Proteobacteria")
+gg_Variovorax_plot<-ggplot(Variovorax_plot)
+gg_Variovorax_plot+
+	geom_point(aes(x=days,y=rel_value,colour=interaction(habitat,nucleic_acid)))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Variovorax")+
+	scale_colour_manual(values=palette1)
+
+#highly abundant geni:
+
+Blastomonas_plot<-subset(film_water_rel,variable == "Blastomonas_Sphingomonadaceae_Sphingomonadales_Alphaproteobacteria_Proteobacteria")
+gg_Blastomonas_plot<-ggplot(Blastomonas_plot)
+gg_Blastomonas_plot+
+	geom_point(aes(x=days,y=rel_value,colour=interaction(habitat,nucleic_acid)))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Blastomonas")+
+	scale_colour_manual(values=palette1)
+
+Ferrovibrio_plot<-subset(film_water_rel,variable == "Ferrovibrio_Rhodospirillaceae_Rhodospirillales_Alphaproteobacteria_Proteobacteria")
+gg_Ferrovibrio_plot<-ggplot(Ferrovibrio_plot)
+gg_Ferrovibrio_plot+
+	geom_point(aes(x=days,y=rel_value,colour=interaction(habitat,nucleic_acid)))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Ferrovibrio")+
+	scale_colour_manual(values=palette1)
+
+
+Hoeflea_plot<-subset(film_water_rel,variable == "Hoeflea_Phyllobacteriaceae_Rhizobiales_Alphaproteobacteria_Proteobacteria")
+gg_Hoeflea_plot<-ggplot(Hoeflea_plot)
+gg_Hoeflea_plot+
+	geom_point(aes(x=days,y=rel_value,colour=interaction(habitat,nucleic_acid)))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Hoeflea")+
+	scale_colour_manual(values=palette1)
+
+Hot.Creek.32_plot<-subset(film_water_rel,variable == "X__Hot.Creek.32_Betaproteobacteria_Proteobacteria")
+gg_Hot.Creek.32_plot<-ggplot(Hot.Creek.32_plot)
+gg_Hot.Creek.32_plot+
+	geom_point(aes(x=days,y=rel_value,colour=interaction(habitat,nucleic_acid)))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Hot.Creek.32")+
+	scale_colour_manual(values=palette1)
+
+Pseudomonas_plot<-subset(film_water_rel,variable == "Pseudomonas_Pseudomonadaceae_Pseudomonadales_Gammaproteobacteria_Proteobacteria")
+gg_Pseudomonas_plot<-ggplot(Pseudomonas_plot)
+gg_Pseudomonas_plot+
+	geom_point(aes(x=days,y=rel_value,colour=interaction(habitat,nucleic_acid)))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Pseudomonas")+
+	scale_colour_manual(values=palette1)

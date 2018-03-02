@@ -1,0 +1,24 @@
+######single data series
+
+
+goi<-expression(paste(,italic("phnM")," metagenomic read distribution in water column"))
+phnM_iso_2<-ggplot(molten_phnM_gene_isoforms, aes(x=day))+
+	geom_vline(aes(xintercept=70.5),linetype="dashed", size=0.8)+
+	geom_bar(width=1.5,stat="identity",data=phnM_contigs_plot,aes(x=day+0.75, y=unique_contigs,colour="n(contigs)"),fill="grey1")+
+	geom_bar(width=1.5,stat="identity",position="stack",  data=subset(molten_phnM_gene_isoforms, variable != "unique_gene_isoforms"),fill="grey3", aes (y=value,x=day-0.75,colour="phnM_stacked"),alpha=.5)+
+	geom_point(data=more_cell_counts, aes(y=cells_ml*cellfactor/100000000,colour="cell counts"),fill="grey2",shape=21,size=3,alpha=1)+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle(goi)+
+	scale_fill_discrete(name = "gene isoforms")+
+	scale_colour_discrete(name = "data series")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	theme(plot.title = element_text(size=18,face="bold",hjust = 0.5))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0,vjust=0.5))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	xlab("days")+
+	ylab("read counts\nper million")
+phnM_iso_2
+ggsave(file="phnM_2.jpg", width=14, height=8)

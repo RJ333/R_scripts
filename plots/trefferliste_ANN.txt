@@ -1,0 +1,23 @@
+X437	Parvibaculum x
+X256	Dokdonella x
+X496	Reyranella x
+X29		B38 x
+X345	Loktanella x
+X215	Caulobacter x
+X157	Aminobacter x
+X397	Nesiotobacter x
+X311	Idiomarina x
+
+#gene zu testen
+htx nicht gefunden!
+phoBR beide vorhanden, phoB ein bisschen wie phnM, abundanz unauffällig
+glyA nix auffälliges
+purU nix auffälliges
+souR gar nicht gefunden, passt zu monomeric soxa
+gfnR gar nich gefunden
+gbdR gar nich gefunden
+fdhA kaum contigs, kaum reads
+kein phnO vorhanden!
+
+was für bakterium brauche ich? von 1 phnM zu 2 phnM, ohne phnO, duplikate bringen nix, aber phnM müssen nicht auf einem contig liegen
+wir können nicht sagen, ob sich die gleichen contigs hinter der anzahl verbergen: alle contigs mit phnM einzeln darstellen? 79 contigs mit 84 x phnM

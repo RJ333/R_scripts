@@ -1,0 +1,95 @@
+#normalising data for vizualisation (different methods)
+rld_gly_dw <- rlog(dds_glyph_dna_water, blind=FALSE)
+rld_gly_cw <- rlog(dds_glyph_cdna_water, blind=FALSE)
+rld_gly_db <- rlog(dds_glyph_dna_biofilm, blind=FALSE)
+rld_gly_cb <- rlog(dds_glyph_cdna_biofilm, blind=FALSE)
+rld_con_dw <- rlog(dds_control_dna_water, blind=FALSE)
+rld_con_cw <- rlog(dds_control_cdna_water, blind=FALSE)
+rld_con_db <- rlog(dds_control_dna_biofilm, blind=FALSE)
+rld_con_cb <- rlog(dds_control_cdna_biofilm, blind=FALSE)
+
+vsd_gly_dw<- varianceStabilizingTransformation(dds_glyph_dna_water, blind=FALSE)
+library("vsn")
+notAllZero <- (rowSums(counts(dds_glyph_dna_water))>0)
+meanSdPlot(log2(counts(dds_glyph_dna_water,normalized=TRUE)[notAllZero,] + 1))
+meanSdPlot(assay(rld_gly_dw[notAllZero,]))
+meanSdPlot(assay(vsd_gly_dw[notAllZero,]))
+#rlog und vsd sehen besser aus
+
+
+#comparing log2 and rlog against each other, rlog sieht besser aus im niedrigen bereich, wird aber auch kleiner 0
+par( mfrow = c( 1, 2 ) )
+ddsx <- estimateSizeFactors(dds_glyph_dna_water)
+plot(log2(counts(ddsx, normalized=TRUE)[,1:2] + 1),
+     pch=16, cex=0.3)
+plot(assay(rld_gly_dw)[,1:2],
+     pch=16, cex=0.3)
+	 
+	 
+	 
+	 
+#distance matrix (dist hat kein bray curtis)	 
+library(vegan)
+sampleDists_gly_dw<-vegdist(t(assay(rld_gly_dw)))
+
+#distance matrix euclidean (necessary for heatmap)
+sampleDists_gly_dw2<-dist(t(assay(rld_gly_dw)))
+
+library("pheatmap")
+library("RColorBrewer")
+
+sampleDist_gly_dw_Matrix2 <- as.matrix( sampleDists_gly_dw2 )
+rownames(sampleDist_gly_dw_Matrix2) <- paste( rld_gly_dw$days )
+colnames(sampleDist_gly_dw_Matrix2) <- NULL
+colors <- colorRampPalette( rev(brewer.pal(9, "Blues")) )(255)
+pheatmap(sampleDist_gly_dw_Matrix2,
+         clustering_distance_rows=sampleDist_gly_dw_Matrix2,
+         clustering_distance_cols=sampleDist_gly_dw_Matrix2,
+         col=colors)
+		 
+#funktioniert nicht (pca braucht euklid)
+
+#diesmal poissondistance ausprobieren
+library("PoiClaClu")
+poisd <- PoissonDistance(t(counts(dds_glyph_dna_water)))
+
+#We plot the heatmap in a Figure below.
+
+samplePoisDistMatrix <- as.matrix( poisd$dd )
+rownames(samplePoisDistMatrix) <- paste( rld_gly_dw$time )
+colnames(samplePoisDistMatrix) <- NULL
+pheatmap(samplePoisDistMatrix,
+         clustering_distance_rows=poisd$dd,
+         clustering_distance_cols=poisd$dd,
+         col=colors)
+#sagt nich viel aus, ziemlcih voll --> effekt nicht bei vielen, sondern bei wenigen spezifischen?
+
+#pca
+plotPCA(rld_gly_dw, intgroup = "days")
+plotPCA(rld_gly_cw, intgroup = "days")
+plotPCA(rld_gly_db, intgroup = "days")
+plotPCA(rld_gly_cb, intgroup = "days")
+plotPCA(rld_con_dw, intgroup = "days")
+plotPCA(rld_con_cw, intgroup = "days")
+plotPCA(rld_con_db, intgroup = "days")
+plotPCA(rld_con_cb, intgroup = "days")
+
+#NMDS euclid
+mdsData_gly_dw <- data.frame(cmdscale(sampleDist_gly_dw_Matrix2))
+mds_gly_dw <- cbind(mdsData_gly_dw, as.data.frame(colData(rld_gly_dw)))
+ggplot(mds_gly_dw, aes(X1,X2,color=days,shape=treatment)) + geom_point(size=3) +
+  coord_fixed()
+
+#NMDS poisson
+mdsPoisData <- data.frame(cmdscale(samplePoisDistMatrix))
+mdsPois <- cbind(mdsPoisData, as.data.frame(colData(dds_glyph_dna_water)))
+ggplot(mdsPois, aes(X1,X2,color=days,shape=treatment)) + geom_point(size=3) +
+  coord_fixed()
+
+
+nmds_glyph_dna_1<-metaMDS(rld_gly_dw,autotransform=FALSE,k=2,try=70,maxtry=100)
+#extract data from test
+names(nmds_glyph_dna_1)
+nmds_glyph_dna_coord<-as.data.frame(nmds_glyph_dna_1$points)
+row.names(nmds_glyph_dna_coord)<-row.names(cast_glyph_dna)
+plot(nmds_glyph_dna_coord)

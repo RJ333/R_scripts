@@ -1,0 +1,14 @@
+most_abundant in excel selected by sum rel abu > 30
+most_abu<-read.csv(file.choose(),sep=";",row.names=1)
+merge with meta data
+most_abu_with_meta<-merge(most_abu, meta_data_tnt10,by="row.names",all.x=TRUE)
+head(most_abu_with_meta)
+row.names(most_abu_with_meta)<-most_abu_with_meta$sample_name
+head(most_abu_with_meta)
+names(most_abu_with_meta)
+most_abu_with_meta<-most_abu_with_meta[,(-1)]
+names(most_abu_with_meta)
+most_abu_with_meta<-most_abu_with_meta[,(-57)]
+names(most_abu_with_meta)
+head(most_abu_with_meta)
+write.csv(most_abu_with_meta,file="most_abu_with_meta.csv")

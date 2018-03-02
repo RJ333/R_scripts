@@ -1,0 +1,177 @@
+otutabelle mit reads pro taxonomielevel (zB. merged_dna_sub)
+
+http://r4stats.com/examples/graphics-ggplot2/
+ggplot(mydata100, aes(pretest, posttest) ) +
+geom_point() + geom_smooth(method=lm)
+
+#notwendige packages
+library(plyr)
+library(reshape)
+library(ggplot2)
+
+#anzahl der einträge checken
+merged_dna_sub(row.names)
+levels(merged_cdna_sub$?)
+
+#gewählte taxonomische ebene extrahieren (für row.names(wholetax) evtl. neue spalte anfügen)
+merged_dna_sub$wholetax<-tax_dna$wholetax
+dna_reads_otu_new<-ddply(merged_dna_sub, "wholetax", numcolwise(sum))
+tdna_reads_otu_new<-t(dna_reads_otu_new)
+write.csv(tdna_reads_otu_new,file="tdna_reads_otu_new.csv")
+#zeilen/spalten/row.names korrigieren bei meta_dna und tdna_reads_otu_new
+tdna_reads_otu_new<-read.csv(file.choose(),sep=";",header=TRUE,row.names=1)
+
+
+#mit metadaten verknüpfen
+meta_dna<-read.csv(file.choose(),sep=";",row.names=1)
+meta_otu_dna_new<-merge(meta_dna,tdna_reads_otu_new,by="row.names",all.y=TRUE)
+row.names(meta_otu_dna_new)<-meta_otu_dna_new$Row.names
+meta_otu_dna_new<-meta_otu_dna_new[,-1]
+
+(#in excel überschriften korrigieren, 1.spalte löschen, (sample_id löschen), komma zu punkt) falls notwendig
+merged_otu_cdna_absolute<-read.csv(file.choose(),sep=";")
+
+#finale vorbereitung zum plotten
+melted_dna_otu_new<-melt(meta_otu_dna_new, id=c("days","time","treatment","parallel","nucleic_acid","habitat"))
+final_dna_otu_mean_new<-aggregate(value~variable+time+treatment, data = melted_dna_otu_new, mean)
+final_dna_otu_sum_new<-aggregate(value~variable+time+treatment, data = melted_dna_otu_new, sum)
+
+
+barplot_dna_water_otu_sum_new<-ggplot(final_dna_otu_sum_new, aes(x = "", y = value, fill=variable))+		
+	facet_wrap( ~treatment*time,nrow=2,ncol=16)+				
+	geom_bar(width = 1, stat = "identity")+theme(legend.position='none')
+pieplot_dna_water_otu_sum_new<- barplot_dna_water_otu_sum_new + coord_polar("y", start=0)+theme(legend.position='none')
+
+barplot_dna_water_otu_mean_new<-ggplot(final_dna_otu_mean_new, aes(x = "", y = value, fill=variable))+		
+	facet_wrap( ~treatment*time,nrow=2,ncol=16)+				
+	geom_bar(width = 1, stat = "identity")+theme(legend.position='none')+theme(legend.position='none')
+pieplot_dna_water_otu_mean_new<-barplot_dna_water_otu_mean_new + coord_polar("y", start=0)+theme(legend.position='none')
+
+#größenauswahl
+plot <- ggplot([which(df$prop>0),]
+barplot_test2<-ggplot(final_order_absolute_mean[which(final_order_absolute_mean$value>50),], aes(x = "", y = value, fill=variable))+
+
+
+#biofilm übersichtsplot
+names(meta_otu_biofilm_0.2)
+melted_biofilm_otu<-melt(meta_otu_biofilm_0.2, id=c("days","time","treatment","parallel","nucleic_acid","habitat"))
+final_biofilm_otu_mean<-aggregate(value~variable+time+treatment+nucleic_acid, data = melted_biofilm_otu, mean)
+
+final_biofilm_dna_glyph<-aggregate(value~variable+time+treatment+nucleic_acid, data = (subset(melted_biofilm_otu,melted_biofilm_otu$treatment=="glyph"&melted_biofilm_otu$nucleic_acid=="dna")),mean)
+final_biofilm_dna_control<-aggregate(value~variable+time+treatment+nucleic_acid, data = (subset(melted_biofilm_otu,melted_biofilm_otu$treatment=="control"&melted_biofilm_otu$nucleic_acid=="dna")),mean)
+
+barplot_biofilm_dna_glyph_mean_big<-ggplot(final_biofilm_dna_glyph[which(final_biofilm_dna_glyph$value>200),], aes(x = "", y = value, fill=variable))+		
+	facet_wrap( ~time,nrow=1,ncol=8)+				
+	geom_bar(width = 1, stat = "identity")+
+	theme(legend.position='none')
+pieplot_biofilm_otu_mean<-barplot_biofilm_water_otu_mean + coord_polar("y", start=0)+theme(legend.position='none')
+
+#für biofilm dna und cdna zusammen
+
+#gewählte taxonomische ebene extrahieren (für row.names(wholetax) evtl. neue spalte anfügen)
+merged_biofilm_sub$wholetax<-tax_biofilm$wholetax
+biofilm_reads_otu_new<-ddply(merged_biofilm_sub, "wholetax", numcolwise(sum))
+tbiofilm_reads_otu_new<-t(biofilm_reads_otu_new)
+write.csv(tbiofilm_reads_otu_new,file="tbiofilm_reads_otu_new.csv")
+#zeilen/spalten/row.names korrigieren bei meta_biofilm und tbiofilm_reads_otu_new
+tbiofilm_reads_otu_new<-read.table(file.choose(),sep=";",dec=",",header=TRUE,row.names=1)
+
+
+#mit metadaten verknüpfen
+meta_biofilm<-read.csv(file.choose(),sep=";",row.names=1)
+meta_otu_biofilm<-merge(meta_biofilm,tbiofilm_reads_otu,by="row.names",all.y=TRUE)
+row.names(meta_otu_biofilm)<-meta_otu_biofilm$Row.names
+meta_otu_biofilm_new<-meta_otu_biofilm_new[,-1]
+meta_otu_biofilm<-meta_otu_biofilm_new
+
+(#in excel überschriften korrigieren, 1.spalte löschen, (sample_id löschen), komma zu punkt) falls notwendig
+merged_otu_cbiofilm_absolute<-read.csv(file.choose(),sep=";")
+
+#finale vorbereitung zum plotten
+melted_biofilm_otu<-melt(meta_otu_biofilm, id=c("days","time","treatment","parallel","nucleic_acid","habitat"))
+final_biofilm_otu_mean<-aggregate(value~variable+time+treatment+nucleic_acid+habitat, data = melted_biofilm_otu, mean)
+final_biofilm_otu_sum<-aggregate(value~variable+time+treatment+nucleic_acid+habitat, data = melted_biofilm_otu, sum)
+
+
+barplot_biofilm_otu_sum<-ggplot(final_biofilm_otu_sum, aes(x = "", y = value, fill=variable))+		
+	facet_wrap( ~treatment*nucleic_acid*time,nrow=4,ncol=8)+				
+	geom_bar(width = 1, stat = "identity")+theme(legend.position='none')
+pieplot_biofilm_otu_sum<- barplot_biofilm_water_otu_sum + coord_polar("y", start=0)+theme(legend.position='none')
+
+barplot_biofilm_otu_mean<-ggplot(final_biofilm_otu_mean, aes(x = "", y = value, fill=variable))+		
+	facet_wrap( ~treatment*nucleic_acid*time,nrow=4,ncol=8)+				
+	geom_bar(width = 1, stat = "identity")+theme(legend.position='none')
+pieplot_biofilm_otu_mean<-barplot_biofilm_water_otu_mean + coord_polar("y", start=0)+theme(legend.position='none')
+
+
+For example, to create two side-by-side plots, use mfrow=c(1, 2) and par():
+
+
+
+scale_fill_brewer(palette="Set1")	#verschiedene farbpaletten set1 only 1-9, spectral 1-11, rainbow (braucht package colorspace)
+library(ggplot2)
+
+# This example uses the ChickWeight dataset, which comes with ggplot2
+# First plot
+p1 <- ggplot(ChickWeight, aes(x=Time, y=weight, colour=Diet, group=Chick)) +
+    geom_line() +
+    ggtitle("Growth curve for individual chicks")
+
+# Second plot
+p2 <- ggplot(ChickWeight, aes(x=Time, y=weight, colour=Diet)) +
+    geom_point(alpha=.3) +
+    geom_smooth(alpha=.2, size=1) +
+    ggtitle("Fitted growth curve per diet")
+
+# Third plot
+p3 <- ggplot(subset(ChickWeight, Time==21), aes(x=weight, colour=Diet)) +
+    geom_density() +
+    ggtitle("Final weight, by diet")
+
+# Fourth plot
+p4 <- ggplot(subset(ChickWeight, Time==21), aes(x=weight, fill=Diet)) +
+    geom_histogram(colour="black", binwidth=50) +
+    facet_grid(Diet ~ .) +
+    ggtitle("Final weight, by diet") +
+    theme(legend.position="none")        # No legend (redundant in this graph)   
+
+
+
+#x axis higher resolution, sampling times?
+#y axis fixed? at least for comparison between otu...
+
+#adding cell counts and/or glyphosate to table/plot?
+glyph_water<-read.table(file.choose(),header=TRUE,row.names=1,sep=";",dec=",")
+glyph_water_plot<-ggplot(glyph_water)
+glyph_water_plot +
+	geom_point(aes(x=days,y=glyphosate_concentration_mg.l,colour=treatment)) +
+	ggtitle("glyphosate concentration [mg/L]")
+
+cell_water<-read.table(file.choose(),header=TRUE,sep=";",dec=",")
+cell_water_plot<-ggplot(cell_water)
+cell_water_plot +
+	geom_point(aes(x=days,y=cell_count_ml,colour=treatment)) +
+	ggtitle("cell counts/mL")
+	
+
+http://stackoverflow.com/questions/6142944/how-can-i-plot-with-2-different-y-axes
+http://latticeextra.r-forge.r-project.org/man/doubleYScale.html
+http://www.r-bloggers.com/multiple-y-axis-in-a-r-plot/
+http://robjhyndman.com/hyndsight/r-graph-with-two-y-axes/
+
+gg_methylo_plot_water+
+	geom_point(aes(x=days,y=value,colour=nucleic_acid))+
+	facet_wrap(~treatment,nrow=2)+
+	ggtitle("Methylotenera water column") +
+  	geom_line(aes(y=disp, color="disp")) + 
+  	geom_line(aes(y=hp, color="hp")) + 
+  	geom_line(aes(y=wt, color="wt"))
+
+#größenauswahl
+plot <- ggplot([which(df$prop>0),]
+
+barplot_test<-ggplot(final_order_absolute_mean, aes(x = "", y = value, fill=variable))+
+		
+	facet_wrap( ~treatment*time,nrow=2,ncol=16)+				
+	geom_bar(width = 1, stat = "identity")
+pieplot_dna_water_otu_sum_t0<- barplot_dna_water_otu_sum_t0 + coord_polar("y", start=0)+theme(legend.position='none')

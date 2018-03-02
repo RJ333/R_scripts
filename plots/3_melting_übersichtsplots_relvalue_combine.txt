@@ -1,0 +1,78 @@
+#notwendige packages
+
+library(reshape)
+library(ggplot2)
+
+#ausgangsdaten aus:
+
+meta_dwater_cut_0.2
+meta_cdwater_cut_0.2
+meta_biofilm_cut_0.2
+
+#gewählte taxonomische ebene in excel erstellen und einlesen
+#melten
+#rel_value zu melted hinzufügen und in value umbenennen, dazwischen value entfernen: water dna (value/26184*100) and water cdna (value/41583*100) and biofilm dna/cdna (value/46958*100)
+#für übersichtsplot aggregieren
+#water dna
+
+meta_otu_dwater_cut_0.2<-read.csv(file.choose(),sep=";",row.names=1)
+melted_otu_dwater_cut_0.2<-melt(meta_otu_dwater_cut_0.2, id=c("days","time","treatment","parallel","nucleic_acid","habitat"))
+write.csv(melted_otu_dwater_cut_0.2,file="melted_otu_dwater_cut_0.2.csv")
+melted_otu_dwater_cut_0.2_rel<-read.csv(file.choose(),sep=";",row.names=1)
+agg_otu_dwater_cut_0.2<-aggregate(value~variable+time+treatment, data = melted_otu_dwater_cut_0.2, mean) #oder _rel, aber bei übersichtsplot unwichtig
+
+#übersichtsplot
+test<-ggplot(agg_otu_dwater_cut_0.2, aes(x = "", y = value, fill=variable))+		
+	facet_wrap( ~treatment*time,nrow=2,ncol=16)+				
+	geom_bar(width = 1, stat = "identity")+theme(legend.position='none')
+	
+#water cdna
+
+meta_otu_cdwater_cut_0.2<-read.csv(file.choose(),sep=";",row.names=1)
+melted_otu_cdwater_cut_0.2<-melt(meta_otu_cdwater_cut_0.2, id=c("days","time","treatment","parallel","nucleic_acid","habitat"))
+write.csv(melted_otu_cdwater_cut_0.2,file="melted_otu_cdwater_cut_0.2.csv")
+melted_otu_cdwater_cut_0.2_rel<-read.csv(file.choose(),sep=";",row.names=1)
+agg_otu_cdwater_cut_0.2<-aggregate(value~variable+time+treatment, data = melted_otu_cdwater_cut_0.2, mean) #oder _rel, aber bei übersichtsplot unwichtig
+
+#übersichtsplot
+test<-ggplot(agg_otu_cdwater_cut_0.2, aes(x = "", y = value, fill=variable))+		
+	facet_wrap( ~treatment*time,nrow=2,ncol=16)+				
+	geom_bar(width = 1, stat = "identity")+theme(legend.position='none')
+
+
+
+#water biofilm dna/cdna
+
+meta_otu_biofilm_cut_0.2<-read.csv(file.choose(),sep=";",row.names=1)
+melted_otu_biofilm_cut_0.2<-melt(meta_otu_biofilm_cut_0.2, id=c("days","time","treatment","parallel","nucleic_acid","habitat"))
+write.csv(melted_otu_biofilm_cut_0.2,file="melted_otu_biofilm_cut_0.2.csv")
+melted_otu_biofilm_cut_0.2_rel<-read.csv(file.choose(),sep=";",row.names=1)
+agg_otu_biofilm_cut_0.2_rel<-aggregate(value~variable+time+treatment+nucleic_acid, data = melted_otu_biofilm_cut_0.2_rel, mean) #oder _rel,
+
+#übersichtsplot
+test<-ggplot(agg_otu_biofilm_cut_0.2_rel, aes(x = "", y = value, fill=variable))+		
+	facet_wrap( ~treatment~nucleic_acid*time,nrow=4,ncol=8)+				
+	geom_bar(width = 1, stat = "identity")+theme(legend.position='none')
+
+
+
+
+#combine water and biofilm dna and cdna
+
+film_water_rel_cut<-rbind(melted_otu_dwater_cut_0.2_rel,melted_otu_cdwater_cut_0.2_rel,melted_otu_biofilm_cut_0.2_rel)
+
+nrow(melted_otu_dwater_cut_0.2_rel)
+nrow(melted_otu_cdwater_cut_0.2_rel)
+nrow(melted_otu_biofilm_cut_0.2_rel)
+nrow(film_water_rel_cut)
+names(film_water_rel_cut)
+
+
+
+
+
+#größenauswahl
+plot <- ggplot([which(df$prop>0),]
+barplot_test2<-ggplot(test_agg_otu_dwater_cut_0.2[which(test_agg_otu_dwater_cut_0.2$value>50),], aes(x = "", y = value, fill=variable))+
+	facet_wrap( ~treatment*time,nrow=2,ncol=16)+				
+	geom_bar(width = 1, stat = "identity")+theme(legend.position='none')

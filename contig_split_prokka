@@ -1,0 +1,108 @@
+"
+k141_65859	Prodigal:2.6	CDS	708	1463	.	+	0	ID=PROKKA_MOD_PART1_59385;eC_number=2.3.1.-;gene=phbC_21;inference=ab initio prediction:Prodigal:2.6,similar to AA sequence:UniProtKB:P23608;locus_tag=PROKKA_MOD_PART1_59385;product=Poly-beta-hydroxybutyrate polymerase
+k141_65860	Prodigal:2.6	CDS	388	1743	.	+	0	ID=PROKKA_MOD_PART1_59386;inference=ab initio prediction:Prodigal:2.6,protein motif:Cdd:COG2010;locus_tag=PROKKA_MOD_PART1_59386;product=Cytochrome c%2C mono- and diheme variants
+k141_65860	Prodigal:2.6	CDS	1749	1979	.	+	0	ID=PROKKA_MOD_PART1_59387;inference=ab initio prediction:Prodigal:2.6;locus_tag=PROKKA_MOD_PART1_59387;product=hypothetical protein
+k141_65860	Prodigal:2.6	CDS	2022	2972	.	+	0	ID=PROKKA_MOD_PART1_59388;inference=ab initio prediction:Prodigal:2.6;locus_tag=PROKKA_MOD_PART1_59388;product=hypothetical protein
+k141_65860	Prodigal:2.6	CDS	2988	3332	.	+	0	ID=PROKKA_MOD_PART1_59389;inference=ab initio prediction:Prodigal:2.6,similar to AA sequence:UniProtKB:P00105;locus_tag=PROKKA_MOD_PART1_59389;product=Cytochrome c-554(548)
+k141_65860	Prodigal:2.6	CDS	3881	4249	.	+	0	ID=PROKKA_MOD_PART1_59390;inference=ab initio prediction:Prodigal:2.6;locus_tag=PROKKA_MOD_PART1_59390;product=hypothetical protein
+k141_65860	Prodigal:2.6	CDS	4459	5301	.	+	0	ID=PROKKA_MOD_PART1_59391;inference=ab initio prediction:Prodigal:2.6,protein motif:CLUSTERS:PRK11175;locus_tag=PROKKA_MOD_PART1_59391;product=universal stress protein UspE
+k141_65860	Prodigal:2.6	CDS	5383	6384	.	+	0	ID=PROKKA_MOD_PART1_59392;gene=yrbG_12;inference=ab initio prediction:Prodigal:2.6,similar to AA sequence:UniProtKB:P45394;locus_tag=PROKKA_MOD_PART1_59392;product=Inner membrane protein YrbG
+k141_65860	Prodigal:2.6	CDS	6395	8902	.	+	0	ID=PROKKA_MOD_PART1_59393;eC_number=3.6.3.8;gene=yloB_3;inference=ab initio prediction:Prodigal:2.6,similar to AA sequence:UniProtKB:O34431;locus_tag=PROKKA_MOD_PART1_59393;product=Calcium-transporting ATPase
+k141_65860	Prodigal:2.6	CDS	8955	10523	.	-	0	ID=PROKKA_MOD_PART1_59394;inference=ab initio prediction:Prodigal:2.6,protein motif:Cdd:COG4639;locus_tag=PROKKA_MOD_PART1_59394;product=putative kinase
+k141_65860	Prodigal:2.6	CDS	10980	11171	.	+	0	ID=PROKKA_MOD_PART1_59395;inference=ab initio prediction:Prodigal:2.6;locus_tag=PROKKA_MOD_PART1_59395;product=hypothetical protein
+k141_65860	Prodigal:2.6	CDS	11265	11474	.	-	0	ID=PROKKA_MOD_PART1_59396;inference=ab initio prediction:Prodigal:2.6;locus_tag=PROKKA_MOD_PART1_59396;product=hypothetical protein
+k141_65860	Prodigal:2.6	CDS	11869	12207	.	+	0	ID=PROKKA_MOD_PART1_59397;inference=ab initio prediction:Prodigal:2.6;locus_tag=PROKKA_MOD_PART1_59397;product=hypothetical protein
+k141_65860	Prodigal:2.6	CDS	12278	13192	.	-	0	ID=PROKKA_MOD_PART1_59398;eC_number=2.1.1.185;gene=rlmB_13;inference=ab initio prediction:Prodigal:2.6,similar to AA sequence:UniProtKB:P63177;locus_tag=PROKKA_MOD_PART1_59398;product=23S rRNA (guanosine-2'-O-)-methyltransferase RlmB
+k141_65860	Prodigal:2.6	CDS	13720	15015	.	-	0	ID=PROKKA_MOD_PART1_59399;inference=ab initio prediction:Prodigal:2.6;locus_tag=PROKKA_MOD_PART1_59399;product=hypothetical protein
+k141_65860	Prodigal:2.6	CDS	15029	15331	.	-	0	ID=PROKKA_MOD_PART1_59400;inference=ab initio prediction:Prodigal:2.6;locus_tag=PROKKA_MOD_PART1_59400;product=hypothetical protein
+k141_65860	Prodigal:2.6	CDS	15892	16197	.	-	0	ID=PROKKA_MOD_PART1_59401;inference=ab initio prediction:Prodigal:2.6,protein motif:Pfam:PF00535.20;locus_tag=PROKKA_MOD_PART1_59401;product=Glycosyl transferase family 2
+k141_65860	Prodigal:2.6	CDS	16509	17810	.	+	0	ID=PROKKA_MOD_PART1_59402;eC_number=2.4.1.250;gene=mshA_12;inference=ab initio prediction:Prodigal:2.6,similar to AA sequence:UniProtKB:Q8NTA6;locus_tag=PROKKA_MOD_PART1_59402;product=D-inositol 3-phosphate glycosyltransferase
+k141_65860	Prodigal:2.6	CDS	17847	18602	.	+	0	ID=PROKKA_MOD_PART1_59403;inference=ab initio prediction:Prodigal:2.6;locus_tag=PROKKA_MOD_PART1_59403;product=hypothetical protein
+k141_65860	Prodigal:2.6	CDS	18638	19090	.	+	0	ID=PROKKA_MOD_PART1_59404;eC_number=2.3.1.-;inference=ab initio prediction:Prodigal:2.6,similar to AA sequence:UniProtKB:Q7A3E8;locus_tag=PROKKA_MOD_PART1_59404;product=Putative acetyltransferase
+k141_65860	Prodigal:2.6	CDS	19245	20147	.	+	0	ID=PROKKA_MOD_PART1_59405;inference=ab initio prediction:Prodigal:2.6;locus_tag=PROKKA_MOD_PART1_59405;product=hypothetical protein
+"
+
+split<-read.csv(file.choose(),sep=";")
+head(split)
+prokka<-read.delim(file.choose())
+prokka<-prokka[,c(1:8)]
+
+prok_tag<-merge(split,prokka,by="contig_id",all.x=TRUE)
+write.csv(prok_tag,file="prok_tag.csv")
+
+#in excel mit SVERWEIS und intervall kürzel anhängen, dann rbind und mergen mit kallisto prokka, die contig_length == NA rausschmeißen
+
+prok_tag<-read.csv(file.choose(),sep=";",row.names=1)
+to_remove<-read.csv(file.choose(),sep=";")
+prok_tag_rm<-merge(prokka,to_remove,by="contig_id",all=TRUE)
+prok_tag_rm$tag<-as.character(prok_tag_rm$tag)
+str(prok_tag_rm)
+
+write.csv(prok_tag_rm,file="prok_tag_rm.csv") #in excel noch level "keep" zu tag hinzugefügt
+prok_tag_rm<-read.csv(file.choose(),sep=";",row.names=1)
+str(prok_tag_rm)
+prok_tag_rm2<-subset(prok_tag_rm,prok_tag_rm$tag == "keep")
+prok_tag_rm2
+
+colnames(prok_tag)[colnames(prok_tag) == 'neuer.name'] <- 'contig_id'
+prok_tag<-prok_tag[,c(1,3:9,2)]
+
+prokka_again<-rbind(prok_tag,prok_tag_rm2)
+write.csv(prokka_again,file="prokka_again.csv")
+prokka_again<-read.csv(file.choose(),sep=";",row.names=1)
+prokka
+
+#NEU!!!!!
+prokka_new<-read.csv(file.choose(),sep=";")
+prokka_new2<-merge(prokka_new,contig_length_uncut,by.x="contig_id",by.y="row.names")
+write.csv(prokka_new2,file="prokka_new2.csv")
+
+#nur anwenden bei den contigs länger als 20000 bp (in merge list split)
+merge_list_split<-read.csv(file.choose(),sep=";")
+prokka_new2<-read.csv(file.choose(),sep=";",row.names=1)
+prokka_to_split<-merge(merge_list_split,prokka_new2,by="contig_id")
+write.csv(prokka_to_split,file="prokka_to_split.csv")
+##alle prokka infos inklusive cds start und ende mit hilfe der SVERWEIS-formel den jeweiligen contig-abschnitten zurordnen --> prokka_to_split2
+#dort nur "split" contigs enthalten
+prokka_to_split2<-read.csv(file.choose(),sep=";",row.names=1)
+#entfernen der vorher gesplitteten contigs
+prokka_without_split <- prokka_new[ ! prokka_new$contig_id %in% merge_list_split$contig_id,]
+prokka_split<-prokka_to_split2[,c(1,3:9)]
+prokka_ready<-rbind(prokka_split,prokka_without_split)
+write.csv(prokka_ready,file="prokka_ready.csv")
+#in excel prokka_id und cds entfernen --> prokka_ready2
+##fertig um mit kallisto zu mergen etc
+prokka_ready2<-<-read.csv(file.choose(),sep=";",row.names=1)
+
+
+###probleme mit den letzten splitabschnitten, SVERWEIS fehlerhaft? ergibt zu hohes suffix: in excel -1 genommen, neu verrechnen
+hoch_split<-read.csv(file.choose(),sep=";")
+#merge tables
+kallisto_hoch_split<-merge(kallisto,hoch_split,by.x="row.names",by.y="contig_id",all.y=TRUE)
+kallisto_hoch_split2<-merge(kallisto_hoch_split,contig_length,by.x="Row.names",by.y="row.names",all.x=T)
+write.csv(kallisto_hoch_split2,file="kallisto_hoch_split2.csv")
+
+#####################enlarging table
+
+head(kallisto_hoch_split2)
+kallisto_hoch_split_concoct1<-merge(kallisto_hoch_split2,bins_1000,by.x="Row.names",by.y="row.names",all.x=T)
+head(kallisto_hoch_split_concoct1)
+
+#adding bowtie2  information
+bowtie2_cov<-read.delim(file.choose(),header=TRUE)
+kallisto_bowtie2_hoch_split_concoct<-merge(kallisto_hoch_split_concoct1,bowtie2_cov,by.x="Row.names",by.y="contig",all.x=T)
+head(kallisto_bowtie2_hoch_split_concoct)
+
+#adding metaxa
+metaxa<-read.csv(file.choose(),sep=";")
+kallisto_bowtie2_hoch_split_concoct_metaxa<-merge(kallisto_bowtie2_hoch_split_concoct,metaxa,by.x="Row.names",by.y="contig_id",all.x=T)
+
+
+#include checkm (only tax, completeness, contamination) lost a1_est_counts here
+checkm<-read.csv(file.choose(),sep=";")
+kallisto_bowtie2_hoch_split_concoct_metaxa_checkm<-merge(kallisto_bowtie2_hoch_split_concoct_metaxa,checkm,by="bin_gt1000",all.x=T)
+write.csv(kallisto_bowtie2_hoch_split_concoct_metaxa_checkm,file="kallisto_bowtie2_hoch_split_concoct_metaxa_checkm.csv")
+#rearrange columns in excel, A1_est counts is missing
+#redid merging, sorting of columns, removed "bins_nocutup" due to missing extra information
+#some extra long contigs with taxonomy tags by metaxa where not correctly merged, I added the contig length and bin information manually
+kallisto_hoch_split_concoct2_metaxa_checkm<-read.csv(file.choose(),sep=";",row.names=1)

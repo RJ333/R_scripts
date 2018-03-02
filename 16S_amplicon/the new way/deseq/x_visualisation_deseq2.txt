@@ -1,0 +1,64 @@
+#Visualisierungen
+#A quick way to visualize the counts for a particular gene is to use the plotCounts function that takes as arguments the DESeqDataSet, a gene name, and the group over which to plot the counts (Figure below).
+
+topGene <- rownames(otuSig8)[which.min(otuSig8$padj)]
+rownames(otuSig5)
+otuSig5[14,]
+#pseudolabrys hat einen pvalue von 0
+
+plotCounts(dds_glyph_dna_water, gene=topGene, intgroup=c("time")) #wegen relevel steht zeitpunkt 6 am beginn
+plotCounts(dds_glyph_dna_water, gene=topGene, intgroup=c("days")) #hier stimmt die reihenfolge
+plotCounts(dds_glyph_dna_water, gene=topG, intgroup=c("parallel"))
+
+library(ggplot2)
+data <- plotCounts(dds_glyph_dna_water, gene=topGene, intgroup=c("days","parallel"), returnData=TRUE)
+ggplot(data, aes(x=days, y=count, color=parallel)) +
+  scale_y_log10() + 
+  geom_point(position=position_jitter(width=.1,height=0), size=3)
+
+#plotting overview of log field change depending on mean of normalized counts
+plotMA_otuSig7<-plotMA(otuSig7, main="DESeq2", ylim=c(-10,10))# and these ones too, one for each, they should look sort of symetrhical
+plotMA_otuSig7<-plotMA(otuSig7, main="DESeq2", ylim=c(-10,10))
+
+#from here are you only need to do things once, these are general values for the whole test
+#was is das?
+beta_control_dna_water <- coef(dds_control_dna_water)
+#die otus passen nicht zu den werten (werden aus zwei verschiedenen dateien extrahiert)!!
+#liste der positionen der wichtigsten otus
+otu_for_Heatmap
+topOtus_37<-head(order(otuSig4$padj),37)
+heatmap_control_dw_37<-beta_control_dna_water[topOtus_37, -c(1)]
+library(pheatmap)
+pheatmap(heatmap_control_dw_37,cluster_col=FALSE)
+
+
+#from here are you only need to do things once, these are general values for the whole test
+#was is das?
+beta_control_cdna_water <- coef(dds_control_cdna_water)
+#die otus passen nicht zu den werten (werden aus zwei verschiedenen dateien extrahiert)!!
+#liste der positionen der wichtigsten otus
+topOtus_37<-head(order(otuSig4$padj),37)
+heatmap_control_cw_37<-beta_control_cdna_water[topOtus_37, -c(1)]
+library(pheatmap)
+pheatmap(heatmap_control_cw_37,cluster_col=FALSE)
+
+
+
+
+beta_control_cdna_biofilm <- coef(dds_control_cdna_biofilm)
+#die otus passen nicht zu den werten (werden aus zwei verschiedenen dateien extrahiert)!!
+#liste der positionen der wichtigsten otus
+topOtus_37<-head(order(otuSig5$padj),37)
+heatmap_control_cb_37<-beta_control_cdna_biofilm[topOtus_37, -c(1)]
+library(pheatmap)
+pheatmap(heatmap_control_cb_37,cluster_col=FALSE)
+
+
+
+beta_control_dna_biofilm <- coef(dds_control_dna_biofilm)
+#die otus passen nicht zu den werten (werden aus zwei verschiedenen dateien extrahiert)!!
+#liste der positionen der wichtigsten otus
+topOtus_37<-head(order(otuSig5$padj),37)
+heatmap_control_db_37<-beta_control_dna_biofilm[topOtus_37, -c(1)]
+library(pheatmap)
+pheatmap(heatmap_control_db_37,cluster_col=FALSE)

@@ -1,0 +1,46 @@
+##otu_table preparation in excel
+#set excel decimal marker to "." instead of ","
+#open in the silva NGS results archive the csv-file "taxbreakdown..." with excel
+#split column into separated columns using "data-->text into columns" and the appropriate separators (tab, semicolon, underscore), insert enough free columns after first column
+#there should be several read count columns in the beginning, then sample name and path with all taxonomic layers
+#clean up the otu table
+#from the read counts we only leave the "total number" and rename it as total_seqremove
+#we delete the header "path" and name all taxonomic layers (domain, order etc).
+#we also keep one column with the full path connected via "_" and call this "wholetax"
+#mark whole table, sort bei domain and remove non-relatives 
+#we can adjust sample name: extra column, =Teil(cell;startcharacter;numberofcharacters) or with STRG + H
+#we make all "1" in the total_seq column to "0" (STRG  H), then sort "total_seq" by number and delete all rows with "0". Why? If you have only 1 read for an OTU it might be due to PCR/Sequencing errors, whereas it is not likely to get 2 reads = 2 times the exact same error
+#sample_names not starting with number
+#save under extra name as *.csv (csv only contain the first spreadsheet!!)
+
+#note: it is possible, that excel interpretes otu names as dates, which is almost not to prevent. that's why some otu's are called "10. May" and so on
+
+##R preparation:
+
+#once: download and install required packages: vegan, reshape2, DESeq2, ggplot2
+
+#at every start: choose working folder, where exported files and the workspace is saved
+#load workspace 
+
+#first step in R:  read prepared otu_table from the silvaNGS-Pipeline into R
+#open R
+#set working folder
+#load workspace
+#download packages: vegan, ggplot2, reshape2
+
+#file from the old cutted times..."cut_all"
+
+#now we have all packages we need and know where our saved files and the workspace will be stored
+
+
+#read in data into "otu_table" with following parameters: semicolon as value separator, columns have names, 1. excel column contains R row names
+
+#using cut_all with the 4 later sequenced water dna samples as input
+#all singletons were removed
+
+otu_table<-read.csv(file.choose(),sep=",",row.names=1)					#generates "otu_table" and reads our table into it
+otu_table 				#displays the object																								
+head(otu_table,6)		#shows first 6 lines of object (also by default), other amount can be set																					#show the top 6 lines (compare "tail")
+names(otu_table)		#shows the names of the columns	("headers")
+str(otu_table)			#shows the structure of the whole object with all values and columns																			#show the structure of "otu_table"
+levels(otu_table$sample_name) #shows the different values of the column "sample_name" of "otu_table", we adress columns via "$"

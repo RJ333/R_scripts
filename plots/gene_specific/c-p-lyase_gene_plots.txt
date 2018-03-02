@@ -1,0 +1,108 @@
+##creating phn-operon subsets
+#2-aep-specific: phnW and phnX
+#unspecific ABC-transporter: phnCDE
+#unspecific C-P Lyase: phnGHIJKLM 
+#P-independent phosphonopyruvate hydrolase: pphA
+
+##phnWX
+phnXW_plot<-subset(merged_cpl_genes, grepl("phnX|phnW", genes))
+phnXW_plot<-phnXW_plot[order(phnXW_plot[,4]),]
+nrow(phnXW_plot)
+
+xphnXW_genes_bar<-ggplot(phnXW_plot, aes(x = day, y = value, fill=genes))+				
+	geom_bar(width = 1.7, stat = "identity")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	geom_text(data=subset(phnXW_plot, value > 3),aes(label=contig_id),size=rel(2.7), position = position_stack(vjust = .5))+
+	#geom_label_repel(data=subset(phnXW_plot, value > 1),position="stack",min.segment.length = unit(0.1, "lines"),aes(label=genes,size=1.4))+
+	ggtitle("phnXW_genes")+
+	theme(plot.title = element_text(size=18,face="bold"))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	geom_vline(aes(xintercept=70),linetype="dashed", size=1.2)+
+	xlab("day")+
+	ylab("rpm")+
+	geom_point(aes(y=cells_ml/1000000),size=3,alpha=0.4)+
+	facet_wrap( ~treatment,nrow=2)
+xphnXW_genes_bar
+ ggsave(file="phnXW_genes.jpg", width=14, height=8)
+ 
+ 
+##phnCDE (nur C gefunden)
+phnCDE_plot<-subset(merged_cpl_genes, grepl("phnC|phnE|phnD", genes))
+phnCDE_plot<-phnCDE_plot[order(phnCDE_plot[,4]),]
+nrow(phnCDE_plot)
+
+xphnCDE_genes_bar<-ggplot(phnCDE_plot, aes(x = day, y = value, fill=genes))+				
+	geom_bar(width = 1.7, stat = "identity")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	geom_text(data=subset(phnCDE_plot, value > 3),aes(label=contig_id),size=rel(2.7), position = position_stack(vjust = .5))+
+	#geom_label_repel(data=subset(phnCDE_plot, value > 1),position="stack",min.segment.length = unit(0.1, "lines"),aes(label=genes,size=1.4))+
+	ggtitle("phnCDE_genes")+
+	theme(plot.title = element_text(size=18,face="bold"))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	geom_vline(aes(xintercept=70),linetype="dashed", size=1.2)+
+	xlab("day")+
+	ylab("rpm")+
+	geom_point(aes(y=cells_ml/1000000),size=3,alpha=0.4)+
+	facet_wrap( ~treatment,nrow=2)
+xphnCDE_genes_bar
+ ggsave(file="phnCDE_genes.jpg", width=14, height=8)
+ 
+ 
+##phnGHIJKLM 
+phnGHIJKLM_plot<-subset(merged_cpl_genes, grepl("phnG|phnH|phnI|phnJ|phnK|phnL|phnM", genes))
+phnGHIJKLM_plot<-phnGHIJKLM_plot[order(phnGHIJKLM_plot[,4]),]
+nrow(phnGHIJKLM_plot)
+
+xphnGHIJKLM_genes_bar<-ggplot(phnGHIJKLM_plot, aes(x = day, y = value, fill=genes))+				
+	geom_bar(width = 1.7, stat = "identity")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	geom_text(data=subset(phnGHIJKLM_plot, value > 5),aes(label=contig_id),size=rel(2.7), position = position_stack())+
+	#geom_label_repel(data=subset(phnGHIJKLM_plot, value > 1),position="stack",min.segment.length = unit(0.1, "lines"),aes(label=genes,size=1.4))+
+	ggtitle("phnGHIJKLM_genes")+
+	theme(plot.title = element_text(size=18,face="bold"))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	geom_vline(aes(xintercept=70),linetype="dashed", size=1.2)+
+	xlab("day")+
+	ylab("rpm")+
+	geom_point(aes(y=cells_ml/200000),size=3,alpha=0.4)+
+	facet_wrap( ~treatment,nrow=2)
+xphnGHIJKLM_genes_bar
+ ggsave(file="phnGHIJKLM_genes.jpg", width=14, height=8)
+ 
+ 
+##pphA
+pphA_plot<-subset(merged_cpl_genes, grepl("pphA", genes))
+pphA_plot<-pphA_plot[order(pphA_plot[,4]),]
+nrow(pphA_plot)
+
+xpphA_genes_bar<-ggplot(pphA_plot, aes(x = day, y = value, fill=genes))+				
+	geom_bar(width = 1.7, stat = "identity")+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	geom_text(data=subset(pphA_plot, value > 1),aes(label=contig_id),size=rel(2.7), position = position_stack(vjust = 0.5))+
+	#geom_label_repel(data=subset(pphA_plot, value > 1),position="stack",min.segment.length = unit(0.1, "lines"),aes(label=genes,size=1.4))+
+	ggtitle("pphA_genes")+
+	theme(plot.title = element_text(size=18,face="bold"))+
+	theme(axis.title = element_text(size=12,face="bold"))+
+	theme(axis.title.y = element_text(angle=0))+
+	theme(axis.text=element_text(size=12))+
+	theme(legend.title=element_text(size=13,face="bold"))+
+	theme(legend.text=element_text(size=11))+
+	geom_vline(aes(xintercept=70),linetype="dashed", size=1.2)+
+	xlab("day")+
+	ylab("rpm")+
+	geom_point(aes(y=cells_ml/1000000),size=3,alpha=0.4)+
+	facet_wrap( ~treatment,nrow=2)
+xpphA_genes_bar
+ ggsave(file="pphA_genes.jpg", width=14, height=8)

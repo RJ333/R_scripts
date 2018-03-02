@@ -1,0 +1,86 @@
+#######################ALL WATER_DNA
+
+#####################NMDS mit Bray Curtis als Distanzmaß
+all_tnorm_meta_numbercode<-read.csv(file.choose(),sep=";",row.names=1)
+head(all_tnorm_meta_numbercode)
+names(all_tnorm_meta_numbercode)
+water_dna_subset<-subset(all_tnorm_meta_numbercode,all_tnorm_meta_numbercode$habitat=="water"&all_tnorm_meta_numbercode$nucleic_acid=="dna")
+head(water_dna_subset)
+names(water_dna_subset)
+
+
+#zero counts entfernen
+#meta daten entfernen
+water_dna_subset2<-water_dna_subset[,9:695]
+separation<-colSums(water_dna_subset2)!=0
+water_dna_subset_nonzero<-water_dna_subset2[,separation]
+ncol(water_dna_subset2)
+ncol(water_dna_subset_nonzero)
+names(water_dna_subset_nonzero)
+head(water_dna_subset_nonzero)
+
+
+#####
+test<-colSums(water_dna_subset_nonzero)
+test<-as.data.frame(test)
+test100<-subset(test,test>100)
+hist(test100,breaks=20) #bin width change with breaks doesn't work?
+#####
+
+#2 dimensionen
+nmds_water_dna<-metaMDS(water_dna_subset_nonzero,autotransform=FALSE)
+#extract data
+names(nmds_water_dna)
+nmds_water_dna_coord<-as.data.frame(nmds_water_dna$points)
+str(nmds_water_dna_coord)
+row.names(nmds_water_dna_coord)<-row.names(water_dna_subset_nonzero)
+plot(nmds_water_dna_coord)
+text(nmds_water_dna_coord,labels=row.names(nmds_water_dna_coord),cex=0.5) #gives the sample ids, must be called when the plot is already open
+#meta_file<-read.csv(file.choose(),sep=";",row.names=1)
+meta_nmds_water_dna<-merge(nmds_water_dna_coord,meta_file,by="row.names",all.x=TRUE)
+head(meta_nmds_water_dna)
+
+#make "row.names" to actual row.names
+row.names(meta_nmds_water_dna)<-meta_nmds_water_dna$Row.names
+meta_nmds_water_dna<-meta_nmds_water_dna[,-1]
+head(meta_nmds_water_dna)
+
+#removing nmds coords for envfit
+meta_nmds_water_dna2<-meta_nmds_water_dna[,3:10]
+str(meta_nmds_water_dna2)
+#keine cellcounts, kein treatment, keine parallele, kein time, kein habitat
+meta_nmds_water_dna3<-meta_nmds_water_dna2[,c(2,7,8)]
+str(meta_nmds_water_dna3)
+
+#turning "days" and "time" into factors (after creating envfit-file)
+meta_nmds_water_dna$days<-as.factor(meta_nmds_water_dna$days)
+meta_nmds_water_dna$time<-as.factor(meta_nmds_water_dna$time)
+
+#plotting
+colfunc <- colorRampPalette(c("yellow2","red","purple"))
+colfunc(16)
+plot(nmds_water_dna,main="NMDS_water_dna", type="p",display="sites",xlim=c(-1,1),ylim=c(-1,1))
+with(meta_nmds_water_dna, points(nmds_water_dna,col=colfunc(16)[meta_nmds_water_dna$days],pch=c(16,17)[meta_nmds_water_dna2$treatment]))
+with(meta_nmds_water_dna, legend("bottomright", legend = levels(treatment), bty = "n", pch = c(16,17)))
+with(meta_nmds_water_dna, legend("topright", legend = levels(days), pch=16, bty = "n", col=colfunc(16)))
+water_dna_envfit<-envfit(nmds_water_dna,meta_nmds_water_dna3,permutations=100)
+plot(water_dna_envfit)
+text(nmds_water_dna_coord,labels=row.names(nmds_water_dna_coord),cex=0.5)
+
+#########oder
+
+#plotting
+colfunc <- colorRampPalette(c("lightgrey","yellow","blue"))
+colfunc(16)
+plot(nmds_water_dna,main="NMDS_water_dna", type="t",display="species",cex=0.4)
+with(meta_nmds_water_dna, points(nmds_water_dna,col=colfunc(16)[meta_nmds_water_dna$days],pch=c(16,17)[meta_nmds_water_dna2$treatment]))
+with(meta_nmds_water_dna, legend("bottomright", legend = levels(treatment), bty = "n", pch = c(16,17)))
+with(meta_nmds_water_dna, legend("bottomleft", legend = levels(days), pch=16, bty = "n", col=colfunc(16)))
+water_dna_envfit<-envfit(nmds_water_dna,meta_nmds_water_dna3,permutations=100)
+plot(water_dna_envfit)
+text(nmds_water_dna_coord,labels=row.names(nmds_water_dna_coord),cex=0.7)
+
+#anosim 
+anosim_treatment_water_dna<-anosim(water_dna_subset_nonzero,meta_nmds_water_dna$treatment,permutations=999,distance="bray")
+
+plot(anosim_treatment)

@@ -1,0 +1,187 @@
+library(ggplot2)
+#Dataset to use: diamonds. 
+?diamonds 
+#gives a short description of the data.
+#We'll use a subset of the whole dataset:
+set.seed(42)
+small<-diamonds[sample(nrow(diamonds),1000),]
+head(small)
+summary(small)
+
+ggplot(small)+
+	geom_point(aes(x=carat,y=price,colour=cut))+
+	scale_y_log10()+
+	facet_wrap(~cut)+
+	ggtitle("First example")
+
+#Data:Create the ggplot object and populate it with data (always a data frame)
+
+    ggplot(small)
+#Layers: Add layer(s)
+
+    geom_point(aes(x=carat,y=price,colour=cut))
+
+#[facets]:Used for conditionning on variable(s)
+
+    facet_wrap(~cut)
+#Scales for dimensions, colour palettes etc.
+
+    scale_y_log10()
+  
+ggtitle("First example")
+#All geom_xxx() require some aesthetics.
+
+?geom_point
+
+#Aesthetics
+#The following aesthetics can be used with geom_point. Aesthetics are mapped 
+#to variables in the data with the aes function: geom_point(aes(x = var))
+#x: x position (required)
+#y: y position (required)
+#shape: shape of point
+#colour: border colour
+#size: size
+#fill: internal colour
+#alpha: transparency
+
+ggplot(small)+geom_point(aes(x=carat,y=price,colour=cut))
+=
+ggplot(small,aes(x=carat,y=price,colour=cut))+geom_point()
+=
+ggplot(small,aes(x=carat,y=price))+geom_point(aes(colour=cut))
+
+#Caveat: there is a difference between setting and assigning aesthetics.
+
+p<-ggplot(small)
+
+#Assigning (or mapping) is done through aes.
+
+p+geom_point(aes(x=carat,y=price,colour=cut))
+
+#Setting: Fixes a parameter to a certain value and is done outside aes (punkte sollen blau sein)
+
+p+geom_point(aes(x=carat,y=price),colour="blue")
+
+#wrong (so wird "colour" ist titel der legende, "blue" ist die datenreihe)
+
+p+geom_point(aes(x=carat,y=price,colour="blue"))
+
+
+#Faceting: facet_xxx are used for conditionning plots on 1 or 2 variables.
+
+p+geom_point(aes(x=carat,y=price))+facet_wrap(~cut)
+
+p+geom_point(aes(x=carat,y=price))+facet_wrap(~cut,nrow=1)
+
+p+geom_point(aes(x=carat,y=price))+facet_wrap(~cut,ncol=1)
+
+p+geom_point(aes(x=carat,y=price))+facet_grid(cut~color) # alle kombis aus cut und color
+
+
+
+#Other geoms: geom_smooth: is useful for displaying a trend in the data
+
+p<-ggplot(small,aes(x=carat,y=price))
+
+#By default, geom_smooth uses splines.
+
+p+geom_point()+geom_smooth()+facet_wrap(~cut) #kombiniert die punktplots mit einer punktwolke (durchschnitt)
+
+#You can also specified a function to use:
+
+p+geom_point()+geom_smooth(method="lm")+facet_wrap(~cut)
+
+#Putting it all together:
+
+p<-ggplot(diamonds,aes(x=carat,y=price,colour=cut))
+p<-p+scale_x_log10()+scale_y_log10()
+p<-p+geom_point(alpha=0.3)+geom_smooth(method="lm",colour='black')
+p<-p+facet_wrap(~cut)
+print(p)
+
+#Other Geoms: Histograms are useful for categorical variables (nach update muss geom_bar statt geom_histogram genutzt werden):
+
+ggplot(small)+geom_histogram(aes(x=clarity)) #funzt nich, wegen update? 
+ggplot(small,aes(clarity))+geom_bar()
+
+#Show the composition of each bin:
+
+ggplot(small)+geom_histogram(aes(x=clarity,fill=cut)) #funzt nicht, aber 
+ggplot(small,aes(clarity,fill=cut))+geom_bar()
+
+#Using position="dodge" one can more easily compare each sub-bins:
+
+ggplot(small)+geom_histogram(aes(x=clarity,fill=cut),position="dodge") #funzt nicht, aber
+ggplot(small,aes(clarity,fill=cut))+geom_bar(position="dodge")
+
+#position="fill" is useful for showing relative proportions
+
+ggplot(small)+geom_histogram(aes(x=clarity,fill=cut),position="fill")
+ggplot(small,aes(clarity,fill=cut))+geom_bar(position="fill")
+
+
+#Other geoms: Density plots are better suited than histograms for continuous variables:
+
+ggplot(small)+geom_density(aes(x=price))
+ggplot(small)+geom_density(aes(x=price,fill=cut))
+ggplot(small)+geom_density(aes(x=price,fill=clarity))
+
+#We can use some transparency to distinguish between the distributions:
+
+ggplot(small)+geom_density(aes(x=price,fill=cut),alpha=0.5)
+
+#Or use colour instead of fill:
+
+ggplot(small)+geom_density(aes(x=price,colour=cut))
+
+
+#Boxplots: Use geom_boxplot is used for box plots.
+
+ggplot(small)+geom_boxplot(aes(x=cut,y=price))
+
+ggplot(small)+geom_boxplot(aes(x=cut,y=price,fill=color))
+
+
+#Many other geoms available
+
+geom_abline		geom_jitter
+geom_area		geom_line
+geom_bar		geom_linerange 
+geom_bin2d		geom_path 
+geom_blank		geom_point 
+geom_boxplot		geom_pointrange 
+geom_contour		geom_polygon 
+geom_crossbar		geom_quantile 
+geom_density		geom_rect 
+geom_density2d		geom_ribbon
+geom_errorbar		geom_rug 
+geom_errorbarh		geom_segment 
+geom_freqpoly		geom_smooth 
+geom_hex		geom_step 
+geom_histogram		geom_text 
+geom_hline		geom_tile
+geom_vline
+
+
+# Stacking is the default behaviour for most area plots: geom_bar
+ggplot(mtcars, aes(factor(cyl), fill = factor(vs))) + geom_bar()
+
+# Fill makes it easier to compare proportions
+ggplot(mtcars, aes(factor(cyl), fill = factor(vs))) +
+  geom_bar(position = "fill")
+
+# To change stacking order, use factor() to change order of levels
+mtcars$vs <- factor(mtcars$vs, levels = c(1,0))
+ggplot(mtcars, aes(factor(cyl), fill = factor(vs))) + geom_bar()
+
+# Stacking is also useful for time series
+data.set <- data.frame(
+  Time = c(rep(1, 4),rep(2, 4), rep(3, 4), rep(4, 4)),
+  Type = rep(c('a', 'b', 'c', 'd'), 4),
+  Value = rpois(16, 10)
+)
+
+ggplot(data.set, aes(Time, Value)) + geom_area(aes(fill = Type))
+
+# If you want to stack lines, you need to say so:
+ggplot(data.set, aes(Time, Value)) + geom_line(aes(colour = Type))

@@ -1,0 +1,38 @@
+####try to run small part in loop with variable
+
+kallisto_prokka_concoct2_metaxa_checkm<-read.csv(file.choose(),row.names=1,sep=";")
+
+
+gene.subset<-function(dataset,column,gene){
+	genestart<-paste0(gene,"_[0-999]")
+	myout=subset(dataset,grepl(genestart,column))
+	return(myout)
+	}
+	
+#how many structure genes?
+genelist<-subset(kallisto_prokka_concoct2_metaxa_checkm, grepl("phn|pho|pst|psp|pph|gyr|rpo|sox|rrs", genes))$genes
+genelist<-sort(genelist)
+genelist<-sub('_.*$','', genelist)
+genelist<-unique(genelist)
+container<-list("mygenes"=genelist)
+
+#check structure and dimensions
+
+for (gene in genelist){print(gene)}
+
+for (gene in genelist){
+container[[gene]] = gene.subset(kallisto_prokka_concoct2_metaxa_checkm,kallisto_prokka_concoct2_metaxa_checkm$genes,gene)
+}
+
+
+nrow(container[["soxB"]])
+
+test<-NULL
+temp<-NULL
+for (gene in genelist){
+temp<-print(nrow(get(paste0(gene,"_sub"))))
+test<-rbind(test,temp)
+}
+subset_overview<-data.frame(genes = genelist,nrow = test)
+
+

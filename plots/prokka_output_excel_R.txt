@@ -1,0 +1,15 @@
+####prokka gff
+
+einzelne gffs rübergezogen und bearbeitet in excel
+tsv, spalten gelöscht, nur die zeilen mit contig id übergelassen
+zu einer tabelle zusammenfügen
+in R einlesen
+
+minpath: zuordnung prokka? separate ec-listen pro mapping notwendig
+
+ohne metaxa, eher separate bin=metaxa mergetabelle
+
+daten in R einlesen, mergen,speichern
+
+in excel namen kürzen, nach glyph genen suchen: 
+https://metacyc.org/compound?orgid=META&id=CPD0-1308#tab=RXNS
