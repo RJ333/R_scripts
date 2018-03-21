@@ -5,10 +5,23 @@ library(ggplot2)
 library(reshape2)
 
 # omics_neu as workspace, read in phn_op_richness.csv, statistics by online available function summarySE
-test <- read.csv(file.choose(), row.names = 1, sep = ",") 
-test_summary <- summarySE(test, measurevar = "gene_richness_relative", groupvars = c("days" ,"treatment")) #creating statistical data based on script summarySE
+not_phn <- read.csv(file.choose(), row.names = 1, sep = ",") 
+
+# ydiF, malF, ktrB from "phnM_like" too small
+# norB from "nitrogen" too small
+# pphA, phnR, phnA, phnT from "more_phosphonate"
+# chtA not found at all, chiA always 2
+# all glycosyl hydrolases too snall
+# tfdB fdm celB cenC in some samples not present
+
+# remove to small genes, replace NA with 0
+not_phn[is.na(not_phn)] <- 0
+not_phn <- subset(not_phn, !grepl("fdm|ydiF|norB|malF|ktrB|pphA|phnR|phnA|phnT|chtA|chiA|xynB|bcsZ|celB|cenC", gene))
+
+# creating statistical data based on script summarySE, it does not understand "NA"! dataframe[is.na(dataframe)] <- 0
+not_phn_summary <- summarySE(not_phn, measurevar = "gene_richness_relative", groupvars = c("days" ,"treatment")) 
 fuck <- c("group_func", "group_func", "group_func", "group_func", "group_func", "group_func", "group_func", "group_func", "group_func", "group_func")
-test_summary["group"] <- fuck 
+not_phn_summary["group"] <- fuck 
 
 # read in cell count data
 more_cell_counts["new_days"] <- more_cell_counts$day - 69
@@ -23,18 +36,12 @@ fuck2 <- c(rep("group_tax", 32))
 tax_rich["group"] <- fuck2 
 tax_rich_omics <- subset(tax_rich, days >= 0)
 
-test_mean_ci<-ggplot(test_summary, aes(x = days, y = gene_richness_relative, group = treatment, colour = treatment))+
-geom_line(linetype = "dashed")+
-geom_ribbon(aes(ymax = gene_richness_relative + ci, ymin = gene_richness_relative - ci), alpha = 0.1)+
-geom_line(data = tax_rich_omics, aes(y = richness_rel))
-test_mean_ci
-
 
 #plot with averaged groups and confidence interval
-my_y_title <- expression(paste(italic("phn"), " operon and species richness in relation to day 0 [%]"))
-my_legend <- expression(paste(italic("phn"), " operon richness"))
+my_y_title <- expression(paste("not ",italic("phn"), " operon and species richness in relation to day 0 [%]"))
+my_legend <- expression(paste("not ",italic("phn"), " operon richness"))
 
-phn_mean_ci <- ggplot(test_summary, aes(x = days, y = gene_richness_relative, group = treatment, colour = treatment))+
+not_phn_mean_ci <- ggplot(not_phn_summary, aes(x = days, y = gene_richness_relative, group = treatment, colour = treatment))+
 geom_line(aes(linetype = group), size = 2)+
 geom_ribbon(aes(ymax = gene_richness_relative + ci, ymin = gene_richness_relative - ci), alpha = 0.1, colour = NA)+
 geom_line(data = tax_rich_omics, aes(y = richness_rel, linetype = group), size = 1.5)+
@@ -61,8 +68,8 @@ theme_bw()+
 	xlab("Days after glyphosate addition")+
 	ylab(my_y_title)+
 	guides(lty = guide_legend(keywidth = 1.5, keyheight = 1))
-phn_mean_ci
-ggsave(file = "phn_and_tax.png", width = 14, height = 12)
+not_phn_mean_ci
+ggsave(file = "not_phn_and_tax.png", width = 14, height = 12)
 
 my_y_title <- expression(paste(italic("phn"), " operon and species richness in relation to day 0 [%]"))
 .... + labs(y=my_y_title)
