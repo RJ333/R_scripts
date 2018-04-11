@@ -12,9 +12,9 @@ more_cell_counts_0 <- subset(more_cell_counts, new_day >= 0)
 library(ggplot2)
 library(scales)
 
-ggplot(more_cell_counts_0,aes(x=new_day,colour=treatment,linetype=treatment,group=treatment))+
-	geom_errorbar(aes(ymin=cells_ml-cells_se, ymax=cells_ml+cells_se), colour="black",width=2,size=1.2)+
-	geom_line(aes(y=cells_ml,group=treatment,linetype=treatment),colour="black",size=2,alpha=0.8)+
+ggplot(more_cell_counts_0, aes(x = new_day, colour = treatment, linetype = treatment, group = treatment)) +
+	geom_errorbar(aes(ymin = cells_ml - cells_se, ymax = cells_ml + cells_se), colour = "black", width = 2, size = 1.2) +
+	geom_line(aes(y = cells_ml, group = treatment, linetype = treatment), colour = "black", size = 2, alpha = 0.8) +
 	#geom_point(aes(y=glyph_theor*2000000,shape="glyph"),colour="black",alpha=1, size=4)+
 	#geom_point(aes(y=glyph_mg_L*2000000,shape="glyph_deg"),colour="black",alpha=1, size=4)+
 	#geom_errorbar(aes(ymin=(glyph_mg_L-glyph_se)*2000000, ymax=(glyph_mg_L+glyph_se)*2000000),colour="black", width=2,size=1.2)+
