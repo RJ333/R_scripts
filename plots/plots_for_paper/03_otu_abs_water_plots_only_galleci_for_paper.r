@@ -99,7 +99,7 @@ a<-ggplot(data=Gallaecimonas_abs_water_plot, aes(x=days-69,y=value,group=nucleic
 ggsave(file="absolute_genus_Gallaecimonas_water_for_paper_oneplot_bar.png", width=10, height=12)
 
 
-#########Gallaecimonas for paper
+#########Gallaecimonas for poster
 Gallaecimonas_poster_plot<-subset(abs_abu_molten_tax, habitat == "water" & grepl('Gallaecimonas', genus) & days > 45)
 species_title_Gallaecimonas<-expression(paste(,italic("Gallaecimonas")," sp."))
 Gallaecimonas_poster_plot$treatment2<-factor(Gallaecimonas_poster_plot$treatment,labels=c("Control","Treatment"))
@@ -124,9 +124,9 @@ ggplot(data=Gallaecimonas_poster_plot, aes(x=days-69,y=value,group=nucleic_acid,
 	scale_y_continuous(label= function(x) {ifelse(x==0, "0", parse(text=gsub("[+]", "", gsub("e", " %*% 10^", scientific_format()(x)))))})+
 	theme(panel.grid.major=element_line(colour = NA, size = 0.2))+
 	theme(panel.grid.minor=element_line(colour = NA, size = 0.5))+
-	theme(axis.title = element_text(size = 20, face = "bold"))+
-	theme(axis.title.y = element_text(angle = 90, vjust = 0.5))+
-	theme(axis.text = element_text(size = 17, face = "bold"))+
+	theme(axis.title = element_text(size = 35))+
+	theme(axis.title.y = element_text(angle = 90, vjust = 1))+
+	theme(axis.text = element_text(size = 30))+
 	#theme(legend.title=element_text(size=13,face="bold"))+
 	theme(legend.position = "none")+
 	#theme(legend.background = element_rect(fill="grey90",linetype="solid"))+

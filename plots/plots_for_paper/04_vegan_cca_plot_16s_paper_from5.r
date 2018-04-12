@@ -6,12 +6,13 @@ library(grid)
 ############# clean final version ################################################################
 ############################ für DNA only, Y Achse gespiegelt ########################################
 dna_cca_5_plot<-ggplot() + 
-  geom_path(data=subset(path_both5,nucleic_acid=="dna"),aes(x=CCA1,y=CA1,group=treatment),colour="grey30",size=1.5,alpha=0.8)+
+  geom_path(data=subset(path_both5,nucleic_acid=="dna" & treatment == "glyph"),aes(x=CCA1,y=CA1,group=treatment),colour="black",size=2,alpha=1)+
+  geom_path(data=subset(path_both5,nucleic_acid=="dna"& treatment == "control"),aes(x=CCA1,y=CA1,group=treatment),colour="grey70",size=2,alpha=1)+
   geom_point(data=subset(combined_cca5,nucleic_acid=="dna"),aes(x=CCA1,y=CA1,shape=treatment),size=4,colour="black",fill="white",alpha=1)+
   coord_cartesian(ylim = c(-2.3, 2.3),xlim=c(-1.5,3))+
   scale_y_reverse()+
   theme_bw()+
-	theme(axis.text=element_text(size=17,face="bold"))+
+	theme(axis.text=element_text(size=30))+
 	theme(legend.position="none")+
 	theme(axis.title=element_blank())+
 	theme(panel.grid.major=element_line(colour = NA, size = 0.2))+
@@ -20,21 +21,22 @@ dna_cca_5_plot<-ggplot() +
 ############################ für cDNA only, nicht gespiegelt ########################################  
  
  cdna_cca_5_plot<-ggplot() + 
-  geom_path(data=subset(path_both5,nucleic_acid=="cdna"),aes(x=CCA1,y=CA1,group=treatment),colour="grey30",size=1.5,alpha=0.8)+
-  geom_point(data=subset(combined_cca5,nucleic_acid=="cdna"),aes(x=CCA1,y=CA1,shape=treatment),size=4,colour="black",fill="white",alpha=1)+
+  geom_path(data=subset(path_both5,nucleic_acid=="cdna" & treatment == "glyph"),aes(x=CCA1,y=CA1,group=treatment),colour="black",size = 2, alpha = 1)+
+  geom_path(data=subset(path_both5,nucleic_acid=="cdna"& treatment == "control"),aes(x=CCA1,y=CA1,group=treatment),colour="grey70",size = 2, alpha = 1)+
+  geom_point(data=subset(combined_cca5,nucleic_acid=="cdna"),aes(x=CCA1,y=CA1,shape=treatment),size=4,colour="black",fill="white",alpha = 1)+
   coord_cartesian(ylim = c(-2.3, 2.3),xlim=c(-1.5,3))+
   theme_bw()+
-	theme(axis.text=element_text(size=17,face="bold"))+
+	theme(axis.text=element_text(size=30))+
 	theme(legend.position="none")+
 	theme(axis.title=element_blank())+
 	theme(panel.grid.major=element_line(colour = NA, size = 0.2))+
 	theme(panel.grid.minor=element_line(colour = NA, size = 0.5))
  
 #########################################################################zusammenführen mit gridExtra
-grid.arrange(dna_cca_5_plot, cdna_cca_5_plot, nrow = 1, bottom=textGrob("CCA1",gp=gpar(fontface="bold",fontsize=20)),left=textGrob("CA1",rot=90,gp=gpar(fontface="bold",fontsize=20)))
+grid.arrange(dna_cca_5_plot, cdna_cca_5_plot, nrow = 1, bottom=textGrob("CCA1",gp=gpar(fontsize=35)),left=textGrob("CA1",rot=90,gp=gpar(fontsize=35)))
 
 
-ggsave(file="Fig_04_cca_water5_paper_arrows.png", width=20, height=8.75,grid.arrange(dna_cca_5_plot, cdna_cca_5_plot, nrow = 1, bottom=textGrob("CCA1",gp=gpar(fontface="bold",fontsize=20)),left=textGrob("CA1",rot=90,gp=gpar(fontface="bold",fontsize=20))))
+ggsave(file="Fig_04_cca_water5_paper_arrows.png", width = 20, height = 8.75, grid.arrange(dna_cca_5_plot, cdna_cca_5_plot, nrow = 1, bottom = textGrob("CCA1", gp = gpar(fontsize = 35)), left = textGrob("CA1", rot = 90, gp = gpar(fontsize = 35))))
 
 ################## end clean final version #########################################################################################################################
 
