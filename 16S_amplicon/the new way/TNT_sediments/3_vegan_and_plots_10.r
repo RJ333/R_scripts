@@ -1,16 +1,35 @@
-#vegan analysis and plots
-##for vegan
-##otus in spalten/proben als rownames 
-tnt10_tvegan_dna<-read.csv(file.choose(),row.names=1,sep=";")
+# vegan analysis and plots
+## for vegan
+## otus in spalten/proben als rownames 
+tnt10_tvegan_dna <- read.csv(file.choose(), row.names = 1, sep = ";")
+meta_data_tnt10_dna <- read.csv(file.choose(), row.names = 1,sep = ";")
+
+# if you don't merge (e.g. for ggplot), the count table and the meta table must be in the same order
+meta_data_tnt10_dna <- meta_data_tnt10_dna[ order(row.names(meta_data_tnt10_dna)), ]  # if you row.names are characters! otherwise "1, 10, 11, ...."
 
 #transpose back for merging
 tnt10_vegan_dna<-t(tnt10_tvegan_dna)
 head(tnt10_vegan_dna)
 
+# remove two outliers (dna02_S2, dna31_S31)
+tnt10_vegan_dna <- tnt10_vegan_dna[-c(2,31),]
+
 #2 dimensionen
 nmds_tnt10_dna_notrans<-metaMDS(tnt10_vegan_dna,try=100,autotransform=FALSE)
-
 nmds_tnt10_dna<-nmds_tnt10_dna_notrans
+
+fit <- envfit(nmds_tnt10_dna ~ area, meta_data_tnt10_dna)
+plot(nmds_tnt10_dna, type = "p", display = "sites", main ="NMDS DNA_10 with summed TNT and ADNT")
+#with(meta_data_tnt10_dna, ordiellipse(nmds_tnt10_dna, area, kind = "se", conf = 0.95))
+with(meta_data_tnt10_dna, ordisurf(nmds_tnt10_dna, sumTNT_ADNT, add = TRUE))
+with(meta_data_tnt10_dna, points(nmds_tnt10_dna, col = c("purple","black","blue","green")[meta_data_tnt10_dna$cruise], pch = c(16, 17)[meta_data_tnt10_dna$low_oxygen]))
+with(meta_data_tnt10_dna, legend("bottomright", legend = levels(low_oxygen), bty = "n", pch = c(16,17)))
+with(meta_data_tnt10_dna, legend("topright", legend = levels(cruise), pch=16, bty = "n", col= c("purple","black","blue","green")))
+text(nmds_tnt10_dna, labels=meta_data_tnt10_dna$sample, cex = 0.8, pos = 1)
+#plot(fit)
+
+
+
 #extract data
 names(nmds_tnt10_dna)
 nmds_tnt10_dna_coord<-as.data.frame(nmds_tnt10_dna$points)

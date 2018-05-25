@@ -118,14 +118,15 @@ ggplot(data=Gallaecimonas_poster_plot, aes(x=days-69,y=value,group=nucleic_acid,
 						name="Microcosm  ",
 						breaks=c("glyph","control"),
 						labels=c("Treatment","Control"))+
-	scale_x_continuous(breaks = scales::pretty_breaks(n = 20))+
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 10))+
 	#ggtitle(species_title_Gallaecimonas)+
 	theme_bw()+
 	scale_y_continuous(label= function(x) {ifelse(x==0, "0", parse(text=gsub("[+]", "", gsub("e", " %*% 10^", scientific_format()(x)))))})+
 	theme(panel.grid.major=element_line(colour = NA, size = 0.2))+
 	theme(panel.grid.minor=element_line(colour = NA, size = 0.5))+
 	theme(axis.title = element_text(size = 35))+
-	theme(axis.title.y = element_text(angle = 90, vjust = 1))+
+	theme(axis.title.y = element_text(angle = 90, vjust = 0.5, margin = margin(t = 0, r = 0, b = 0, l = 0)))+
+	theme(axis.title.x = element_text(angle = 0, vjust = 0, margin = margin(t = 15, r = 0, b = 0, l = 0)))+
 	theme(axis.text = element_text(size = 30))+
 	#theme(legend.title=element_text(size=13,face="bold"))+
 	theme(legend.position = "none")+

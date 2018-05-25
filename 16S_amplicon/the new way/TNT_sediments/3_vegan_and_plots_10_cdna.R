@@ -1,15 +1,36 @@
-#vegan analysis and plots
-##for vegan
-##otus in spalten/proben als rownames 
-tnt10_tvegan_cdna<-read.csv(file.choose(),row.names=1,sep=";")
+# vegan analysis and plots
+## for vegan
+## otus in spalten/proben als rownames 
+tnt10_tvegan_cdna <- read.csv(file.choose(), row.names = 1, sep = ";")
+meta_data_tnt10_cdna <- read.csv(file.choose(), row.names = 1, sep = ";")
+
+# if you don't merge (e.g. for ggplot), the count table and the meta table must be in the same order
+meta_data_tnt10_cdna <- meta_data_tnt10_cdna[ order(row.names(meta_data_tnt10_cdna)), ]  # if you row.names are characters! otherwise "1, 10, 11, ...."
 
 #transpose back for merging
 tnt10_vegan_cdna<-t(tnt10_tvegan_cdna)
 head(tnt10_vegan_cdna)
 
-#2 dimensionen 
+#2 dimensionen
 nmds_tnt10_cdna_notrans<-metaMDS(tnt10_vegan_cdna,try=100,autotransform=FALSE)
 nmds_tnt10_cdna<-nmds_tnt10_cdna_notrans
+
+fit <- envfit(nmds_tnt10_cdna ~ area, meta_data_tnt10_cdna)
+plot(nmds_tnt10_cdna, type = "p", display = "sites", main ="NMDS cDNA_10 with summed TNT and ADNT")
+#with(meta_data_tnt10_cdna, ordiellipse(nmds_tnt10_cdna, area, kind = "se", conf = 0.95))
+with(meta_data_tnt10_cdna, ordisurf(nmds_tnt10_cdna, sumTNT_ADNT, add = TRUE))
+with(meta_data_tnt10_cdna, points(nmds_tnt10_cdna, col = c("purple","black","blue","green")[meta_data_tnt10_cdna$cruise], pch = c(16, 17)[meta_data_tnt10_cdna$low_oxygen]))
+with(meta_data_tnt10_cdna, legend("bottomright", legend = levels(low_oxygen), bty = "n", pch = c(16,17)))
+with(meta_data_tnt10_cdna, legend("topright", legend = levels(cruise), pch=16, bty = "n", col= c("purple","black","blue","green")))
+text(nmds_tnt10_cdna, labels=meta_data_tnt10_cdna$station, cex = 0.8, pos = 1)
+plot(fit)
+
+
+
+
+
+
+
 #extract data
 names(nmds_tnt10_cdna)
 nmds_tnt10_cdna_coord<-as.data.frame(nmds_tnt10_cdna$points)
