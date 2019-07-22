@@ -1,6 +1,6 @@
 ##VennDiagram
 library(data.table)
-library(VennDiagramm)
+library(VennDiagram)
 library(ggplot2)
 library(reshape2)
 

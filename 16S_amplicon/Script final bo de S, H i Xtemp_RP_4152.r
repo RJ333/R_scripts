@@ -60,7 +60,7 @@ for (st in 1:T){
 	XtempTot<-XtempTot+Xtemp
 	rm(Xtemp)
 	}
-XtempAve<-XtempTot/100
+XtempAve<-XtempTot/T
 Smean<-colMeans(S.obs_sim)  # you can skip all the rest if you are not interested in Richness and diversity
 Chao1mean<-colMeans(S.chao1_sim)
 seChao1mean<-colMeans(se.chao1_sim)
